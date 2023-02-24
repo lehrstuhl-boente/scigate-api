@@ -1,0 +1,204 @@
+openapi: 3.0.3
+info:
+  title: Scigate API
+  description: This is an API to download search results (hitlists and documents) from different data sources
+  termsOfService: https://scigate.ch
+  contact:
+    email: joern@erbguth.net
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Description will be available soon
+  url: https://scigate.ch
+servers:
+  - url: https://scigate.ch
+tags:
+  - name: search request
+    description: New Scigate API request with a query
+    externalDocs:
+      description: Description will be available soon
+      url: https://scigate.ch
+  - name: document list request
+    description: New Scigate API request with a document list
+    externalDocs:
+      description: Description will be available soon
+      url: https://scigate.ch
+  - name: status
+    description: Access the status of your API Request
+    externalDocs:
+      description: Description will be available soon
+      url: https://scigate.ch
+paths:
+  /api/search:
+    post:
+      tags:
+        - search request
+      summary: search for documents
+      description: search request
+      operationId: search
+      requestBody:
+        description: search
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/search'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/search'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/search'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/result'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/result'
+        '405':
+          description: Invalid input
+  /api/load:
+    post:
+      tags:
+        - document list request
+      summary: get list of documents
+      description: get a ZIP-file with documents through a document list
+      operationId: load
+      requestBody:
+        description: load
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/load'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/load'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/load'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/load'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/load'
+        '405':
+          description: Invalid input
+  /api/status:
+    get:
+      tags:
+        - status
+      summary: Checks status of request
+      description: checks status of request
+      operationId: queryStatus
+      parameters:
+        - name: status
+          in: query
+          description: check status
+          required: true
+          explode: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusId:
+                    type: integer
+                  statusText:
+                    type: string
+        '400':
+          description: Invalid status value
+
+components:
+  schemas:
+    search:
+      type: object
+      properties:
+        collection:
+          type: string
+          example: entscheidsuche
+          enum:
+            - entscheidsuche
+            - swisscovery
+            - zora
+            - boris
+        query:
+          type: string
+          format: json
+          example: xyz
+        maxHits:
+          type: integer
+          format: int32
+          example: 100
+          default: 100
+        maxReply:
+          type: integer
+          format: int32
+          example: 100
+          default: 100
+        getDocs:
+          type: boolean
+          default: false
+    load:
+      type: object
+      properties:
+        collection:
+          type: string
+          example: entscheidsuche
+          enum:
+            - entscheidsuche
+        docList:
+          type: array
+          items:
+            type: string
+          example: abc
+        maxReply:
+          type: integer
+          format: int32
+          example: 100
+          default: 100
+    result:
+      type: object
+      properties:
+        collection:
+          type: string
+          example: entscheidsuche
+          enum:
+            - entscheidsuche
+            - swisscovery
+            - zora
+            - boris
+        hitlist:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              description1:
+                type: string
+              description2:
+                type: string
+              url:
+                type: string
+        zip:
+          type: string
+          format: byte
+        request-id:
+          type: string
