@@ -1,2 +1,13 @@
-from swagger_ui import api_doc
-api_doc(app, config_path='./openapi.yaml', url_prefix='/api/doc', title='Scigate API doc')
+# function called by the API
+
+
+def search(jsonBody):
+	return
+	
+def load(jsonBody):
+	return
+	
+def queryStatus(jsonBody):
+	return
+
+
