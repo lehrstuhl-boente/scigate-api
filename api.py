@@ -37,7 +37,7 @@ def search(sdata):
 			if result['status']=='ok':
 				hits=result['hits']
 				reply['hits']=hits
-				reply['token']=id
+				reply['token']=str(id)
 				reply['check']=MYAPIURL+'status?{"id":'+str(id)+'}'
 				reply['load']=MYAPIURL+'load?{"id":'+str(id)+'}'
 				if hits>maxHits:
@@ -45,6 +45,7 @@ def search(sdata):
 					reply['hitsTruncated']=True
 				if hits>maxReply:
 					new_thread = Thread(target=getData,args=(query,collection,hits,id))
+					new_thread.run()
 				else:
 					print("Rufe nun getData mit '"+query+"' auf.")
 					reply.update(getData(query,collection,hits,id))
