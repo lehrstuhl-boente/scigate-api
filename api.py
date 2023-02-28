@@ -51,7 +51,7 @@ def search(sdata):
 def getData(query,collection,hits,id):
 	start=0
 	hitlist=[]
-	verzeichnisname=request"+str(id)
+	verzeichnisname="request"+str(id)
 	dir=PARENTDIR+"/"+verzeichnisname
 	os.mkdir(dir)
 	try:
