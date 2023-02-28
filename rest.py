@@ -23,6 +23,8 @@ class MyServer(BaseHTTPRequestHandler):
 		try:
 			commands=self.path.split("?",1)
 			print(commands)
+			print(commands[1])
+			print(urllib.parse.parse_qs(commands[1]))
 			sdata=json.loads(urllib.parse.parse_qs(commands[1]))
 			command=commands[0]
 		except:
