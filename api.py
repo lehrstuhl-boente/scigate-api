@@ -89,9 +89,11 @@ def getData(query,collection,hits,id):
 				result['errormodule']="getData return from hitlist-command"			
 				return result
 			start+=count
+		print("Schreibe CSV")
 		with open(dir+"/hitlist.csv", 'w') as f:
 			write = csv.writer(f)
-			write.writerow(["Description1","Description2","Description3","URL","ID"])
+			# write.writerow(["Description1","Description2","Description3","URL","ID"])
+			write.writerow(["Description1"])
 			write.writerows(hitlist)
 		reply['verzeichnis']=verzeichnisname
 			
