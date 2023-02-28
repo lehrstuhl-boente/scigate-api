@@ -76,6 +76,11 @@ def getData(query,collection,hits,id):
 			#print("json")
 			if result['status']=='ok':
 				print("status ok")
+				print(result['hitlist'][0])
+				print(result['hitlist'][0]['description'])
+				print(result['hitlist'][0]['description'][0])
+				print(result['hitlist'][0]['url'])
+								
 				hitlist.extend([[i['description'][0], i['description'][1], i['description'][2], i['url'], i['url'].after('https://entscheidsuche.ch/view/')] for i in result['hitlist']])
 				print("umlistung ok")
 			else:
