@@ -51,7 +51,8 @@ def search(sdata):
 		reply['errormodule']="search"
 		reply['error']="exception caught"	
 		reply['status']='error'
-	return reply
+	finally:
+		return reply
 	
 def getData(query,collection,hits,id):
 	start=0
@@ -86,8 +87,8 @@ def getData(query,collection,hits,id):
 		reply['errormodule']="getData"
 		reply['error']="exception caught"	
 		reply['status']='error'
-	print("Ende von getData")
-	return reply
+	finally:
+		return reply
 
 	
 def load(sdata):
