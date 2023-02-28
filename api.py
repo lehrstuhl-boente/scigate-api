@@ -6,9 +6,10 @@ import os
 import csv
 
 APIURL="http://v2202109132150164038.luckysrv.de:8080/"
+MYAPIURL="http://v2202109132150164038.luckysrv.de:5001/api/"
 CHUNK=100
 PARENTDIR="/home/jorn/scigateapi/data"
-MAXREPLY=1000
+MAXREPLY=200
 
 def search(sdata):
 	reply={}
@@ -36,11 +37,14 @@ def search(sdata):
 			if result['status']=='ok':
 				hits=result['hits']
 				reply['hits']=hits
+				reply['token']=id
+				reply['check']=MYAPIURL+'status?{"id":'+str(id)+'}'
+				reply['load']=MYAPIURL+'load?{"id":'+str(id)+'}'
 				if hits>maxHits:
 					hits=maxHits
 					reply['hitsTruncated']=True
 				if hits>maxReply:
-					reply['token']=id
+					new_thread = Thread(target=getData,args=(query,collection,hits,id))
 				else:
 					print("Rufe nun getData mit '"+query+"' auf.")
 					reply.update(getData(query,collection,hits,id))
@@ -108,7 +112,7 @@ def load(sdata):
 	reply['status']='ok'
 	return reply
 	
-def queryStatus(sdata):
+def status(sdata):
 	reply={}
 	reply['status']='ok'
 	return reply
