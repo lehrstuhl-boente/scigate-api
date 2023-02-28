@@ -2,16 +2,18 @@
 import json
 
 def search(**kwargs):
-	jsonBody=list(kwargs.values())[0]
-	print(jsonBody)
-	return jsonBody
+	jsonInput=list(kwargs.values())[0]
+	print(jsonInput)
+	return json.dumps({})
 	
 def load(**kwargs):
-	jsonBody=list(kwargs.values())[0]
-	return jsonBody
+	jsonInput=list(kwargs.values())[0]
+	print(jsonInput)
+	return json.dumps({})
 	
 def queryStatus(**kwargs):
-	jsonBody=list(kwargs.values())[0]
-	return jsonBody
+	jsonInput=list(kwargs.values())[0]
+	print(jsonInput)
+	return json.dumps({})
 
 
