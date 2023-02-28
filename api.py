@@ -38,7 +38,7 @@ def search(sdata):
 				if hits>maxReply:
 					reply['token']=id
 				else:
-					reply=getData(query,collection,hits,id)
+					reply.update(getData(query,collection,hits,id))
 			else:
 				result['errormodule']="search: return from search-command"
 				return result	
