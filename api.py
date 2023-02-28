@@ -126,6 +126,7 @@ def getData(query,collection,hits,id):
 		saveStatus(status, id)
 
 	finally:
+		print("finally block of getData for "+str(id))	
 		return reply
 
 def saveStatus(status,id):
