@@ -26,7 +26,7 @@ class MyServer(BaseHTTPRequestHandler):
 		except:
 			self.do_Error('Wrong command: '+self.path)
 		else:
-			do_Common(command,sdata)
+			self.do_Common(command,sdata)
 	
 	def do_POST(self):
 		try:
@@ -40,7 +40,7 @@ class MyServer(BaseHTTPRequestHandler):
 		except:
 			self.do_Error('Wrong command: '+self.path)
 		else:
-			do_Common(command,sdata)
+			self.do_Common(command,sdata)
 			
 	def do_Header(self):
 		self.send_response(200)
@@ -59,7 +59,7 @@ class MyServer(BaseHTTPRequestHandler):
 		print(string);
 		self.wfile.write(string)
 		
-	self.do_Common(self,sdata,command):
+	def do_Common(self,sdata,command):
 		self.do_Header()
 		reply={}
 		reply['status']='ok'
