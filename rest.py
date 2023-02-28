@@ -3,9 +3,12 @@ from flask import (
     render_template
 )
 import connexion
+from connexion.resolver import RestyResolver
+from flask_cors import CORS
 
 # Create the application instance
 app = connexion.App(__name__, specification_dir='./')
+CORS(app.app)
 
 # Read the yaml file to configure the endpoints
 app.add_api('openapi.yaml')
