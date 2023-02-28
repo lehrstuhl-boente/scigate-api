@@ -74,7 +74,7 @@ class MyServer(BaseHTTPRequestHandler):
 			reply=api.queryStatus(sdata)
 		else:
 			reply['status']='error'
-			reply['error']="Unknown command: "+command)
+			reply['error']="Unknown command: "+command
 		string=json.dumps(reply, ensure_ascii=False).encode('utf8')
 		print(string);
 		self.wfile.write(string)
