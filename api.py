@@ -24,7 +24,7 @@ def search(sdata):
 		else:
 			reply['status']='error'
 			reply['error']="Collection '"+collection+"' unknown"	
-	catch:
+	except:
 		reply['status']='error'
 	return reply
 	
