@@ -18,7 +18,7 @@ def home():
     anyhost:5001/
     :return:        the rendered template 'home.html'
     """
-    return render_template('home.html')
+    return render_template('index.html')
     
 app = connexion.App(__name__, specification_dir='./')
 
@@ -33,7 +33,7 @@ def home():
     anyhost:5001/
     :return:        the rendered template 'home.html'
     """
-    return render_template('home.html')
+    return render_template('index.html')
 
 
 from OpenSSL import SSL
