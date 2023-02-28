@@ -38,6 +38,7 @@ def search(sdata):
 				if hits>maxReply:
 					reply['token']=id
 				else:
+					print("Rufe nun getData mit '"+query+"' auf.")
 					reply.update(getData(query,collection,hits,id))
 			else:
 				result['errormodule']="search: return from search-command"
