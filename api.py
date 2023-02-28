@@ -8,6 +8,7 @@ import csv
 APIURL="http://v2202109132150164038.luckysrv.de:8080/"
 CHUNK=100
 PARENTDIR="/home/jorn/scigateapi/data"
+MAXREPLY=1000
 
 def search(sdata):
 	reply={}
@@ -24,6 +25,9 @@ def search(sdata):
 			maxReply=100
 			if 'maxReply' in sdata:
 				maxReply=sdata['maxReply']
+				if maxReply > MAXREPLY:
+					maxReply=MAXREPLY
+					reply["warning"]="Synchronous requests are limited to "+str(MAXREPLY)+" hits"
 			result={}
 			data={'engine': collection, 'type': 'search', 'term': query}
 			r=requests.post(url=APIURL,json=data)
@@ -64,8 +68,8 @@ def getData(query,collection,hits,id):
 	print("lege nun Verzeichnis '"+dir+"' an.")
 	os.mkdir(dir)
 	try:
-		# print("starte nun hitlist-Schleife")
 		while start<hits:
+			print("Durchlauf hitlist-Schleife start mit "+str(start))
 			count=CHUNK
 			if start+count>hits:
 				count=hits-start
