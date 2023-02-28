@@ -45,8 +45,9 @@ def search(sdata):
 				hits=result['hits']
 				reply['hits']=hits
 				reply['token']=str(id)
-				reply['check']=MYAPIURL+'status?{"id":'+str(id)+'}'
-				reply['load']=MYAPIURL+'load?{"id":'+str(id)+'}'
+				reply['check']=MYAPIURL+'status?{%22id%22:'+str(id)+'}'
+				reply['load']=MYAPIURL+'load?{%22id%22:'+str(id)+'}'
+				reply['id']=str(id)
 				if hits>maxHits:
 					hits=maxHits
 					reply['hitsTruncated']=True
@@ -115,7 +116,6 @@ def getData(query,collection,hits,id):
 			write.writerow(["Description1","Description2","Description3","URL"])
 			write.writerows(hitlist)
 		print('fertig CSV')
-		reply['verzeichnis']=verzeichnisname
 		status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
 		status['status']='done'
 		status['erasure']=datetime.datetime.fromtimestamp(time.time()+604800).isoformat()
