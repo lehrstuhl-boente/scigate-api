@@ -76,7 +76,8 @@ def getData(query,collection,hits,id):
 			#print("json")
 			if result['status']=='ok':
 				print("status ok")
-				hitlist.extend([[i['description'][0], i['description'][1], i['url'], i['url'].after('https://entscheidsuche.ch/view/')] for i in result['hitlist']])
+				hitlist.extend([[i['description'][0], i['description'][1], i['description'][2], i['url'], i['url'].after('https://entscheidsuche.ch/view/')] for i in result['hitlist']])
+				print("umlistung ok")
 			else:
 				print("status nicht ok")
 				result['errormodule']="getData return from hitlist-command"			
@@ -84,7 +85,7 @@ def getData(query,collection,hits,id):
 			start+=count
 		with open(dir+"/hitlist.csv", 'w') as f:
 			write = csv.writer(f)
-			write.writerow(["Description1","Description2","URL","ID"])
+			write.writerow(["Description1","Description2","Description3","URL","ID"])
 			write.writerows(hitlist)
 		reply['verzeichnis']=verzeichnisname
 			
