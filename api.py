@@ -60,8 +60,8 @@ def search(sdata):
 			reply['status']='error'
 			reply['errormodule']="search"
 			reply['error']="Collection '"+collection+"' unknown"	
-	except:
-		print("except block of search for "+str(id))	
+	except Exception ex:
+		printException(ex,"search "+str(id))
 		reply['errormodule']="search"
 		reply['error']="exception caught"	
 		reply['status']='error'
@@ -118,8 +118,8 @@ def getData(query,collection,hits,id):
 		status['erasure']=datetime.datetime.fromtimestamp(time.time()+604800).isoformat()
 		saveStatus(status, id)
 			
-	except:
-		print("except block of getData for "+str(id))
+	except Exception as ex:
+		printException(ex,"getData "+str(id))
 		reply['errormodule']="getData"
 		reply['error']="exception caught"	
 		reply['status']='error'
@@ -129,6 +129,25 @@ def getData(query,collection,hits,id):
 	finally:
 		print("finally block of getData for "+str(id))	
 		return reply
+
+def printException(ex, name):
+	# Get current system exception
+	ex_type, ex_value, ex_traceback = sys.exc_info()
+
+	# Extract unformatter stack traces as tuples
+	trace_back = traceback.extract_tb(ex_traceback)
+
+	# Format stacktrace
+	stack_trace = list()
+
+	for trace in trace_back:
+		stack_trace.append("File : %s , Line : %d, Func.Name : %s, Message : %s" % (trace[0], trace[1], trace[2], trace[3]))
+
+	print("Exception "+name)
+	print("Exception type : %s " % ex_type.__name__)
+	print("Exception message : %s" %ex_value)
+	print("Stack trace : %s" %stack_trace)
+
 
 def saveStatus(status,id):
 	path=PARENTDIR+"/"+PREDIR+str(id)+"/status.json"
