@@ -22,15 +22,11 @@ class MyServer(BaseHTTPRequestHandler):
 	def do_GET(self):
 		try:
 			commands=self.path.split("?",1)
-			print(commands)
-			print(commands[1])
 			args=urllib.parse.unquote(commands[1])
-			print(args)
-			print(json.loads(args))
 			sdata=json.loads(args)
 			command=commands[0]
 		except:
-			self.do_Error('Wrong command: '+self.path)
+			self.do_Error('Wrong command: '+self.path+'. Use JSON-Syntax with double quotes.')
 		else:
 			self.do_Common(command,sdata)
 	
@@ -65,11 +61,20 @@ class MyServer(BaseHTTPRequestHandler):
 		print(string);
 		self.wfile.write(string)
 		
-	def do_Common(self,sdata,command):
+	def do_Common(self,command,sdata):
 		self.do_Header()
 		reply={}
 		reply['status']='ok'
 		reply['command']=command
+		if command=='api/search':
+			reply=api.search(sdata)
+		elif command=='api/load':
+			reply=api.load(sdata)
+		elif command=='api/queryStatus'
+			reply=api.queryStatus(sdata)
+		else:
+			reply['status']='error'
+			reply['error']="Unknown command: "+command)
 		string=json.dumps(reply, ensure_ascii=False).encode('utf8')
 		print(string);
 		self.wfile.write(string)
