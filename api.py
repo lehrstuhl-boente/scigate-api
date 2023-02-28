@@ -50,7 +50,7 @@ def search(sdata):
 					hits=maxHits
 					reply['hitsTruncated']=True
 				if hits>maxReply:
-					new_thread = Thread(target=getData,args=(query,collection,hits,id))
+					new_thread = thread(target=getData,args=(query,collection,hits,id))
 					new_thread.run()
 				else:
 					print("Rufe nun getData mit '"+query+"' auf.")
