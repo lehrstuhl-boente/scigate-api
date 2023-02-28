@@ -64,9 +64,8 @@ def getData(query,collection,hits,id):
 	print("lege nun Verzeichnis '"+dir+"' an.")
 	os.mkdir(dir)
 	try:
-		print("starte nun hitlist-Schleife")
+		# print("starte nun hitlist-Schleife")
 		while start<hits:
-			print("Scheifendurchlauf mit Start="+str(start))
 			count=CHUNK
 			if start+count>hits:
 				count=hits-start
@@ -77,17 +76,9 @@ def getData(query,collection,hits,id):
 			result=json.loads(ergebnis)
 			#print("json")
 			if result['status']=='ok':
-				print("status ok")
-				print(result['hitlist'][0])
-				print(result['hitlist'][0]['description'])
-				print(result['hitlist'][0]['description'][0])
-				print(result['hitlist'][0]['url'])
-								
 				# hitlist.extend([[i['description'][0], i['description'][1], i['description'][2], i['url'], i['url'].after('https://entscheidsuche.ch/view/')] for i in result['hitlist']])
-				hitlist.extend([[i['description'][0],i['description'][1], i['description'][2]] for i in result['hitlist']])
-				print("umlistung ok")
+				hitlist.extend([[i['description'][0],i['description'][1], i['description'][2]i['url']] for i in result['hitlist']])
 			else:
-				print("status nicht ok")
 				result['errormodule']="getData return from hitlist-command"			
 				return result
 			start+=count
@@ -95,7 +86,7 @@ def getData(query,collection,hits,id):
 		with open(dir+"/hitlist.csv", 'w') as f:
 			write = csv.writer(f)
 			# write.writerow(["Description1","Description2","Description3","URL","ID"])
-			write.writerow(["Description1","Description2","Description3"])
+			write.writerow(["Description1","Description2","Description3","URL"])
 			write.writerows(hitlist)
 		print('fertig CSV')
 		reply['verzeichnis']=verzeichnisname
