@@ -8,10 +8,10 @@ from flask_cors import CORS
 
 # Create the application instance
 app = connexion.App(__name__, specification_dir='./')
-CORS(app.app)
 
 # Read the yaml file to configure the endpoints
 app.add_api('openapi.yaml')
+CORS(app.app)
 
 # Create a URL route in our application for "/"
 @app.route('/ui')
