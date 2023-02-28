@@ -47,6 +47,8 @@ def search(sdata):
 			reply['errormodule']="search"
 			reply['error']="Collection '"+collection+"' unknown"	
 	except:
+		reply['errormodule']="search"
+		reply['error']="exception caught"	
 		reply['status']='error'
 	return reply
 	
@@ -78,6 +80,8 @@ def getData(query,collection,hits,id):
 		reply['verzeichnis']=verzeichnisname
 			
 	except:
+		reply['errormodule']="getData"
+		reply['error']="exception caught"	
 		reply['status']='error'
 	return reply
 
