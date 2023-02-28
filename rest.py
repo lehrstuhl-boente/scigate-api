@@ -59,7 +59,7 @@ class MyServer(BaseHTTPRequestHandler):
 		print(string);
 		self.wfile.write(string)
 		
-	self.do_Common(self,sdata,command)
+	self.do_Common(self,sdata,command):
 		self.do_Header()
 		reply={}
 		reply['status']='ok'
