@@ -55,6 +55,8 @@ def search(sdata):
 		return reply
 	
 def getData(query,collection,hits,id):
+	reply={}
+	reply['status']='ok'
 	start=0
 	hitlist=[]
 	verzeichnisname="request"+str(id)
