@@ -1,5 +1,5 @@
 # function called by the API
-
+import json
 
 def search(jsonBody):
 	return jsonBody
