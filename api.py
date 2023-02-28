@@ -19,7 +19,7 @@ def search(sdata):
 				maxReply=sdata['maxReply']
 			result={}
 			data={'engine': collection, 'type': 'search', 'term': query}
-			r=requests.post(url=APIURL,data=data)
+			r=requests.post(url=APIURL,json=data)
 			reply['ergebnis']=r.text 				
 		else:
 			reply['status']='error'
