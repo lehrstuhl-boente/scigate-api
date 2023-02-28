@@ -86,6 +86,7 @@ def getData(query,collection,hits,id):
 		reply['errormodule']="getData"
 		reply['error']="exception caught"	
 		reply['status']='error'
+	print("Ende von getData")
 	return reply
 
 	
