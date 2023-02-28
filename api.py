@@ -18,7 +18,7 @@ def search(sdata):
 	reply={}
 	reply['status']='ok'
 	# add some random to the id so that guessing it becomes difficult
-	id=millisec = int(time.time() * 100000000000)+randint(0,100000000)
+	id=millisec = int(time.time() * 100000000000)+random.randint(0,100000000)
 
 	try:
 		collection=sdata['collection']
