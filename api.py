@@ -95,6 +95,7 @@ def getData(query,collection,hits,id):
 			# write.writerow(["Description1","Description2","Description3","URL","ID"])
 			write.writerow(["Description1"])
 			write.writerows(hitlist)
+		print('fertig CSV')
 		reply['verzeichnis']=verzeichnisname
 			
 	except:
