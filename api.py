@@ -73,7 +73,6 @@ def search(sdata):
 def getData(query,collection,hits,id):
 	print('Start getData for '+str(id))
 	status={ 'start': datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(), 'last': datetime.datetime.fromtimestamp(time.time()).isoformat(), 'hits': hits, 'fetched': 0, 'status': 'running'}
-	saveStatus(status, id)
 	reply={}
 	reply['status']='ok'
 	start=0
@@ -82,6 +81,7 @@ def getData(query,collection,hits,id):
 	dir=PARENTDIR+"/"+verzeichnisname
 	print("lege nun Verzeichnis '"+dir+"' an.")
 	os.mkdir(dir)
+	saveStatus(status, id)
 	try:
 		print('Start getData try for '+str(id))
 		while start<hits:
