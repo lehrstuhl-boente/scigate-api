@@ -31,7 +31,7 @@ tags:
       description: Description will be available soon
       url: https://scigate.ch
 paths:
-  /api/search:
+  /search:
     post:
       tags:
         - search request
@@ -63,7 +63,7 @@ paths:
                 $ref: '#/components/schemas/result'
         '405':
           description: Invalid input
-  /api/load:
+  /load:
     post:
       tags:
         - document list request
@@ -95,7 +95,7 @@ paths:
                 $ref: '#/components/schemas/load'
         '405':
           description: Invalid input
-  /api/status:
+  /status:
     get:
       tags:
         - status
