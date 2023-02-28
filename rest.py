@@ -24,9 +24,10 @@ class MyServer(BaseHTTPRequestHandler):
 			commands=self.path.split("?",1)
 			print(commands)
 			print(commands[1])
-			print(urllib.parse.parse_qs(commands[1]))
-			print(json.loads(urllib.parse.parse_qs(commands[1])))
-			sdata=json.loads(urllib.parse.parse_qs(commands[1]))
+			args=urllib.parse.unquote(commands[1])
+			print(args)
+			print(json.loads(args))
+			sdata=json.loads(args)
 			command=commands[0]
 		except:
 			self.do_Error('Wrong command: '+self.path)
