@@ -61,6 +61,7 @@ def search(sdata):
 			reply['errormodule']="search"
 			reply['error']="Collection '"+collection+"' unknown"	
 	except:
+		print("except block of search for "+str(id))	
 		reply['errormodule']="search"
 		reply['error']="exception caught"	
 		reply['status']='error'
@@ -117,6 +118,7 @@ def getData(query,collection,hits,id):
 		saveStatus(status, id)
 			
 	except:
+		print("except block of getData for "+str(id))
 		reply['errormodule']="getData"
 		reply['error']="exception caught"	
 		reply['status']='error'
