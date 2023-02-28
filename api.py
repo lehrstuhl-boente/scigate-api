@@ -73,9 +73,12 @@ def getData(query,collection,hits,id):
 			ergebnis=r.text
 			print("Ergebnis von 'hitlist': "+ergebnis)
 			result=json.loads(ergebnis)
+			print("json")
 			if result['status']=='ok':
+				print("status ok")
 				hitlist.extend([[i['description'][0], i['description'][1], i['url'], i['url'].after('https://entscheidsuche.ch/view/')] for i in result['hitlist']])
 			else:
+				print("status nicht ok")
 				result['errormodule']="getData return from hitlist-command"			
 				return result
 			start+=count
