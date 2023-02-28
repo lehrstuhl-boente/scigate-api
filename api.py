@@ -81,6 +81,7 @@ def getData(query,collection,hits,id):
 	print("lege nun Verzeichnis '"+dir+"' an.")
 	os.mkdir(dir)
 	try:
+		print('Start getData try for '+str(id))
 		while start<hits:
 			print("Durchlauf hitlist-Schleife start mit "+str(start))
 			count=CHUNK
