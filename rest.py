@@ -19,48 +19,59 @@ class MyServer(BaseHTTPRequestHandler):
 		self.end_headers()
 		
 	def do_GET(self):
-		self.send_response(200)
-		self.send_header("Content-type", "text/html")
-		self.end_headers()
-		with open("index.html") as f:
-			lines = f.readlines()
-		f.close()
-		for i in lines:
-			self.wfile.write(bytes(i, "utf-8"))
-
+		try:
+			commands=self.path.split("?",1)
+			sdata=json.loads(commands[1])
+			command=commands[0]
+		except:
+			self.do_Error('Wrong command: '+self.path)
+		else:
+			do_Common(command,sdata)
+	
 	def do_POST(self):
+		try:
+			commands=self.path.split("?",1)
+			command=commands[0]
+			if "application/json" in self.headers.get("Content-type").lower():
+				data = self.rfile.read(int(self.headers.get('Content-Length')))
+				sdata=json.loads(data)
+			else:
+				self.do_Error('Wrong Content-type: '+self.headers.get("Content-type")+' (should by application/json)')
+		except:
+			self.do_Error('Wrong command: '+self.path)
+		else:
+			do_Common(command,sdata)
+			
+	def do_Header(self):
 		self.send_response(200)
 		self.send_header("Content-type", "application/json; charset=utf-8")
 		self.send_header("Access-Control-Allow-Origin", "*")
 		self.send_header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		self.send_header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
 		self.end_headers()
+	
+	def do_Error(self,fehler):
+		self.do_Header()
 		reply={}
-		reply['command']=self.path
-		if "application/json" in self.headers.get("Content-type").lower():
-			data = self.rfile.read(int(self.headers.get('Content-Length')))
-			sdata=json.loads(data)
-			if 'engine' in sdata:
-				engine=sdata['engine']
-				if engine=='entscheidsuche':
-					reply=entscheidsuche.execute(sdata)
-				elif engine=='boris':
-					reply=boris.execute(sdata)
-				elif engine=='zora':
-					reply=zora.execute(sdata)
-				elif engine=='swisscovery':
-					reply=swisscovery.execute(sdata)
-				else:
-					reply['error']='engine '+engine+' unknown'
-		else:
-			reply['error']='unexpected Content-type: '+self.headers.get("Content-type")
-		if 'error' in reply:
-			reply['status']='error'
-		else:
-			reply['status']='ok'
+		reply['status']='error'
+		reply['error']=fehler
 		string=json.dumps(reply, ensure_ascii=False).encode('utf8')
 		print(string);
 		self.wfile.write(string)
+		
+	self.do_Common(sdata,command)
+		self.do_Header()
+		reply={}
+		reply['status']='ok'
+		reply['command']=command
+		string=json.dumps(reply, ensure_ascii=False).encode('utf8')
+		print(string);
+		self.wfile.write(string)
+		
+	def do_Common(self,InputJson,command):
+		reply={}
+		reply['command']=self.path
+	
 		
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     """Handle requests in a separate thread."""
