@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from socketserver import ThreadingMixIn
+from threading import Thread
 import threading
 import time
 import json
@@ -69,8 +70,8 @@ class MyServer(BaseHTTPRequestHandler):
 			reply=api.search(sdata)
 		elif command=='/api/load':
 			reply=api.load(sdata)
-		elif command=='/api/queryStatus':
-			reply=api.queryStatus(sdata)
+		elif command=='/api/status':
+			reply=api.status(sdata)
 		else:
 			reply['status']='error'
 			reply['error']="Unknown command: "+command
