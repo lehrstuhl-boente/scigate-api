@@ -1,19 +1,19 @@
 # function called by the API
 import json
 
-def search(**kwargs):
-	jsonInput=json.loads(list(kwargs.values())[0].decode('utf-8'))
-	print(jsonInput)
-	return json.dumps(jsonInput)
+def search(sdata):
+	reply={}
+	reply['status']='ok'
+	return reply
 	
-def load(**kwargs):
-	jsonInput=json.loads(list(kwargs.values())[0].decode('utf-8'))
-	print(jsonInput)
-	return json.dumps(jsonInput)
+def load(sdata):
+	reply={}
+	reply['status']='ok'
+	return reply
 	
-def queryStatus(**kwargs):
-	jsonInput=json.loads(list(kwargs.values())[0].decode('utf-8'))
-	print(jsonInput)
-	return json.dumps(jsonInput)
+def queryStatus(sdata):
+	reply={}
+	reply['status']='ok'
+	return reply
 
 

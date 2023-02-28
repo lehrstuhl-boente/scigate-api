@@ -66,11 +66,11 @@ class MyServer(BaseHTTPRequestHandler):
 		reply={}
 		reply['status']='ok'
 		reply['command']=command
-		if command=='api/search':
+		if command=='/api/search':
 			reply=api.search(sdata)
-		elif command=='api/load':
+		elif command=='/api/load':
 			reply=api.load(sdata)
-		elif command=='api/queryStatus':
+		elif command=='/api/queryStatus':
 			reply=api.queryStatus(sdata)
 		else:
 			reply['status']='error'
