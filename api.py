@@ -128,7 +128,7 @@ def getData(query,collection,hits,id):
 def saveStatus(status,id):
 	path=PARENTDIR+"/"+PREDIR+str(id)+"/status.json"
 	with open(path, "w") as outfile:
-    	outfile.write(json.dumps(status))
+		outfile.write(json.dumps(status))
 	
 def load(sdata):
 	reply={}
