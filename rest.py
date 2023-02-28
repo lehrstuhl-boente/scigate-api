@@ -36,7 +36,7 @@ class MyServer(BaseHTTPRequestHandler):
 		self.send_header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
 		self.end_headers()
 		reply={}
-		reply['command']=self.headers.get("requestline")
+		reply['command']=self.path
 		if "application/json" in self.headers.get("Content-type").lower():
 			data = self.rfile.read(int(self.headers.get('Content-Length')))
 			sdata=json.loads(data)
