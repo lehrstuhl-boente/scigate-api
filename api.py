@@ -2,19 +2,23 @@
 import json
 import requests
 import time
+import datetime
 import os
 import csv
+import random
 
 APIURL="http://v2202109132150164038.luckysrv.de:8080/"
 MYAPIURL="http://v2202109132150164038.luckysrv.de:5001/api/"
 CHUNK=100
 PARENTDIR="/home/jorn/scigateapi/data"
+PREDIR="request"
 MAXREPLY=200
 
 def search(sdata):
 	reply={}
 	reply['status']='ok'
-	id=millisec = int(time.time() * 1000)
+	# add some random to the id so that guessing it becomes difficult
+	id=millisec = int(time.time() * 100000000000)+randint(0,100000000)
 
 	try:
 		collection=sdata['collection']
@@ -64,11 +68,13 @@ def search(sdata):
 		return reply
 	
 def getData(query,collection,hits,id):
+	status={ 'start': datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(), 'last': datetime.datetime.fromtimestamp(time.time()).isoformat(), 'hits': hits, 'fetched': 0, 'status': 'running'}
+	saveStatus(status, id)
 	reply={}
 	reply['status']='ok'
 	start=0
 	hitlist=[]
-	verzeichnisname="request"+str(id)
+	verzeichnisname=PREDIR+str(id)
 	dir=PARENTDIR+"/"+verzeichnisname
 	print("lege nun Verzeichnis '"+dir+"' an.")
 	os.mkdir(dir)
@@ -88,9 +94,14 @@ def getData(query,collection,hits,id):
 				# hitlist.extend([[i['description'][0], i['description'][1], i['description'][2], i['url'], i['url'].after('https://entscheidsuche.ch/view/')] for i in result['hitlist']])
 				hitlist.extend([[i['description'][0],i['description'][1], i['description'][2],i['url']] for i in result['hitlist']])
 			else:
-				result['errormodule']="getData return from hitlist-command"			
+				result['errormodule']="getData return from hitlist-command"	
+				status['status']='error'
+				saveStatus(status, id)
 				return result
 			start+=count
+			status['fetched']=start
+			status['last']=datetime.datetime.fromtimestamp(time.time())
+			saveStatus(status, id)
 		print("Schreibe CSV")
 		with open(dir+"/hitlist.csv", 'w') as f:
 			write = csv.writer(f)
@@ -99,14 +110,25 @@ def getData(query,collection,hits,id):
 			write.writerows(hitlist)
 		print('fertig CSV')
 		reply['verzeichnis']=verzeichnisname
+		status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
+		status['status']='done'
+		status['erasure']=datetime.datetime.fromtimestamp(time.time()+604800).isoformat()
+		saveStatus(status, id)
 			
 	except:
 		reply['errormodule']="getData"
 		reply['error']="exception caught"	
 		reply['status']='error'
+		status['status']='error'
+		saveStatus(status, id)
+
 	finally:
 		return reply
 
+def saveStatus(status,id):
+	path=PARENTDIR+"/"+PREDIR+str(id)+"/status.json"
+	with open(path, "w") as outfile:
+    	outfile.write(json.dumps(status))
 	
 def load(sdata):
 	reply={}
@@ -114,8 +136,23 @@ def load(sdata):
 	return reply
 	
 def status(sdata):
-	reply={}
-	reply['status']='ok'
-	return reply
+	reply['status']='error'
+	try:
+		if "id" in sdata:
+			id=sdata['id']
+			path=PARENTDIR+"/"+id+"/status.json"
+			if os.path.isfile(path):
+				f = open(path)
+				data=json.load(f)
+				reply.update(data)
+				reply['status']='ok'
+			else:
+				reply['error']='id '+id+' not found'	
+		else:
+			reply['error']='no id submitted'	
+	except:
+		reply['error']='no description available'
+	finally:
+		return reply
 
 
