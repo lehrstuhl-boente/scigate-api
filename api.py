@@ -64,6 +64,7 @@ def getData(query,collection,hits,id):
 	try:
 		print("starte nun hitlist-Schleife")
 		while start<hits:
+			print("Scheifendurchlauf mit Start="+str(start))
 			count=CHUNK
 			if start+count>hits:
 				count=hits-start
