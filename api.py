@@ -106,7 +106,7 @@ def getData(query,collection,hits,id):
 				return result
 			start+=count
 			status['fetched']=start
-			status['last']=datetime.datetime.fromtimestamp(time.time())
+			status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
 			saveStatus(status, id)
 		print("Schreibe CSV")
 		with open(dir+"/hitlist.csv", 'w') as f:
