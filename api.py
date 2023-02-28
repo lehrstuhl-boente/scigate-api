@@ -40,9 +40,11 @@ def search(sdata):
 				else:
 					reply=getData(query,collection,hits,id)
 			else:
+				result['errormodule']="search: return from search-command"
 				return result	
 		else:
 			reply['status']='error'
+			reply['errormodule']="search"
 			reply['error']="Collection '"+collection+"' unknown"	
 	except:
 		reply['status']='error'
@@ -66,6 +68,7 @@ def getData(query,collection,hits,id):
 			if result['status']=='ok':
 				hitlist.extend([[i['description'][0], i['description'][1], i['url'], i['url'].after('https://entscheidsuche.ch/view/')] for i in result['hitlist']])
 			else:
+				result['errormodule']="getData return from hitlist-command"			
 				return result
 			start+=count
 		with open(dir+"/hitlist.csv", 'w') as f:
