@@ -58,8 +58,10 @@ def getData(query,collection,hits,id):
 	hitlist=[]
 	verzeichnisname="request"+str(id)
 	dir=PARENTDIR+"/"+verzeichnisname
+	print("lege nun Verzeichnis '"+dir+"' an.")
 	os.mkdir(dir)
 	try:
+		print("starte nun hitlist-Schleife")
 		while start<hits:
 			count=CHUNK
 			if start+count>hits:
