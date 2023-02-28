@@ -2,12 +2,12 @@
 
 
 def search(jsonBody):
-	return
+	return jsonBody
 	
 def load(jsonBody):
-	return
+	return jsonBody
 	
 def queryStatus(jsonBody):
-	return
+	return jsonBody
 
 
