@@ -62,7 +62,7 @@ def search(sdata):
 			reply['status']='error'
 			reply['errormodule']="search"
 			reply['error']="Collection '"+collection+"' unknown"	
-	except Exception ex:
+	except Exception as ex:
 		printException(ex,"search "+str(id))
 		reply['errormodule']="search"
 		reply['error']="exception caught"	
