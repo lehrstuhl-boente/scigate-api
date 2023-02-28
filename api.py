@@ -68,6 +68,7 @@ def search(sdata):
 		return reply
 	
 def getData(query,collection,hits,id):
+	print('Start getData for '+str(id))
 	status={ 'start': datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(), 'last': datetime.datetime.fromtimestamp(time.time()).isoformat(), 'hits': hits, 'fetched': 0, 'status': 'running'}
 	saveStatus(status, id)
 	reply={}
@@ -140,7 +141,7 @@ def status(sdata):
 	try:
 		if "id" in sdata:
 			id=sdata['id']
-			path=PARENTDIR+"/"+id+"/status.json"
+			path=PARENTDIR+"/"+PREDIR+id+"/status.json"
 			if os.path.isfile(path):
 				f = open(path)
 				data=json.load(f)
