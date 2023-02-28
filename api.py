@@ -71,6 +71,7 @@ def getData(query,collection,hits,id):
 			data={'engine': collection, 'type': 'hitlist', 'term': query, 'start':start, 'count': count}
 			r=requests.post(url=APIURL,json=data)
 			ergebnis=r.text
+			print("Ergebnis von 'hitlist': "+ergebnis)
 			result=json.loads(ergebnis)
 			if result['status']=='ok':
 				hitlist.extend([[i['description'][0], i['description'][1], i['url'], i['url'].after('https://entscheidsuche.ch/view/')] for i in result['hitlist']])
