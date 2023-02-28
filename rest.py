@@ -15,7 +15,7 @@ app.add_api('openapi.yaml')
 def home():
     """
     This function just responds to the browser ULR
-    anyhost:5000/
+    anyhost:5001/
     :return:        the rendered template 'home.html'
     """
     return render_template('home.html')
@@ -30,7 +30,7 @@ app.add_api('openapi.yaml')
 def home():
     """
     This function just responds to the browser ULR
-    anyhost:5000/
+    anyhost:5001/
     :return:        the rendered template 'home.html'
     """
     return render_template('home.html')
@@ -40,4 +40,4 @@ from OpenSSL import SSL
 
 # If we're running in stand alone mode, run the application
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)
