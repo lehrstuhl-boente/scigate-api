@@ -3,6 +3,7 @@ import json
 
 def search(**kwargs):
 	jsonBody=list(kwargs.values())[0]
+	print(jsonBody)
 	return jsonBody
 	
 def load(**kwargs):
