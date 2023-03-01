@@ -157,12 +157,12 @@ def getData(query,collection,hits,id,sdata):
 			saveStatus(status, id)
 			with zipfile.ZipFile(PARENTDIR+"/"+verzeichnisname+'/result.zip', 'w') as zipObj:
   			# Iterate over all the files in directory
-			for folderName, subfolders, filenames in os.walk(PARENTDIR+"/"+verzeichnisname):
-				for filename in filenames:
-				#create complete filepath of file in directory
-				filePath = os.path.join(folderName, filename)
-				# Add file to zip
-				zipObj.write(filePath, os.path.basename(filePath))
+				for folderName, subfolders, filenames in os.walk(PARENTDIR+"/"+verzeichnisname):
+					for filename in filenames:
+						#create complete filepath of file in directory
+						filePath = os.path.join(folderName, filename)
+						# Add file to zip
+						zipObj.write(filePath, os.path.basename(filePath))
 				
 	except Exception as ex:
 		printException(ex,"getData "+str(id))
