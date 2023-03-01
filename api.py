@@ -12,6 +12,7 @@ import threading
 
 APIURL="http://v2202109132150164038.luckysrv.de:8080/"
 MYAPIURL="http://v2202109132150164038.luckysrv.de:5001/api/"
+MYFILEURL="http://v2202109132150164038.luckysrv.de/apidata/"
 CHUNK=100
 PARENTDIR="/home/jorn/scigateapi/data"
 PREDIR="request"
@@ -115,7 +116,7 @@ def getData(query,collection,hits,id):
 			# write.writerow(["Description1","Description2","Description3","URL","ID"])
 			write.writerow(["Description1","Description2","Description3","URL"])
 			write.writerows(hitlist)
-		status['csv']=MYAPIURL+'load?{%22id%22:'+str(id)+', %22file%22: %22hitlist.csv%22}'
+		status['csv']=MYFILEURL+verzeichnisname+"/hitlist.csv"
 		status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
 		status['requeststatus']='done'
 		status['erasure']=datetime.datetime.fromtimestamp(time.time()+604800).isoformat()
@@ -157,10 +158,6 @@ def saveStatus(status,id):
 	with open(path, "w") as outfile:
 		outfile.write(json.dumps(status))
 	
-def load(sdata):
-	reply={}
-	reply['status']='ok'
-	return reply
 	
 def status(sdata):
 	reply={}
