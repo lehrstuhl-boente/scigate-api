@@ -168,7 +168,7 @@ def status(sdata):
 	try:
 		if "id" in sdata:
 			id=sdata['id']
-			path=PARENTDIR+"/"+PREDIR+id+"/status.json"
+			path=PARENTDIR+"/"+PREDIR+str(id)+"/status.json"
 			if os.path.isfile(path):
 				f = open(path)
 				data=json.load(f)
