@@ -125,24 +125,18 @@ components:
         getDocs:
           type: boolean
           default: false
-    load:
-      type: object
-      properties:
-        collection:
-          type: string
-          example: entscheidsuche
-          enum:
-            - entscheidsuche
-        docList:
-          type: array
-          items:
-            type: string
-          example: abc
-        maxReply:
-          type: integer
-          format: int32
-          example: 100
-          default: 100
+        getCSV:
+          type: boolean
+          default: false
+        getHTML:
+          type: boolean
+          default: true
+        getJSON:
+          type: boolean
+          default: false
+        getZIP:
+          type: boolean
+          default: true
 
     status:
       type: object
