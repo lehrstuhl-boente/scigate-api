@@ -147,6 +147,7 @@ def getData(query,collection,hits,id,sdata):
 					outfile.write(r.text)
 				t['JSON-File']=entscheidid+".json"
 				t['JSON-URL']=stammurl+".json"
+				print(r.text)
 				entscheidjson=json.loads(r.text)
 				if "HTML" in entscheidjson:
 					r=requests.get(url=stammurl+".html")
