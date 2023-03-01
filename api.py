@@ -9,6 +9,7 @@ import random
 import sys
 import traceback
 import threading
+import zipFile
 
 APIURL="http://v2202109132150164038.luckysrv.de:8080/"
 MYAPIURL="http://v2202109132150164038.luckysrv.de:5001/api/"
@@ -36,7 +37,32 @@ def search(sdata):
 				maxReply=sdata['maxReply']
 				if maxReply > MAXREPLY:
 					maxReply=MAXREPLY
-					reply["warning"]="Synchronous requests are limited to "+str(MAXREPLY)+" hits"
+					reply["warning"]="Synchronous requests are limited to "+str(MAXREPLY)+" hits"			
+			#setDefaults
+			if not 'getZIP' in sdata:
+				sdata['getZIP']=True
+			if not 'getDocs' in sdata:
+				sdata['getDocs']=False
+			if not 'getCSV' in sdata:
+				sdata['getCSV']=False
+			if not 'getHTML' in sdata:
+				sdata['getHTML']=True
+			if not 'getJSON' in sdata:
+				sdata['getJSON']=False
+			if sdata['getDocs'] and collection != 'entscheidsuche':
+				reply['status']='error'
+				reply['errormodule']="search"
+				reply['error']="getDocs only available for entscheidsuche collection"
+				return reply
+			if not (sdata['getCSV'] or sdata['getHTML'] or sdata['getJSON'] or sdata['getDocs'):
+				reply['status']='error'
+				reply['errormodule']="search"
+				reply['error']="no output format selected, select at least one of getCSV, getHTML, getJSON, getDocs"
+				return reply
+
+			#always ZIP when retrieving docs
+			if 'getDocs' in sdata and sdata['getDocs']:
+				sdata['getZIP']=True
 			result={}
 			data={'engine': collection, 'type': 'search', 'term': query}
 			r=requests.post(url=APIURL,json=data)
@@ -53,11 +79,11 @@ def search(sdata):
 					hits=maxHits
 					reply['hitsTruncated']=True
 				if hits>maxReply:
-					new_thread = threading.Thread(target=getData,args=(query,collection,hits,id))
+					new_thread = threading.Thread(target=getData,args=(query,collection,hits,id,sdata))
 					new_thread.start()
 				else:
 					print("Rufe nun getData mit '"+query+"' auf.")
-					reply.update(getData(query,collection,hits,id))
+					reply.update(getData(query,collection,hits,id,sdata))
 			else:
 				result['errormodule']="search: return from search-command"
 				return result	
@@ -73,7 +99,7 @@ def search(sdata):
 	finally:
 		return reply
 	
-def getData(query,collection,hits,id):
+def getData(query,collection,hits,id,sdata):
 	print('Start getData for '+str(id))
 	status={ 'start': datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(), 'last': datetime.datetime.fromtimestamp(time.time()).isoformat(), 'hits': hits, 'fetched': 0, 'requeststatus': 'running'}
 	reply={}
@@ -110,18 +136,34 @@ def getData(query,collection,hits,id):
 			status['fetched']=start
 			status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
 			saveStatus(status, id)
-		print("Schreibe CSV")
-		with open(dir+"/hitlist.csv", 'w') as f:
-			write = csv.writer(f)
-			# write.writerow(["Description1","Description2","Description3","URL","ID"])
-			write.writerow(["Description1","Description2","Description3","URL"])
-			write.writerows(hitlist)
-		status['csv']=MYFILEURL+verzeichnisname+"/hitlist.csv"
+		
+		if sdata['getCSV']:
+			print("Schreibe CSV")
+			with open(dir+"/hitlist.csv", 'w') as f:
+				write = csv.writer(f)
+				# write.writerow(["Description1","Description2","Description3","URL","ID"])
+				write.writerow(["Description1","Description2","Description3","URL"])
+				write.writerows(hitlist)
+			status['csv']=MYFILEURL+verzeichnisname+"/hitlist.csv"
+
 		status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
 		status['requeststatus']='done'
 		status['erasure']=datetime.datetime.fromtimestamp(time.time()+604800).isoformat()
 		saveStatus(status, id)
-			
+		
+		if sdata['getZIP']:
+			print("Schreibe ZIP")
+			status['zip']=MYFILEURL+verzeichnisname+"/result.zip"
+			saveStatus(status, id)
+			with zipfile.ZipFile(PARENTDIR+"/"+verzeichnisname+'/result.zip', 'w') as zipObj:
+  			# Iterate over all the files in directory
+			for folderName, subfolders, filenames in os.walk(PARENTDIR+"/"+verzeichnisname):
+				for filename in filenames:
+				#create complete filepath of file in directory
+				filePath = os.path.join(folderName, filename)
+				# Add file to zip
+				zipObj.write(filePath, os.path.basename(filePath))
+				
 	except Exception as ex:
 		printException(ex,"getData "+str(id))
 		reply['errormodule']="getData"
