@@ -54,7 +54,7 @@ def search(sdata):
 				reply['errormodule']="search"
 				reply['error']="getDocs only available for entscheidsuche collection"
 				return reply
-			if not (sdata['getCSV'] or sdata['getHTML'] or sdata['getJSON'] or sdata['getDocs'):
+			if not (sdata['getCSV'] or sdata['getHTML'] or sdata['getJSON'] or sdata['getDocs']):
 				reply['status']='error'
 				reply['errormodule']="search"
 				reply['error']="no output format selected, select at least one of getCSV, getHTML, getJSON, getDocs"
