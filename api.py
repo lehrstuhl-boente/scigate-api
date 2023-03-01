@@ -178,7 +178,8 @@ def status(sdata):
 				reply['error']='id '+id+' not found'	
 		else:
 			reply['error']='no id submitted'	
-	except:
+	except Exception as ex:
+		printException(ex,"status")
 		reply['error']='no description available'
 	finally:
 		return reply
