@@ -54,7 +54,7 @@ def search(sdata):
 					reply['hitsTruncated']=True
 				if hits>maxReply:
 					new_thread = threading.Thread(target=getData,args=(query,collection,hits,id))
-					new_thread.run()
+					new_thread.start()
 				else:
 					print("Rufe nun getData mit '"+query+"' auf.")
 					reply.update(getData(query,collection,hits,id))
