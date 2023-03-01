@@ -73,7 +73,6 @@ def search(sdata):
 				reply['hits']=hits
 				reply['token']=str(id)
 				reply['check']=MYAPIURL+'status?{%22id%22:'+str(id)+'}'
-				reply['load']=MYAPIURL+'load?{%22id%22:'+str(id)+'}'
 				reply['id']=str(id)
 				if hits>maxHits:
 					hits=maxHits
@@ -125,8 +124,7 @@ def getData(query,collection,hits,id,sdata):
 			result=json.loads(ergebnis)
 			#print("json")
 			if result['status']=='ok':
-				# hitlist.extend([[i['description'][0], i['description'][1], i['description'][2], i['url'], i['url'].after('https://entscheidsuche.ch/view/')] for i in result['hitlist']])
-				hitlist.extend([[i['description'][0],i['description'][1], i['description'][2],i['url']] for i in result['hitlist']])
+				hitlist.extend(result['hitlist'])
 			else:
 				result['errormodule']="getData return from hitlist-command"	
 				status['requeststatus']='error'
@@ -134,6 +132,52 @@ def getData(query,collection,hits,id,sdata):
 				return result
 			start+=count
 			status['fetched']=start
+			status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
+			saveStatus(status, id)
+
+		if sdata['getDocs']:
+			for t in hitlist:
+				url=t['url']
+				stamm=url.split('/view/')
+				entscheidid=stamm[1]
+				stammurl=stamm[0]+"/docs/"+stamm1
+				stammpath=PARENTDIR+"/"+verzeichnisname+"/"+stamm1
+				r=requests.get(url=stammurl+".json")
+				with open(stammpath+".json", "w") as outfile:
+					outfile.write(r.text)
+				t['JSON-File']=entscheidid+".json"
+				t['JSON-URL']=stammurl+".json"
+				entscheidjson=json.loads(r.text)
+				if "HTML" in entscheidjson:
+					r=requests.get(url=stammurl+".html")
+					with open(stammpath+".html", "w") as outfile:
+						outfile.write(r.text)
+					t['HTML-File']=entscheidid+".html"
+					t['HTML-URL']=stammurl+".html"	
+				if "PDF" in entscheidjson:
+					r=requests.get(url=stammurl+".pdf")
+					with open(stammpath+".html", "wb") as outfile:
+						outfile.write(r.content)
+					t['PDF-File']=entscheidid+".pdf"
+					t['PDF-URL']=stammurl+".pdf"
+				if "Datum" in entscheidjson:
+					t['Date']=entscheidjson['Datum']
+				if "Sprache" in entscheidjson:
+					t['Lang']=entscheidjson['Sprache']
+				if "Zeit UTC" in entscheidjson:
+					t['Scrapingtime UTC']=entscheidjson['Zeit UTC']
+				if "Abstract" in entscheidjson:
+					t['Scrapingtime UTC']=entscheidjson['Abstract'][0]['Text']
+				if "Num" in entscheidjson:
+					t['Reference']=entscheidjson['Num']
+				if "Meta" in entscheidjson:
+					t['Source']=filter(lambda x: x['Sprachen'][0] == t['Lang'], entscheidjson['Meta'])[0]['Text']
+			
+		if sdata['getJSON']:
+			print("Schreibe JSON")
+			with open(dir+"/hitlist.json", 'w') as f:
+				f.write(json.dumps(hitlist))
+			status['json']=MYFILEURL+verzeichnisname+"/hitlist.json"		
 			status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
 			saveStatus(status, id)
 		
