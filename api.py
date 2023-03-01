@@ -74,7 +74,7 @@ def search(sdata):
 	
 def getData(query,collection,hits,id):
 	print('Start getData for '+str(id))
-	status={ 'start': datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(), 'last': datetime.datetime.fromtimestamp(time.time()).isoformat(), 'hits': hits, 'fetched': 0, 'status': 'running'}
+	status={ 'start': datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(), 'last': datetime.datetime.fromtimestamp(time.time()).isoformat(), 'hits': hits, 'fetched': 0, 'requeststatus': 'running'}
 	reply={}
 	reply['status']='ok'
 	start=0
@@ -102,7 +102,7 @@ def getData(query,collection,hits,id):
 				hitlist.extend([[i['description'][0],i['description'][1], i['description'][2],i['url']] for i in result['hitlist']])
 			else:
 				result['errormodule']="getData return from hitlist-command"	
-				status['status']='error'
+				status['requeststatus']='error'
 				saveStatus(status, id)
 				return result
 			start+=count
@@ -115,9 +115,9 @@ def getData(query,collection,hits,id):
 			# write.writerow(["Description1","Description2","Description3","URL","ID"])
 			write.writerow(["Description1","Description2","Description3","URL"])
 			write.writerows(hitlist)
-		print('fertig CSV')
+		status['csv']=MYAPIURL+'load?{%22id%22:'+str(id)+', %22file%22: %22hitlist.csv%22}'
 		status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
-		status['status']='done'
+		status['requeststatus']='done'
 		status['erasure']=datetime.datetime.fromtimestamp(time.time()+604800).isoformat()
 		saveStatus(status, id)
 			
