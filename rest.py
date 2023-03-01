@@ -26,7 +26,8 @@ class MyServer(BaseHTTPRequestHandler):
 			args=urllib.parse.unquote(commands[1])
 			sdata=json.loads(args)
 			command=commands[0]
-		except:
+		except Exception as ex:
+			api.printException(ex,"do_Get")
 			self.do_Error('Wrong command: '+self.path+'. Use JSON-Syntax with double quotes.')
 		else:
 			self.do_Common(command,sdata)
@@ -40,7 +41,8 @@ class MyServer(BaseHTTPRequestHandler):
 				sdata=json.loads(data)
 			else:
 				self.do_Error('Wrong Content-type: '+self.headers.get("Content-type")+' (should by application/json)')
-		except:
+		except Exception as ex:
+			api.printException(ex,"do_Post")
 			self.do_Error('Wrong command: '+self.path)
 		else:
 			self.do_Common(command,sdata)
