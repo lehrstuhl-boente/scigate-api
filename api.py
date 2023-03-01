@@ -140,8 +140,8 @@ def getData(query,collection,hits,id,sdata):
 				url=t['url']
 				stamm=url.split('/view/')
 				entscheidid=stamm[1]
-				stammurl=stamm[0]+"/docs/"+stamm1
-				stammpath=PARENTDIR+"/"+verzeichnisname+"/"+stamm1
+				stammurl=stamm[0]+"/docs/"+stamm[1]
+				stammpath=PARENTDIR+"/"+verzeichnisname+"/"+stamm[1]
 				r=requests.get(url=stammurl+".json")
 				with open(stammpath+".json", "w") as outfile:
 					outfile.write(r.text)
