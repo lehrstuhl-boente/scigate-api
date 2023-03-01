@@ -164,6 +164,9 @@ def getData(query,collection,hits,id,sdata):
 					t['Date']=entscheidjson['Datum']
 				if "Sprache" in entscheidjson:
 					t['Lang']=entscheidjson['Sprache']
+					lang=entscheidjson['Sprache']
+				else:
+					lange="de"
 				if "Zeit UTC" in entscheidjson:
 					t['Scrapingtime UTC']=entscheidjson['Zeit UTC']
 				if "Abstract" in entscheidjson:
@@ -171,7 +174,7 @@ def getData(query,collection,hits,id,sdata):
 				if "Num" in entscheidjson:
 					t['Reference']=entscheidjson['Num']
 				if "Meta" in entscheidjson:
-					t['Source']=list(filter(lambda x: x['Sprachen'][0] == t['Lang'], entscheidjson['Meta']))[0]['Text']
+					t['Source']=list(filter(lambda x: x['Sprachen'][0] == lang, entscheidjson['Meta']))[0]['Text']
 			
 		if sdata['getJSON']:
 			print("Schreibe JSON")
