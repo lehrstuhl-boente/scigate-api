@@ -52,7 +52,7 @@ def search(sdata):
 					hits=maxHits
 					reply['hitsTruncated']=True
 				if hits>maxReply:
-					new_thread = thread(target=getData,args=(query,collection,hits,id))
+					new_thread = threading.Thread(target=getData,args=(query,collection,hits,id))
 					new_thread.run()
 				else:
 					print("Rufe nun getData mit '"+query+"' auf.")
@@ -175,7 +175,7 @@ def status(sdata):
 				reply.update(data)
 				reply['status']='ok'
 			else:
-				reply['error']='id '+id+' not found'	
+				reply['error']='id '+str(id)+' not found'	
 		else:
 			reply['error']='no id submitted'	
 	except Exception as ex:
