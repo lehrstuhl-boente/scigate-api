@@ -163,6 +163,7 @@ def load(sdata):
 	return reply
 	
 def status(sdata):
+	reply={}
 	reply['status']='error'
 	try:
 		if "id" in sdata:
