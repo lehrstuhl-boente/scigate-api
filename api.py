@@ -171,7 +171,7 @@ def getData(query,collection,hits,id,sdata):
 				if "Num" in entscheidjson:
 					t['Reference']=entscheidjson['Num']
 				if "Meta" in entscheidjson:
-					t['Source']=list(filter(lambda x: x['Sprachen'][0] == t['Lang'], entscheidjson['Meta'])[0]['Text']
+					t['Source']=list(filter(lambda x: x['Sprachen'][0] == t['Lang'], entscheidjson['Meta']))[0]['Text']
 			
 		if sdata['getJSON']:
 			print("Schreibe JSON")
