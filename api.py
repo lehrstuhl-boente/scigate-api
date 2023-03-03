@@ -46,7 +46,7 @@ def search(sdata):
 			return
 
 		result={}
-		data={'engine': collection, 'type': 'search', 'term': query}
+		data={'engine': sdata['collection'], 'type': 'search', 'term': query}
 		r=requests.post(url=APIURL,json=data)
 		ergebnis=r.text
 		result=json.loads(ergebnis)
