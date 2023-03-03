@@ -182,6 +182,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 					entscheidid=t['DocID']
 					basisurl=BASISURL
 
+				print("Verarbeite "+entscheidid)
 				stammurl=basisurl+"/docs/"+entscheidid
 				stammpath=PARENTDIR+"/"+verzeichnisname+"/"+entscheidid
 				r=requests.get(url=stammurl+".json")
