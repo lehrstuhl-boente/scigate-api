@@ -232,12 +232,10 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 			spalten={}
 			for h in hitlist:
 				for k in h:
-					if h[k]==list:
+					if type(h[k])==list:
 						l=len(h[k])
-						print("Spalte "+k+" hat "+str(l)+" Werte")
 					else:
 						l=1
-						print("Spalte "+k+" hat einen Wert")
 					if k in spalten:
 						if spalten[k]<l:
 							spalten[k]=l
@@ -301,14 +299,14 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 				
 	except Exception as ex:
 		printException(ex,"loadDocs "+str(id))
-		reply['errormodule']="getData"
+		reply['errormodule']="loadDocs"
 		reply['error']="exception caught"	
 		reply['status']='error'
 		status['status']='error'
 		saveStatus(status, id)
 
 	finally:
-		print("finally block of getData for "+str(id))	
+		print("finally block of loadDocs for "+str(id))	
 		return reply
 
 
