@@ -76,7 +76,7 @@ def search(sdata):
 	finally:
 		return reply
 	
-def processOutputSetting(sadata):
+def processOutputSetting(sdata):
 	if 'collection' in sdata:
 		collection=sdata['collection']
 		if collection in ['entscheidsuche','boris','zora','swisscovery']:
