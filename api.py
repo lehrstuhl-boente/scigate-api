@@ -289,6 +289,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 						#create complete filepath of file in directory
 						filePath = os.path.join(folderName, filename)
 						# Add file to zip
+						print("Zippe Datei "+filename+" in "+folderName)
 						zipObj.write(filePath, os.path.basename(filePath))
 				
 	except Exception as ex:
