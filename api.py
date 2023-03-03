@@ -241,6 +241,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 							spalten[k]=l
 					else:
 						spalten[k]=l
+			print(spalten)
 
 			spaltenliste=[]
 			for s in spalten:
@@ -251,6 +252,8 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 						i+=1
 						spaltenliste.append(s+str(i))
 			spaltenzahl=len(spaltenliste)
+			
+			print(spaltenliste)
 			
 			with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.csv", 'w') as f:
 				write = csv.writer(f)
@@ -266,7 +269,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 								reihe.extend(spaltenwert)
 								s+=len(spaltenwert)
 							else:
-								reihe.append(str(spaltenwert))
+								reihe.append(spaltenwert)
 								s+=1
 						else:
 							reihe.append("")
