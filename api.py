@@ -321,7 +321,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 				if spalten[s]>1:
 					i=1
 					while spalten[s]>i:
-						i++
+						i+=1
 						spaltenliste.append[s+str(i)]
 			spaltenzahl=len(spaltenliste)
 			
