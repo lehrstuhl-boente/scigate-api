@@ -243,12 +243,12 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 
 			spaltenliste=[]
 			for s in spalten:
-				spaltenliste.append[s]
+				spaltenliste.append(s)
 				if spalten[s]>1:
 					i=1
 					while spalten[s]>i:
 						i+=1
-						spaltenliste.append[s+str(i)]
+						spaltenliste.append(s+str(i))
 			spaltenzahl=len(spaltenliste)
 			
 			with open(dir+"/hitlist.csv", 'w') as f:
