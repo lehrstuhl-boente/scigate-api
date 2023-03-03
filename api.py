@@ -233,7 +233,11 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 			for h in hitlist:
 				for k in h:
 					if type(h[k])==list:
+						#leere Einträge am Ende löschen
 						l=len(h[k])
+						while l>1 and not h[k][l-1]:
+							l-=1
+							del h[k][l]
 					else:
 						l=1
 					if k in spalten:
