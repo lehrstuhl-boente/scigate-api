@@ -19,6 +19,7 @@ PARENTDIR="/home/jorn/scigateapi/data"
 PREDIR="request"
 MAXREPLY=200
 BASISURL="https://entscheidsuche.ch/docs"
+ZIPNAME="result.zip"
 
 def search(sdata):
 	reply={}
@@ -280,17 +281,18 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 		
 		if sdata['getZIP']:
 			print("Schreibe ZIP")
-			status['zip']=MYFILEURL+verzeichnisname+"/result.zip"
+			status['zip']=MYFILEURL+verzeichnisname+"/"+ZIPNAME
 			saveStatus(status, id)
-			with zipfile.ZipFile(PARENTDIR+"/"+verzeichnisname+'/result.zip', 'w') as zipObj:
+			with zipfile.ZipFile(PARENTDIR+"/"+verzeichnisname+'/'+ZIPNAME, 'w') as zipObj:
   			# Iterate over all the files in directory
 				for folderName, subfolders, filenames in os.walk(PARENTDIR+"/"+verzeichnisname):
 					for filename in filenames:
 						#create complete filepath of file in directory
 						filePath = os.path.join(folderName, filename)
 						# Add file to zip
-						print("Zippe Datei "+filename+" in "+folderName)
-						zipObj.write(filePath, os.path.basename(filePath))
+						if filename!=ZIPNAME:
+							print("Zippe Datei "+filename+" in "+folderName)
+							zipObj.write(filePath, os.path.basename(filePath))
 				
 	except Exception as ex:
 		printException(ex,"loadDocs "+str(id))
