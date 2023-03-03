@@ -210,11 +210,11 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 					t['Lang']=entscheidjson['Sprache']
 					lang=entscheidjson['Sprache']
 				else:
-					lange="de"
+					lang="de"
 				if "Zeit UTC" in entscheidjson:
 					t['Scrapingtime UTC']=entscheidjson['Zeit UTC']
 				if "Abstract" in entscheidjson:
-					t['Scrapingtime UTC']=entscheidjson['Abstract'][0]['Text']
+					t['Abstract']=entscheidjson['Abstract'][0]['Text']
 				if "Num" in entscheidjson:
 					t['Reference']=entscheidjson['Num']
 				if "Meta" in entscheidjson:
