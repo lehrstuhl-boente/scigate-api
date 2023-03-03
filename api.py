@@ -182,7 +182,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 					basisurl=BASISURL
 
 				stammurl=basisurl+"/docs/"+entscheidid
-				stammpath=PARENTDIR+"/"+verzeichnisnme+"/"+entscheidid
+				stammpath=PARENTDIR+"/"+verzeichnisname+"/"+entscheidid
 				r=requests.get(url=stammurl+".json")
 				with open(stammpath+".json", "w") as outfile:
 					outfile.write(r.text)
@@ -251,7 +251,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 						spaltenliste.append(s+str(i))
 			spaltenzahl=len(spaltenliste)
 			
-			with open(dir+"/hitlist.csv", 'w') as f:
+			with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.csv", 'w') as f:
 				write = csv.writer(f)
 				write.writerow(spaltenliste)
 				for h in hitlist:
