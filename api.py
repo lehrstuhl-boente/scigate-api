@@ -231,6 +231,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 			print("Schreibe CSV")
 			spalten={}
 			for h in hitlist:
+				print(h)
 				for k in h:
 					if h[k]==list:
 						l=len(h[k])
