@@ -235,11 +235,11 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 						l=len(h[k])
 					else:
 						l=1
-					if h[k] in spalten:
-						if spalten[h[k]]<l:
-							spalten[h[k]]=l
+					if k in spalten:
+						if spalten[k]<l:
+							spalten[k]=l
 					else:
-						spalten[h[k]]=l
+						spalten[k]=l
 
 			spaltenliste=[]
 			for s in spalten:
