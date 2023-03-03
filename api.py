@@ -60,11 +60,11 @@ def search(sdata):
 				hits=maxHits
 				reply['hitsTruncated']=True
 			if hits>maxReply:
-				new_thread = threading.Thread(target=getData,args=(query,collection,hits,id,sdata))
+				new_thread = threading.Thread(target=getData,args=(query,hits,id,sdata))
 				new_thread.start()
 			else:
 				print("Rufe nun getData mit '"+query+"' auf.")
-				reply.update(getData(query,collection,hits,id,sdata))
+				reply.update(getData(query,hits,id,sdata))
 		else:
 			result['errormodule']="search: return from search-command"
 			return result
@@ -145,13 +145,44 @@ def getData(query,hits,id,sdata):
 			status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
 			saveStatus(status, id)
 
+		reply.update(loadDocs(hitlist,id,sdata,verzeichnisname))
+				
+	except Exception as ex:
+		printException(ex,"getData "+str(id))
+		reply['errormodule']="getData"
+		reply['error']="exception caught"	
+		reply['status']='error'
+		status['status']='error'
+		saveStatus(status, id)
+
+	finally:
+		print("finally block of getData for "+str(id))	
+		return reply
+
+def loadDocs(hitlist,id,sdata,verzeichnisname):
+	print('Start loadDocs for '+str(id))
+	hits=len(hitlist)
+	status={ 'start': datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(), 'last': datetime.datetime.fromtimestamp(time.time()).isoformat(), 'hits': hits, 'fetched': 0, 'requeststatus': 'running'}
+	reply={}
+	reply['status']='ok'
+	start=0
+
+	saveStatus(status, id)
+	try:
 		if sdata['getDocs']:
 			for t in hitlist:
-				url=t['url']
-				stamm=url.split('/view/')
-				entscheidid=stamm[1]
-				stammurl=stamm[0]+"/docs/"+stamm[1]
-				stammpath=PARENTDIR+"/"+verzeichnisname+"/"+stamm[1]
+				if 'url' in t:
+					url=t['url']
+					stamm=url.split('/view/')
+					entscheidid=stamm[1]
+					basisurl=stamm[0]
+					t['DocID']=entscheidid
+				else:
+					entscheidid=t['DocID']
+					basisurl=BASISURL
+
+				stammurl=basisurl+"/docs/"+entscheidid
+				stammpath=PARENTDIR+"/"+verzeichnisnme+"/"+entscheidid
 				r=requests.get(url=stammurl+".json")
 				with open(stammpath+".json", "w") as outfile:
 					outfile.write(r.text)
@@ -186,111 +217,6 @@ def getData(query,hits,id,sdata):
 					t['Reference']=entscheidjson['Num']
 				if "Meta" in entscheidjson:
 					t['Source']=list(filter(lambda x: x['Sprachen'][0] == lang, entscheidjson['Meta']))[0]['Text']
-			
-		if sdata['getJSON']:
-			print("Schreibe JSON")
-			with open(dir+"/hitlist.json", 'w') as f:
-				f.write(json.dumps(hitlist))
-			status['json']=MYFILEURL+verzeichnisname+"/hitlist.json"		
-			status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
-			saveStatus(status, id)
-		
-		if sdata['getCSV']:
-			print("Schreibe CSV")
-			with open(dir+"/hitlist.csv", 'w') as f:
-				write = csv.writer(f)
-				# write.writerow(["Description1","Description2","Description3","URL","ID"])
-				write.writerow(["Description1","Description2","Description3","URL"])
-				write.writerows(hitlist)
-			status['csv']=MYFILEURL+verzeichnisname+"/hitlist.csv"
-
-		status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
-		status['requeststatus']='done'
-		status['erasure']=datetime.datetime.fromtimestamp(time.time()+604800).isoformat()
-		saveStatus(status, id)
-		
-		if sdata['getZIP']:
-			print("Schreibe ZIP")
-			status['zip']=MYFILEURL+verzeichnisname+"/result.zip"
-			saveStatus(status, id)
-			with zipfile.ZipFile(PARENTDIR+"/"+verzeichnisname+'/result.zip', 'w') as zipObj:
-  			# Iterate over all the files in directory
-				for folderName, subfolders, filenames in os.walk(PARENTDIR+"/"+verzeichnisname):
-					for filename in filenames:
-						#create complete filepath of file in directory
-						filePath = os.path.join(folderName, filename)
-						# Add file to zip
-						zipObj.write(filePath, os.path.basename(filePath))
-				
-	except Exception as ex:
-		printException(ex,"getData "+str(id))
-		reply['errormodule']="getData"
-		reply['error']="exception caught"	
-		reply['status']='error'
-		status['status']='error'
-		saveStatus(status, id)
-
-	finally:
-		print("finally block of getData for "+str(id))	
-		return reply
-
-def loadDocs(hitlist,id,sdata,verzeichnisname):
-	print('Start loadDocs for '+str(id))
-	hits=len(hitlist)
-	status={ 'start': datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(), 'last': datetime.datetime.fromtimestamp(time.time()).isoformat(), 'hits': hits, 'fetched': 0, 'requeststatus': 'running'}
-	reply={}
-	reply['status']='ok'
-	start=0
-
-	saveStatus(status, id)
-	try:
-		for t in hitlist:
-			if 'url' in t:
-				url=t['url']
-				stamm=url.split('/view/')
-				entscheidid=stamm[1]
-				basisurl=stamm[0]
-				t['DocID']=entscheidid
-			else:
-				entscheidid=t['DocID']
-				basisurl=BASISURL
-
-			stammurl=basisurl+"/docs/"+entscheidid
-			stammpath=PARENTDIR+"/"+verzeichnisnme+"/"+entscheidid
-			r=requests.get(url=stammurl+".json")
-			with open(stammpath+".json", "w") as outfile:
-				outfile.write(r.text)
-			t['JSON-File']=entscheidid+".json"
-			t['JSON-URL']=stammurl+".json"
-			print(stammurl+".json")
-			entscheidjson=json.loads(r.text)
-			if "HTML" in entscheidjson:
-				r=requests.get(url=stammurl+".html")
-				with open(stammpath+".html", "w") as outfile:
-					outfile.write(r.text)
-				t['HTML-File']=entscheidid+".html"
-				t['HTML-URL']=stammurl+".html"	
-			if "PDF" in entscheidjson:
-				r=requests.get(url=stammurl+".pdf")
-				with open(stammpath+".html", "wb") as outfile:
-					outfile.write(r.content)
-				t['PDF-File']=entscheidid+".pdf"
-				t['PDF-URL']=stammurl+".pdf"
-			if "Datum" in entscheidjson:
-				t['Date']=entscheidjson['Datum']
-			if "Sprache" in entscheidjson:
-				t['Lang']=entscheidjson['Sprache']
-				lang=entscheidjson['Sprache']
-			else:
-				lange="de"
-			if "Zeit UTC" in entscheidjson:
-				t['Scrapingtime UTC']=entscheidjson['Zeit UTC']
-			if "Abstract" in entscheidjson:
-				t['Scrapingtime UTC']=entscheidjson['Abstract'][0]['Text']
-			if "Num" in entscheidjson:
-				t['Reference']=entscheidjson['Num']
-			if "Meta" in entscheidjson:
-				t['Source']=list(filter(lambda x: x['Sprachen'][0] == lang, entscheidjson['Meta']))[0]['Text']
 			
 		if sdata['getJSON']:
 			print("Schreibe JSON")
