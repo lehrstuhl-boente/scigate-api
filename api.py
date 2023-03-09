@@ -263,7 +263,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 			status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
 			saveStatus(status, id)
 		
-		if sdata['getCSV'] || sdata['getHTML']:
+		if sdata['getCSV'] or sdata['getHTML']:
 			print("Bereite CSV und/oder HTML vor")
 			spalten={}
 			for h in hitlist:
