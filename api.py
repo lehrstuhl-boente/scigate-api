@@ -343,7 +343,8 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 							else:
 								f.write("<td></td>")
 								s+=1
-						f.write("</tr></tbody></table></body></html>")
+						f.write("</tr>")
+					f.write("</tbody></table></body></html>")
 					status['html']=MYFILEURL+verzeichnisname+"/hitlist.html"
 
 			
