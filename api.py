@@ -20,6 +20,41 @@ PREDIR="request"
 MAXREPLY=200
 BASISURL="https://entscheidsuche.ch/docs"
 ZIPNAME="result.zip"
+HTMLSTART="""
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <style>
+		.styled-table {
+			border-collapse: collapse;
+			margin: 25px 0;
+			font-size: 0.9em;
+			font-family: sans-serif;
+			min-width: 400px;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+		}
+		.styled-table thead tr {
+			background-color: #009879;
+			color: #ffffff;
+			text-align: left;
+		}
+		.styled-table tbody tr {
+			border-bottom: 1px solid #dddddd;
+		}
+		.styled-table tbody tr:nth-of-type(even) {
+			background-color: #f3f3f3;
+		}
+		.styled-table tbody tr:last-of-type {
+			border-bottom: 2px solid #009879;
+		}
+		.styled-table tbody tr.active-row {
+			font-weight: bold;
+			color: #009879;
+		}
+	</style>
+  </head>
+  <body>"""
 
 def search(sdata):
 	reply={}
@@ -228,8 +263,8 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 			status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
 			saveStatus(status, id)
 		
-		if sdata['getCSV']:
-			print("Schreibe CSV")
+		if sdata['getCSV'] || sdata['getHTML']:
+			print("Bereite CSV und/oder HTML vor")
 			spalten={}
 			for h in hitlist:
 				for k in h:
@@ -260,27 +295,58 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 			
 			print(spaltenliste)
 			
-			with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.csv", 'w') as f:
-				write = csv.writer(f)
-				write.writerow(spaltenliste)
-				for h in hitlist:
-					s=0
-					reihe=[]
-					while s<spaltenzahl:
-						spaltenname=spaltenliste[s]
-						if spaltenname in h:
-							spaltenwert=h[spaltenname]
-							if type(spaltenwert)==list:
-								reihe.extend(spaltenwert)
-								s+=len(spaltenwert)
+			if sdata['getCSV']:
+				print("Schreibe CSV")
+				with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.csv", 'w') as f:
+					write = csv.writer(f)
+					write.writerow(spaltenliste)
+					for h in hitlist:
+						s=0
+						reihe=[]
+						while s<spaltenzahl:
+							spaltenname=spaltenliste[s]
+							if spaltenname in h:
+								spaltenwert=h[spaltenname]
+								if type(spaltenwert)==list:
+									reihe.extend(spaltenwert)
+									s+=len(spaltenwert)
+								else:
+									reihe.append(spaltenwert)
+									s+=1
 							else:
-								reihe.append(spaltenwert)
+								reihe.append("")
 								s+=1
-						else:
-							reihe.append("")
-							s+=1
-					write.writerow(reihe)
-			status['csv']=MYFILEURL+verzeichnisname+"/hitlist.csv"
+						write.writerow(reihe)
+				status['csv']=MYFILEURL+verzeichnisname+"/hitlist.csv"
+
+			if sdata['getHTML']:
+				print("Schreibe HTML")
+				with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.html", 'w') as f:
+					f.write(HTMLSTART)
+					f.write("<table class='styled-table'><thead><tr><th>")
+					f.write("</th><th>".join(spaltenliste))
+					f.write("</th></tr></thead>")
+					f.write("<tobody>")
+					for h in hitlist:
+						f.write("<tr>")
+						s=0
+						while s<spaltenzahl:
+							spaltenname=spaltenliste[s]
+							if spaltenname in h:
+								spaltenwert=h[spaltenname]
+								if type(spaltenwert)==list:
+									f.write("<td>"+"</td><td>".join(spaltenwert)+"</td>")
+									s+=len(spaltenwert)
+								else:
+									f.write("<td>"+spaltenwert+"</td>")
+									s+=1
+							else:
+								f.write("<td></td>")
+								s+=1
+						f.write("</tr></tbody></table></body></html>")
+					status['csv']=MYFILEURL+verzeichnisname+"/hitlist.html"
+
+			
 
 		status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
 		status['requeststatus']='done'
