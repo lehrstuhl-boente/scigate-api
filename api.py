@@ -338,6 +338,8 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 									f.write("<td>"+"</td><td>".join(spaltenwert)+"</td>")
 									s+=len(spaltenwert)
 								else:
+									if spaltenwert[:4]=="http":
+										spaltenwert="<a href='"+spaltenwert+"'>"+spaltenwert+"</a>"
 									f.write("<td>"+spaltenwert+"</td>")
 									s+=1
 							else:
