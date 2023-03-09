@@ -344,7 +344,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 								f.write("<td></td>")
 								s+=1
 						f.write("</tr></tbody></table></body></html>")
-					status['csv']=MYFILEURL+verzeichnisname+"/hitlist.html"
+					status['html']=MYFILEURL+verzeichnisname+"/hitlist.html"
 
 			
 
