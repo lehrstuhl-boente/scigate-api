@@ -23,6 +23,7 @@ class MyServer(BaseHTTPRequestHandler):
 	def do_GET(self):
 		try:
 			commands=self.path.split("?",1)
+			print(commands)
 			args=urllib.parse.unquote(commands[1])
 			sdata=json.loads(args)
 			command=commands[0]
