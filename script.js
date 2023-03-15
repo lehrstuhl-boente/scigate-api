@@ -71,7 +71,7 @@ function run_check(statusLink){
 			fetched=data['fetched'];
 			percent=100*fetched/hits;
 			document.getElementById("replytitle").innerHTML=''+data['job']+' '+percent+'%<div id="myProgress" style="width: 100%; background-color: #ddd;"><div id="myBar" style="width: 1%; height: 20px; background-color: #04AA6D; text-align: center;"></div></div>';
-			document.getElementById("myBar").width=percent+"%";
+			document.getElementById("myBar").width=String(percent)+"%";
 		}
 		reply=JSON.stringify(data).replace(/,"/g,', "');
 		document.getElementById("reply").innerHTML=reply;
