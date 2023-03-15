@@ -1,4 +1,4 @@
-init(){
+function init(){
 	alert("test");
 }
 
