@@ -10,16 +10,6 @@
   <body onload="urlstart=location.protocol+'//'+location.hostname+'/api/'; document.getElementById('logo').src=urlstart+'logo.svg'; document.getElementById('css').href=urlstart+'index.css'; document.getElementById('js').src=urlstart+'script.js';">
     <div id="app" data-v-app="">
       <div class="flex flex-col justify-between border-2 border-gray-500 bg-white">
-        <div class="fixed bottom-2 sm:bottom-4 right-2 sm:right-4 bg-gray-100 rounded-full p-4 shadow-md opacity-50 hover:opacity-100 z-50">
-          <a href="#" class="hover:underline text-sm" title="Scroll to top">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 inline" width="192" height="192" fill="#000000" viewBox="0 0 256 256">
-              <rect width="256" height="256" fill="none"></rect>
-              <line x1="128" y1="224" x2="128" y2="72" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line>
-              <polyline points="56 144 128 72 200 144" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polyline>
-              <line x1="40" y1="40" x2="216" y2="40" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></line>
-            </svg>
-          </a>
-        </div>
         <header class="bg-gray-100 p-2 sm:p-8 sticky top-0 flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-16 grow-0 text-gray-600">
           <a href="/" class="router-link-active router-link-exact-active" aria-current="page">
             <img id="logo" alt="Sci-Gate API Logo" class="logo w-auto h-12 sm:h-16" width="160" height="77">
