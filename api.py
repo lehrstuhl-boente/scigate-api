@@ -106,6 +106,7 @@ def search(sdata):
 			reply['token']=str(id)
 			reply['check']=MYAPIURL+'status?{%22id%22:'+str(id)+'}'
 			reply['id']=str(id)
+			print("hits und maxHits",hits,maxHits)
 			if hits>maxHits:
 				p['hits']=str(maxHits)+' of '+str(hits)
 				hits=maxHits
