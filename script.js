@@ -38,6 +38,8 @@ function run_query(){
 			hits = data['maxHits']+" of "+hits;
 		}
 		document.getElementById("hits").innerHTML=hits;
+		reply=JSON.stringify(data)
+		document.getElementById("reply").innerHTML=reply;		
 	});
 }
 
