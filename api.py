@@ -163,7 +163,7 @@ def processOutputSetting(sdata,p):
 			if sdata['getDocs'] and collection != 'entscheidsuche':
 				return "getDocs only available for entscheidsuche collection"
 			if not (sdata['getCSV'] or sdata['getHTML'] or sdata['getJSON'] or sdata['getDocs'] or sdata['ui']):
-				return "no output format selected, select at least one of getCSV, getHTML, getniceHTML, getJSON, getDocs or set ui"
+				return "no output format selected, select at least one of getCSV, getHTML, getNiceHTML, getJSON, getDocs or set ui"
 
 			#always ZIP when retrieving docs
 			if 'getDocs' in sdata and sdata['getDocs']:
