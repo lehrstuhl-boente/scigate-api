@@ -157,8 +157,8 @@ components:
           default: false
         getHTML:
           type: boolean
-          default: true
-        getHTML:
+          default: false
+        getJSON:
           type: boolean
           default: true
         getniceHTML:
