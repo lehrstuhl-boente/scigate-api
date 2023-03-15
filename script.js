@@ -3,9 +3,14 @@ baseref=location.protocol+"//"+location.host+"/api/search";
 
 function init(){
 	update_parameter();
-	if(!(parameter['getCSV'] || parameter['getHTML'] || parameter['getNiceHTML'] || parameter['getJSON'])){
-		document.getElementById('getNiceHTML').checked=true;
-	}
+	if(!(parameter['getDocs'] ||parameter['getCSV'] || parameter['getHTML'] || parameter['getNiceHTML'] || parameter['getJSON'])){
+		if(parameter['collection']=='entscheidsuche'){
+			document.getElementById('getDocs').checked=true;
+		}
+		else {
+			document.getElementById('getNiceHTML').checked=true;
+		}
+	}	
 }
 
 function update_parameter(){
