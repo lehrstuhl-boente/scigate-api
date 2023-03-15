@@ -188,7 +188,7 @@ def processOutputSetting(sdata,p):
 	
 def getData(query,hits,id,sdata):
 	print('Start getData for '+str(id))
-	status={ 'start': datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(), 'last': datetime.datetime.fromtimestamp(time.time()).isoformat(), 'hits': hits, 'fetched': 0, 'requeststatus': 'running'}
+	status={ 'start': datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(), 'last': datetime.datetime.fromtimestamp(time.time()).isoformat(), 'hits': hits, 'fetched': 0, 'requeststatus': 'running', 'job': 'reading hitlist'}
 	reply={}
 	reply['status']='ok'
 	start=0
@@ -240,7 +240,7 @@ def getData(query,hits,id,sdata):
 def loadDocs(hitlist,id,sdata,verzeichnisname):
 	print('Start loadDocs for '+str(id))
 	hits=len(hitlist)
-	status={ 'start': datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(), 'last': datetime.datetime.fromtimestamp(time.time()).isoformat(), 'hits': hits, 'fetched': 0, 'requeststatus': 'running'}
+	status={ 'start': datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(), 'last': datetime.datetime.fromtimestamp(time.time()).isoformat(), 'hits': hits, 'fetched': 0, 'requeststatus': 'running', 'job': 'reading documents'}
 	reply={}
 	reply['status']='ok'
 	start=0
@@ -248,7 +248,8 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 	saveStatus(status, id)
 	try:
 		if sdata['getDocs']:
-			for t in hitlist:
+			for idx in range(len(hitlist)):
+				t=hitlist[idx]
 				if 'url' in t:
 					url=t['url']
 					stamm=url.split('/view/')
@@ -296,6 +297,11 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 					t['Reference']=entscheidjson['Num']
 				if "Meta" in entscheidjson:
 					t['Source']=list(filter(lambda x: x['Sprachen'][0] == lang, entscheidjson['Meta']))[0]['Text']
+				if idx % 10 ==5:
+					status['fetched']=idx
+					saveStatus(status,id)
+			status['fetched']=len(hitlist)
+			saveStatus(status,id)
 			
 		if sdata['getJSON']:
 			print("Schreibe JSON")
