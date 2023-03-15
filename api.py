@@ -80,7 +80,7 @@ def search(sdata):
 		if 'maxReply' in sdata:
 			maxReply=sdata['maxReply']
 			if isinstance(maxReply,str):
-				maxHits=int(maxReply)
+				maxReply=int(maxReply)
 			if maxReply > MAXREPLY:
 				maxReply=MAXREPLY
 				reply["warning"]="Documents will be fetched asynchronosly. Synchronous requests are limited to "+str(MAXREPLY)+" hits"			
