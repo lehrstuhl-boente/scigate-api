@@ -81,7 +81,7 @@ function run_check(statusLink){
 
 
 async function getData(url){
-  await delay(2000);
+  await new Promise(resolve => setTimeout(resolve, 2000));
   const response = await fetch(url, {});
   return response.json();
 }
