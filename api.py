@@ -102,6 +102,7 @@ def search(sdata):
 		if result['status']=='ok':
 			hits=result['hits']
 			reply['hits']=hits
+			reply['maxHits']=maxHits
 			reply['token']=str(id)
 			reply['check']=MYAPIURL+'status?{%22id%22:'+str(id)+'}'
 			reply['id']=str(id)
