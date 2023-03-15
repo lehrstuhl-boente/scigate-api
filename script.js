@@ -9,7 +9,7 @@ function update_parameter(){
 	parameter['query']=document.getElementById('searchterm').value;
 	parameter['maxHits']=document.getElementById('maxHits').value;
 	parameter['maxReply']=document.getElementById('maxReply').value;
-	parameter['getDocs']=document.getElementById('getDocs).checked;
+	parameter['getDocs']=document.getElementById('getDocs').checked;
 	parameter['getCSV']=document.getElementById('getCSV').checked;
 	parameter['getHTML']=document.getElementById('getHTML').checked;
 	parameter['getniceHTML']=document.getElementById('getniceHTML').checked;
