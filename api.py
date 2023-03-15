@@ -220,6 +220,7 @@ def getData(query,hits,id,sdata):
 				return result
 			start+=count
 			status['fetched']=start
+			print("fetched: ",start)
 			status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
 			saveStatus(status, id)
 
