@@ -1,3 +1,6 @@
-function init(){
-	alert("init");
+init(){
+	alert("test");
 }
+
+
+init();
