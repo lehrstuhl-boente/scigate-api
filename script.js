@@ -34,7 +34,7 @@ function run_query(){
 	update_parameter();
 	document.getElementById("replytitle").innerHTML="Running...";	
 	document.getElementById("reply").innerHTML="";
-	document.getElementById("replylink").innerHTML="";
+	document.getElementById("replylinks").innerHTML="";
 	postData(url=baseref, data=parameter).then((data) => {
 		if (data['status']!='ok'){
 			document.getElementById("replytitle").innerHTML="Error";		
