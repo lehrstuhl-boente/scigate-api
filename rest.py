@@ -47,14 +47,14 @@ class MyServer(BaseHTTPRequestHandler):
 		else:
 			self.do_Common(command,sdata)
 			
-	def do_Header(self):
+	def do_Header(self, contenttype="application/json"):
 		self.send_response(200)
-		self.send_header("Content-type", "application/json; charset=utf-8")
+		self.send_header("Content-type", contenttype+"; charset=utf-8")
 		self.send_header("Access-Control-Allow-Origin", "*")
 		self.send_header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		self.send_header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
 		self.end_headers()
-	
+
 	def do_Error(self,fehler):
 		self.do_Header()
 		reply={}
@@ -64,18 +64,22 @@ class MyServer(BaseHTTPRequestHandler):
 		self.wfile.write(string)
 		
 	def do_Common(self,command,sdata):
-		self.do_Header()
 		reply={}
 		reply['status']='ok'
 		reply['command']=command
 		if command=='/api/search':
-			reply=api.search(sdata)
+			reply, =api.search(sdata)
 		elif command=='/api/status':
 			reply=api.status(sdata)
 		else:
 			reply['status']='error'
 			reply['error']="Unknown command: "+command
-		string=json.dumps(reply, ensure_ascii=False).encode('utf8')
+		if "htmloutput" in reply:
+			self.do_Header(contenttype="text/html")
+			string=reply['htmloutput']
+		else:
+			self.do_Header()
+			string=json.dumps(reply, ensure_ascii=False).encode('utf8')
 		self.wfile.write(string)
 		
 		

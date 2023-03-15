@@ -20,6 +20,10 @@ PREDIR="request"
 MAXREPLY=200
 BASISURL="https://entscheidsuche.ch/docs"
 ZIPNAME="result.zip"
+TEMPLATEPATH="/home/jorn/scigateapi/template.html"
+
+TEMPLATEKEYS=["query","hits","truncated","checked_entscheidsuche","checked_swisscovery","checked_zora","checked_boris","checked_csv","checked_json","checked_html","checked_nicehtml","checked_docs","checked_zip","maxhits","maxreply"]
+
 HTMLSTART="""
 <!DOCTYPE html>
 <html lang="en">
@@ -57,6 +61,7 @@ HTMLSTART="""
   <body>"""
 
 def search(sdata):
+	p={ a: "", for a in TEMPLATEKEYS}
 	reply={}
 	reply['status']='ok'
 	# add some random to the id so that guessing it becomes difficult
@@ -64,22 +69,26 @@ def search(sdata):
 
 	try:
 		query=sdata['query']
+		p['query']=query
 		maxHits=100
 		if 'maxHits' in sdata:
 			maxHits=sdata['maxHits']
+		p['maxhits']=maxHits
 		maxReply=100
 		if 'maxReply' in sdata:
 			maxReply=sdata['maxReply']
 			if maxReply > MAXREPLY:
 				maxReply=MAXREPLY
 				reply["warning"]="Documents will be fetched asynchronosly. Synchronous requests are limited to "+str(MAXREPLY)+" hits"			
-
-		fehler=processOutputSetting(sdata)
+		p['maxreply']=maxReply
+		fehler=processOutputSetting(sdata,p)
 		if fehler:
 			reply['error']=fehler
 			reply['status']='error'
 			reply['errormodule']='search'
-			return
+			return reply
+			
+		p['checked_'+sdata['collection']]='checked'
 
 		result={}
 		data={'engine': sdata['collection'], 'type': 'search', 'term': query}
@@ -87,20 +96,26 @@ def search(sdata):
 		ergebnis=r.text
 		result=json.loads(ergebnis)
 		if result['status']=='ok':
-			hits=result['hits']
+			p['hits']=hits
 			reply['hits']=hits
 			reply['token']=str(id)
 			reply['check']=MYAPIURL+'status?{%22id%22:'+str(id)+'}'
 			reply['id']=str(id)
 			if hits>maxHits:
+				p['truncated']=' of '+str(hits)
 				hits=maxHits
 				reply['hitsTruncated']=True
+			hits=result['hits']
 			if hits>maxReply:
 				new_thread = threading.Thread(target=getData,args=(query,hits,id,sdata))
 				new_thread.start()
 			else:
 				print("Rufe nun getData mit '"+query+"' auf.")
 				reply.update(getData(query,hits,id,sdata))
+			if 'ui' in sdata:
+				with open(TEMPLATEPATH) as f:
+					htmlstring = f.readlines()
+				reply['htmloutput']=htmlstring.format(**p)
 		else:
 			result['errormodule']="search: return from search-command"
 			return result
@@ -112,7 +127,7 @@ def search(sdata):
 	finally:
 		return reply
 	
-def processOutputSetting(sdata):
+def processOutputSetting(sdata,p):
 	if 'collection' in sdata:
 		collection=sdata['collection']
 		if collection in ['entscheidsuche','boris','zora','swisscovery']:
@@ -120,14 +135,27 @@ def processOutputSetting(sdata):
 			#setDefaults
 			if not 'getZIP' in sdata:
 				sdata['getZIP']=True
+			else:
+				p['checked_zip']='checked'
 			if not 'getDocs' in sdata:
 				sdata['getDocs']=False
+			else:
+				p['checked_docs']='checked'
 			if not 'getCSV' in sdata:
 				sdata['getCSV']=False
+			else:
+				p['checked_csv']='checked'
+			if 'getniceHTML' in sdata:
+				sdata['getniceHTML']=True
+				p['checked_nicehtml']='checked'
 			if not 'getHTML' in sdata:
-				sdata['getHTML']=True
+				sdata['getHTML']=False
+			else:
+				p['checked_html']='checked'
 			if not 'getJSON' in sdata:
 				sdata['getJSON']=False
+			else:
+				p['checked_json']='checked'
 			if sdata['getDocs'] and collection != 'entscheidsuche':
 				return "getDocs only available for entscheidsuche collection"
 			if not (sdata['getCSV'] or sdata['getHTML'] or sdata['getJSON'] or sdata['getDocs']):
@@ -136,6 +164,9 @@ def processOutputSetting(sdata):
 			#always ZIP when retrieving docs
 			if 'getDocs' in sdata and sdata['getDocs']:
 				sdata['getZIP']=True
+			if 'getZIP' in sdata:
+				p['checked_zip']='checked'
+			
 		else:
 			return "Collection '"+collection+"' unknown"
 	else:
@@ -392,7 +423,8 @@ def docs(sdata):
 
 	try:
 		sdata['getDocs']=True
-		fehler=processOutputSetting(sdata)
+		p={ a: "", for a in TEMPLATEKEYS}
+		fehler=processOutputSetting(sdata,p)
 		if fehler:
 			reply['error']=fehler
 			reply['status']='error'
