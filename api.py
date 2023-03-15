@@ -109,7 +109,7 @@ def search(sdata):
 			if sdata['ui']:
 				with open(TEMPLATEPATH) as f:
 					htmlstring = f.readlines()
-				reply['htmloutput']="".join(htmlstring).format(**p)
+				reply['htmloutput']=("".join(htmlstring)).format(**p)
 			else:			
 				if hits>maxReply:
 					new_thread = threading.Thread(target=getData,args=(query,hits,id,sdata))
