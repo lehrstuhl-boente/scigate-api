@@ -96,6 +96,7 @@ def search(sdata):
 		ergebnis=r.text
 		result=json.loads(ergebnis)
 		if result['status']=='ok':
+			hits=result['hits']
 			p['hits']=hits
 			reply['hits']=hits
 			reply['token']=str(id)
@@ -105,7 +106,6 @@ def search(sdata):
 				p['truncated']=' of '+str(hits)
 				hits=maxHits
 				reply['hitsTruncated']=True
-			hits=result['hits']
 			if sdata['ui']:
 				with open(TEMPLATEPATH) as f:
 					htmlstring = f.readlines()
