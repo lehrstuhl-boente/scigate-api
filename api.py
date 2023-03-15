@@ -359,6 +359,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 								s+=1
 						write.writerow(reihe)
 				status['csv']=MYFILEURL+verzeichnisname+"/hitlist.csv"
+				reply['csv']=MYFILEURL+verzeichnisname+"/hitlist.csv"
 
 			if sdata['getHTML']:
 				print("Schreibe HTML")
@@ -389,6 +390,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 						f.write("</tr>")
 					f.write("</tbody></table></body></html>")
 					status['html']=MYFILEURL+verzeichnisname+"/hitlist.html"
+					reply['html']=MYFILEURL+verzeichnisname+"/hitlist.html"
 
 			
 
@@ -411,6 +413,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 						if filename!=ZIPNAME:
 							print("Zippe Datei "+filename+" in "+folderName)
 							zipObj.write(filePath, os.path.basename(filePath))
+			reply['zip']=MYFILEURL+verzeichnisname+"/"+ZIPNAME
 				
 	except Exception as ex:
 		printException(ex,"loadDocs "+str(id))
