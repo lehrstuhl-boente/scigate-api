@@ -167,6 +167,8 @@ def processOutputSetting(sdata,p):
 				sdata['getZIP']=True
 			if 'getZIP' in sdata:
 				p['checked_zip']='checked'
+			if not 'ui' in sdata:
+				sdata['ui']=True
 			
 		else:
 			return "Collection '"+collection+"' unknown"
