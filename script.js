@@ -67,7 +67,11 @@ function run_check(statusLink){
 			document.getElementById("replytitle").innerHTML="Error";		
 		}
 		else{
-			document.getElementById("replytitle").innerHTML="Status";		
+			document.getElementById("replytitle").innerHTML='<div id="myProgress"><div id="myBar"></div></div>';
+			hits=data['hits'];
+			fetched=data['fetched'];
+			percent=100*fetched/hits;
+			document.getElementById("myBar").width=precent+"%";
 		}
 		reply=JSON.stringify(data).replace(/,"/g,', "');
 		document.getElementById("reply").innerHTML=reply;

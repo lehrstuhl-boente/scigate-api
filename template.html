@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scigate API</title>
     <link id="css" rel="stylesheet">
+    <style>
+		#myProgress {
+  			width: 100%;
+  			background-color: #ddd;
+		}
+
+		#myBar {
+			width: 1%;
+			height: 20px;
+		    background-color: #04AA6D;
+		}
+	</style>
     <script id="js"></script>
   </head>
   <body onload="urlstart=location.protocol+'//'+location.hostname+'/api/'; document.getElementById('logo').src=urlstart+'logo.svg'; document.getElementById('css').href=urlstart+'index.css'; document.getElementById('js').src=urlstart+'script.js';">
@@ -166,7 +178,7 @@
         </header>
         <main class="grow">
           <div class="p-16">
-          	<p id="replytitle" class="font-bold"></p>
+          	<p id="replytitle"></p>
             <p id="reply"></p>
           </div>
         </main>
