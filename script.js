@@ -33,7 +33,8 @@ function update_parameter(){
 function run_query(){
 	update_parameter();
 	document.getElementById("replytitle").innerHTML="Running...";	
-	document.getElementById("reply").innerHTML="";	
+	document.getElementById("reply").innerHTML="";
+	document.getElementById("replylink").innerHTML="";
 	postData(url=baseref, data=parameter).then((data) => {
 		if (data['status']!='ok'){
 			document.getElementById("replytitle").innerHTML="Error";		
@@ -77,7 +78,15 @@ function run_check(statusLink){
 		if(data['requeststatus']=="running"){
 			statuslink=data['check'];
 			run_check(statusLink);
-		}	
+		}
+		else{
+			links="";
+			if ("json" in status) links+="JSON: <a href='"+status['json']+"'>status['json']</a><br>";
+			if ("csv" in status) links+="CSV: <a href='"+status['csv']+"'>status['json']</a><br>";
+			if ("html" in status) links+="HTML: <a href='"+status['html']+"'>status['json']</a><br>";
+			if ("zip" in status) links+="ZIP: <a href='"+status['zip']+"'>status['json']</a><br>";
+			document.getElementById("replylinks").innerHTML=links;			
+		}
 	});
 
 }
