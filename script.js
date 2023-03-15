@@ -32,7 +32,7 @@ function update_parameter(){
 
 function run_query(){
 	update_parameter();
-	document.getElementById("replytitle").innerHTML="running...";	
+	document.getElementById("replytitle").innerHTML="Running...";	
 	document.getElementById("reply").innerHTML="";	
 	postData(url=baseref, data=parameter).then((data) => {
 		if (data['status']!='ok'){
@@ -50,11 +50,43 @@ function run_query(){
 				hits = data['maxHits']+" of "+hits;
 			}
 			document.getElementById("hits").innerHTML=hits;
-			reply=JSON.stringify(data).replace(/,"/g,', "');
 		}
-		document.getElementById("reply").innerHTML=reply;		
+		reply=JSON.stringify(data).replace(/,"/g,', "');
+		document.getElementById("reply").innerHTML=reply;
+		if(data['running']){
+			statuslink=data['check'];
+			await sleep(2000);
+			run_check(statuslink);
+		}	
 	});
 }
+
+function run_check(statusLink){
+	document.getElementById("replytitle").innerHTML="Checking...";	
+	getData(url=statusLink).then((data) => {
+		if (data['status']!='ok'){
+			document.getElementById("replytitle").innerHTML="Error";		
+		}
+		else{
+			document.getElementById("replytitle").innerHTML="Statu";		
+		}
+		reply=JSON.stringify(data).replace(/,"/g,', "');
+		document.getElementById("reply").innerHTML=reply;
+		if(data['running']){
+			statuslink=data['check'];
+			await sleep(2000);
+			run_check(statuslink);
+		}	
+	});
+
+}
+
+
+async function getData(url){
+  const response = await fetch(url, {});
+  return response.json();
+}
+
 
 async function postData(url = "", data = {}) {
   // Default options are marked with *
