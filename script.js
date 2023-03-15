@@ -39,7 +39,7 @@ function run_query(){
 			hits = data['maxHits']+" of "+hits;
 		}
 		document.getElementById("hits").innerHTML=hits;
-		reply=JSON.stringify(data)
+		reply=JSON.stringify(data).replace(/,"/g,', "');
 		document.getElementById("reply").innerHTML=reply;		
 	});
 }

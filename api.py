@@ -415,7 +415,6 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 							print("Zippe Datei "+filename+" in "+folderName)
 							zipObj.write(filePath, os.path.basename(filePath))
 			reply['zip']=MYFILEURL+verzeichnisname+"/"+ZIPNAME
-			print(reply)
 				
 	except Exception as ex:
 		printException(ex,"loadDocs "+str(id))
