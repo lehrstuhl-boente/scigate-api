@@ -61,7 +61,7 @@ HTMLSTART="""
   <body>"""
 
 def search(sdata):
-	p={ a: "", for a in TEMPLATEKEYS}
+	p={ a: "" for a in TEMPLATEKEYS}
 	reply={}
 	reply['status']='ok'
 	# add some random to the id so that guessing it becomes difficult
