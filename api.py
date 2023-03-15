@@ -157,6 +157,8 @@ def processOutputSetting(sdata,p):
 				sdata['getJSON']=False
 			else:
 				p['checked_json']='checked'
+			if not 'ui' in sdata:
+				sdata['ui']=True
 			if sdata['getDocs'] and collection != 'entscheidsuche':
 				return "getDocs only available for entscheidsuche collection"
 			if not (sdata['getCSV'] or sdata['getHTML'] or sdata['getJSON'] or sdata['getDocs'] or sdata['ui']):
@@ -167,8 +169,6 @@ def processOutputSetting(sdata,p):
 				sdata['getZIP']=True
 			if 'getZIP' in sdata:
 				p['checked_zip']='checked'
-			if not 'ui' in sdata:
-				sdata['ui']=True
 			
 		else:
 			return "Collection '"+collection+"' unknown"
