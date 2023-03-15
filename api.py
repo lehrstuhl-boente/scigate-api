@@ -103,9 +103,11 @@ def search(sdata):
 			reply['check']=MYAPIURL+'status?{%22id%22:'+str(id)+'}'
 			reply['id']=str(id)
 			if hits>maxHits:
-				p['truncated']=' of '+str(hits)
+				p['hits']=str(maxHits)+' of '+str(hits)
 				hits=maxHits
 				reply['hitsTruncated']=True
+			else:
+				p['hits']=str(hits)			
 			if sdata['ui']:
 				with open(TEMPLATEPATH) as f:
 					htmlstring = f.readlines()
