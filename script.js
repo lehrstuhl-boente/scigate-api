@@ -32,6 +32,7 @@ function update_parameter(){
 
 function run_query(){
 	update_parameter();
+	document.getElementById("reply").innerHTML="running...";		
 	postData(url=baseref, data=parameter).then((data) => {
 		hits=data['hits']
 		if ("hitsTruncated" in data){
