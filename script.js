@@ -32,14 +32,26 @@ function update_parameter(){
 
 function run_query(){
 	update_parameter();
-	document.getElementById("reply").innerHTML="running...";		
+	document.getElementById("replytitle").innerHTML="running...";	
+	document.getElementById("reply").innerHTML="";	
 	postData(url=baseref, data=parameter).then((data) => {
-		hits=data['hits']
-		if ("hitsTruncated" in data){
-			hits = data['maxHits']+" of "+hits;
+		if (data['status']!='ok'){
+			document.getElementById("replytitle").innerHTML="Error";		
 		}
-		document.getElementById("hits").innerHTML=hits;
-		reply=JSON.stringify(data).replace(/,"/g,', "');
+		else{
+			if(data['running']){
+				document.getElementById("replytitle").innerHTML="Processing asynchronously";		
+			}
+			else{				
+				document.getElementById("replytitle").innerHTML="Request terminated successfully";		
+			}
+			hits=data['hits']
+			if ("hitsTruncated" in data){
+				hits = data['maxHits']+" of "+hits;
+			}
+			document.getElementById("hits").innerHTML=hits;
+			reply=JSON.stringify(data).replace(/,"/g,', "');
+		}
 		document.getElementById("reply").innerHTML=reply;		
 	});
 }
