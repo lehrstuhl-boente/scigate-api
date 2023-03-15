@@ -74,7 +74,6 @@ function run_check(statusLink){
 		document.getElementById("reply").innerHTML=reply;
 		if(data['running']){
 			statuslink=data['check'];
-			await sleep(2000);
 			run_check(statuslink);
 		}	
 	});
@@ -83,6 +82,7 @@ function run_check(statusLink){
 
 
 async function getData(url){
+  await sleep(2000);
   const response = await fetch(url, {});
   return response.json();
 }
