@@ -16,7 +16,7 @@ function update_parameter(){
 	parameter['getJSON']=document.getElementById('getJSON').checked;
 	parameter['getZIP']=document.getElementById('getZIP').checked;
 	parameter['ui']=false;
-	parameterstring=JSON.stringify(parameter);	
+	parameterstring=JSON.stringify(parameter).replace('","','", "');	
 	document.getElementById('postjson').innerHTML=parameterstring;
 }
 
