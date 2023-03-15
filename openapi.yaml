@@ -16,12 +16,12 @@ servers:
   - url: http://v2202109132150164038.luckysrv.de:5001/api
 tags:
   - name: search request
-    description: New Scigate API request with a query
+    description: Query a database
     externalDocs:
       description: Description will be available soon
       url: https://scigate.ch
   - name: document list request
-    description: New Scigate API request with a document list
+    description: Request a list of documents
     externalDocs:
       description: Description will be available soon
       url: https://scigate.ch
@@ -52,19 +52,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/result'          
-  /load:
+    
+  /docs:
     post:
       tags:
         - document list request
-      summary: get list of documents
-      description: get a ZIP-file with documents through a document list
-      operationId: "api.load"
+      summary: get documents from a list
+      description: get document request
+      operationId: "api.docs"
       requestBody:
-        description: load
+        description: get documents
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/load'
+              $ref: '#/components/schemas/docs'
         required: true
       responses:
         '200':
@@ -73,6 +74,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/result'          
+
   /status:
     post:
       tags:
@@ -97,6 +99,25 @@ paths:
 
 components:
   schemas:
+    docs:
+      type: object
+      properties:
+        collection:
+          type: string
+          example: entscheidsuche
+          enum:
+            - entscheidsuche
+            - swisscovery
+            - zora
+            - boris
+        docids:
+          type: array
+          items:
+            type: string
+        output:
+          $ref: '#/components/schemas/output'
+
+  
     search:
       type: object
       properties:
@@ -125,15 +146,27 @@ components:
         getDocs:
           type: boolean
           default: false
+        output:
+          $ref: '#/components/schemas/output'
+
+    output:
+      type: object
+      properties:
         getCSV:
           type: boolean
           default: false
         getHTML:
           type: boolean
           default: true
-        getJSON:
+        getHTML:
+          type: boolean
+          default: true
+        getniceHTML:
           type: boolean
           default: false
+        ui:
+          type: boolean
+          default: true
         getZIP:
           type: boolean
           default: true

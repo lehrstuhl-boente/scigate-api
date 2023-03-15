@@ -112,7 +112,7 @@ def search(sdata):
 			else:
 				print("Rufe nun getData mit '"+query+"' auf.")
 				reply.update(getData(query,hits,id,sdata))
-			if 'ui' in sdata:
+			if sdata['ui']:
 				with open(TEMPLATEPATH) as f:
 					htmlstring = f.readlines()
 				reply['htmloutput']=htmlstring.format(**p)
