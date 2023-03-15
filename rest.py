@@ -24,7 +24,7 @@ class MyServer(BaseHTTPRequestHandler):
 		try:
 			commands=self.path.split("?",1)
 			print(commands)
-			if len(commands<2):
+			if len(commands)<2:
 				sdata={}
 			else:
 				args=urllib.parse.unquote(commands[1])
