@@ -423,7 +423,7 @@ def docs(sdata):
 
 	try:
 		sdata['getDocs']=True
-		p={ a: "", for a in TEMPLATEKEYS}
+		p={ a: "" for a in TEMPLATEKEYS}
 		fehler=processOutputSetting(sdata,p)
 		if fehler:
 			reply['error']=fehler
