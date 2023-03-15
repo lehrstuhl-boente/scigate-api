@@ -8,16 +8,8 @@
     <link id="css" rel="stylesheet" href="index.css">
     <script id="js" src=""></script>
     <script>
-		function init(){{
-    		set_urls();
-		}}
-
-		function set_urls(){{
-			urlstart=location.protocol+'//'+location.hostname+'/api/';
-			document.getElementById('logo').src=urlstart+'logo.svg';
-			document.getElementById('css').href=urlstart+'index.css';
-			document.getElementById('js').src=urlstart+'script.js';
-		}}
+		let init = () => set_urls();
+		let set_urls() => urlstart=location.protocol+'//'+location.hostname+'/api/'; document.getElementById('logo').src=urlstart+'logo.svg'; document.getElementById('css').href=urlstart+'index.css'; document.getElementById('js').src=urlstart+'script.js';
     </script>
   </head>
   <body onload="">
