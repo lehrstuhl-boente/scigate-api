@@ -25,6 +25,7 @@ class MyServer(BaseHTTPRequestHandler):
 			commands=self.path.split("?",1)
 			print(commands)
 			args=urllib.parse.unquote(commands[1])
+			print(args)
 			sdata=json.loads(args)
 			command=commands[0]
 		except Exception as ex:
