@@ -68,7 +68,7 @@ class MyServer(BaseHTTPRequestHandler):
 		reply['status']='ok'
 		reply['command']=command
 		if command=='/api/search':
-			reply, =api.search(sdata)
+			reply=api.search(sdata)
 		elif command=='/api/status':
 			reply=api.status(sdata)
 		else:
