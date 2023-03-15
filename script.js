@@ -71,7 +71,7 @@ function run_check(statusLink){
 			hits=data['hits'];
 			fetched=data['fetched'];
 			percent=100*fetched/hits;
-			document.getElementById("myBar").width=precent+"%";
+			document.getElementById("myBar").width=percent+"%";
 		}
 		reply=JSON.stringify(data).replace(/,"/g,', "');
 		document.getElementById("reply").innerHTML=reply;
