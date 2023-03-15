@@ -67,7 +67,7 @@ function run_check(statusLink){
 			document.getElementById("replytitle").innerHTML="Error";		
 		}
 		else{
-			document.getElementById("replytitle").innerHTML='<div id="myProgress" style="width: 100%; background-color: #ddd;"><div id="myBar" style="width: 1%; height: 20px; background-color: #04AA6D;"></div></div>';
+			document.getElementById("replytitle").innerHTML='<div id="myProgress" style="width: 100%; background-color: #ddd;"><div id="myBar" style="width: 1%; height: 20px; background-color: #04AA6D;">10%</div></div>';
 			hits=data['hits'];
 			fetched=data['fetched'];
 			percent=100*fetched/hits;
