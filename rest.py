@@ -76,7 +76,7 @@ class MyServer(BaseHTTPRequestHandler):
 			reply['error']="Unknown command: "+command
 		if "htmloutput" in reply:
 			self.do_Header(contenttype="text/html")
-			string=reply['htmloutput']
+			string=reply['htmloutput'].encode('utf8')
 		else:
 			self.do_Header()
 			string=json.dumps(reply, ensure_ascii=False).encode('utf8')
