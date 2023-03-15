@@ -147,8 +147,8 @@ def processOutputSetting(sdata,p):
 				sdata['getCSV']=False
 			else:
 				p['checked_csv']='checked'
-			if 'getniceHTML' in sdata:
-				sdata['getniceHTML']=True
+			if 'getNiceHTML' in sdata:
+				sdata['getNiceHTML']=True
 				p['checked_nicehtml']='checked'
 			if not 'getHTML' in sdata:
 				sdata['getHTML']=False

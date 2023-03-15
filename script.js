@@ -12,7 +12,7 @@ function update_parameter(){
 	parameter['getDocs']=document.getElementById('getDocs').checked;
 	parameter['getCSV']=document.getElementById('getCSV').checked;
 	parameter['getHTML']=document.getElementById('getHTML').checked;
-	parameter['getniceHTML']=document.getElementById('getniceHTML').checked;
+	parameter['getNiceHTML']=document.getElementById('getNiceHTML').checked;
 	parameter['getJSON']=document.getElementById('getJSON').checked;
 	parameter['getZIP']=document.getElementById('getZIP').checked;
 	parameter['ui']=false;

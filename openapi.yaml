@@ -161,7 +161,7 @@ components:
         getJSON:
           type: boolean
           default: true
-        getniceHTML:
+        getNiceHTML:
           type: boolean
           default: false
         ui:
