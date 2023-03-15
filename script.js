@@ -82,9 +82,9 @@ function run_check(statusLink){
 		else{
 			links="";
 			if ("json" in data) links+="JSON: <a href='"+data['json']+"'>"+data['json']+"</a><br>";
-			if ("csv" in data) links+="CSV: <a href='"+data['csv']+"'>"+data['json']+"</a><br>";
-			if ("html" in data) links+="HTML: <a href='"+data['html']+"'>"+data['json']+"</a><br>";
-			if ("zip" in data) links+="ZIP: <a href='"+data['zip']+"'>"+data['json']+"</a><br>";
+			if ("csv" in data) links+="CSV: <a href='"+data['csv']+"'>"+data['csv']+"</a><br>";
+			if ("html" in data) links+="HTML: <a href='"+data['html']+"'>"+data['html']+"</a><br>";
+			if ("zip" in data) links+="ZIP: <a href='"+data['zip']+"'>"+data['zip']+"</a><br>";
 			document.getElementById("replylinks").innerHTML=links;			
 		}
 	});
