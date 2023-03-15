@@ -67,10 +67,10 @@ function run_check(statusLink){
 			document.getElementById("replytitle").innerHTML="Error";		
 		}
 		else{
-			document.getElementById("replytitle").innerHTML='<div id="myProgress" style="width: 100%; background-color: #ddd;"><div id="myBar" style="width: 1%; height: 20px; background-color: #04AA6D;">10%</div></div>';
 			hits=data['hits'];
 			fetched=data['fetched'];
 			percent=100*fetched/hits;
+			document.getElementById("replytitle").innerHTML='<div id="myProgress" style="width: 100%; background-color: #ddd;"><div id="myBar" class="text-center" style="width: '+percent+'%; height: 20px; background-color: #04AA6D;">10%</div></div>';
 			document.getElementById("myBar").width=percent+"%";
 		}
 		reply=JSON.stringify(data).replace(/,"/g,', "');
