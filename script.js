@@ -76,6 +76,7 @@ function run_check(statusLink){
 		reply=JSON.stringify(data).replace(/,"/g,', "');
 		document.getElementById("reply").innerHTML=reply;
 		if(data['running']){
+			alert("checking again");
 			statuslink=data['check'];
 			run_check(statuslink);
 		}	
