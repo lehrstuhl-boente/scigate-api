@@ -188,7 +188,7 @@ def processOutputSetting(sdata,p):
 	
 def getData(query,hits,id,sdata):
 	print('Start getData for '+str(id))
-	status={ 'start': datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(), 'last': datetime.datetime.fromtimestamp(time.time()).isoformat(), 'hits': hits, 'fetched': 0, 'requeststatus': 'running', 'job': 'reading hitlist'}
+	status={ 'start': datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(), 'hits': hits, 'fetched': 0, 'requeststatus': 'running', 'job': 'reading hitlist'}
 	reply={}
 	reply['status']='ok'
 	start=0
@@ -220,7 +220,6 @@ def getData(query,hits,id,sdata):
 				return result
 			start+=count
 			status['fetched']=start
-			status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
 			saveStatus(status, id)
 
 		reply.update(loadDocs(hitlist,id,sdata,verzeichnisname))
@@ -308,8 +307,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 			with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.json", 'w') as f:
 				f.write(json.dumps(hitlist))
 			status['json']=MYFILEURL+verzeichnisname+"/hitlist.json"		
-			reply['json']=MYFILEURL+verzeichnisname+"/hitlist.json"		
-			status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
+			reply['json']=MYFILEURL+verzeichnisname+"/hitlist.json"	
 			saveStatus(status, id)
 		
 		if sdata['getCSV'] or sdata['getHTML']:
@@ -402,7 +400,6 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 
 			
 
-		status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
 		status['requeststatus']='done'
 		status['erasure']=datetime.datetime.fromtimestamp(time.time()+604800).isoformat()
 		saveStatus(status, id)
@@ -507,6 +504,7 @@ def printException(ex, name):
 
 
 def saveStatus(status,id):
+	status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
 	path=PARENTDIR+"/"+PREDIR+str(id)+"/status.json"
 	with open(path, "w") as outfile:
 		print("Schreibe ",status)
