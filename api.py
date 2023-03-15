@@ -97,7 +97,6 @@ def search(sdata):
 		result=json.loads(ergebnis)
 		if result['status']=='ok':
 			hits=result['hits']
-			p['hits']=hits
 			reply['hits']=hits
 			reply['token']=str(id)
 			reply['check']=MYAPIURL+'status?{%22id%22:'+str(id)+'}'
