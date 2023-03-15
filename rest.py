@@ -24,15 +24,21 @@ class MyServer(BaseHTTPRequestHandler):
 		try:
 			commands=self.path.split("?",1)
 			print(commands)
-			args=urllib.parse.unquote(commands[1])
-			print(args)
-			sdata=json.loads(args)
+			if len(commands<2):
+				sdata={}
+			else:
+				args=urllib.parse.unquote(commands[1])
+				print(args)
+				sdata=json.loads(args)
 			command=commands[0]
 		except Exception as ex:
 			api.printException(ex,"do_Get")
 			self.do_Error('Wrong command: '+self.path+'. Use JSON-Syntax with double quotes.')
 		else:
-			self.do_Common(command,sdata)
+			if command[:5]=="/api/":
+				self.do_Common(command,sdata)
+			else:
+				print("unknown command "+ command)
 	
 	def do_POST(self):
 		try:
