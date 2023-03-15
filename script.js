@@ -39,7 +39,7 @@ function run_query(){
 			document.getElementById("replytitle").innerHTML="Error";		
 		}
 		else{
-			if(data['running']){
+			if(data['requeststatus']=="running"){
 				document.getElementById("replytitle").innerHTML="Processing asynchronously";		
 			}
 			else{				
@@ -53,7 +53,7 @@ function run_query(){
 		}
 		reply=JSON.stringify(data).replace(/,"/g,', "');
 		document.getElementById("reply").innerHTML=reply;
-		if(data['running']){
+		if(data['requeststatus']){
 			statuslink=data['check'];
 			run_check(statuslink);
 		}	
@@ -75,7 +75,7 @@ function run_check(statusLink){
 		}
 		reply=JSON.stringify(data).replace(/,"/g,', "');
 		document.getElementById("reply").innerHTML=reply;
-		if(data['running']){
+		if(data['requeststatus']=="running"){
 			alert("checking again");
 			statuslink=data['check'];
 			run_check(statuslink);

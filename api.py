@@ -121,7 +121,7 @@ def search(sdata):
 				if hits>maxReply:
 					new_thread = threading.Thread(target=getData,args=(query,hits,id,sdata))
 					new_thread.start()
-					reply["running"]=True
+					reply["requeststatus"]="running"
 				else:
 					print("Rufe nun getData mit '"+query+"' auf.")
 					reply.update(getData(query,hits,id,sdata))
@@ -427,7 +427,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 
 	finally:
 		print("finally block of loadDocs for "+str(id))
-		reply['running']=False
+		reply['requeststatus']='done'
 		return reply
 
 
