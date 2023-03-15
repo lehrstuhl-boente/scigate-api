@@ -106,16 +106,17 @@ def search(sdata):
 				hits=maxHits
 				reply['hitsTruncated']=True
 			hits=result['hits']
-			if hits>maxReply:
-				new_thread = threading.Thread(target=getData,args=(query,hits,id,sdata))
-				new_thread.start()
-			else:
-				print("Rufe nun getData mit '"+query+"' auf.")
-				reply.update(getData(query,hits,id,sdata))
 			if sdata['ui']:
 				with open(TEMPLATEPATH) as f:
 					htmlstring = f.readlines()
 				reply['htmloutput']=htmlstring.format(**p)
+			else:			
+				if hits>maxReply:
+					new_thread = threading.Thread(target=getData,args=(query,hits,id,sdata))
+					new_thread.start()
+				else:
+					print("Rufe nun getData mit '"+query+"' auf.")
+					reply.update(getData(query,hits,id,sdata))
 		else:
 			result['errormodule']="search: return from search-command"
 			return result
@@ -158,8 +159,8 @@ def processOutputSetting(sdata,p):
 				p['checked_json']='checked'
 			if sdata['getDocs'] and collection != 'entscheidsuche':
 				return "getDocs only available for entscheidsuche collection"
-			if not (sdata['getCSV'] or sdata['getHTML'] or sdata['getJSON'] or sdata['getDocs']):
-				return "no output format selected, select at least one of getCSV, getHTML, getJSON, getDocs"
+			if not (sdata['getCSV'] or sdata['getHTML'] or sdata['getJSON'] or sdata['getDocs'] or sdata['ui']):
+				return "no output format selected, select at least one of getCSV, getHTML, getniceHTML, getJSON, getDocs or set ui"
 
 			#always ZIP when retrieving docs
 			if 'getDocs' in sdata and sdata['getDocs']:
