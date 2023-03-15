@@ -3,6 +3,9 @@ baseref=location.protocol+"//"+location.host+"/api/search";
 
 function init(){
 	update_parameter();
+	if(not(parameter['getCSV'] || parameter['getHTML'] || parameter['getNiceHTML'] || parameter['getJSON'])){
+		document.getElementById('getNiceHTML').checked=true;
+	}
 }
 
 function update_parameter(){
@@ -27,7 +30,7 @@ function run_query(){
 	postData(url=baseref, data=parameter).then((data) => {
 		hits=data['hits']
 		if ("hitsTruncated" in data){
-			hits += " of "+data['maxHits'];
+			hits = data['maxHits']+" of "+hits;
 		}
 		document.getElementById("hits").innerHTML=hits;
 	});
