@@ -220,7 +220,6 @@ def getData(query,hits,id,sdata):
 				return result
 			start+=count
 			status['fetched']=start
-			print("fetched: ",start)
 			status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
 			saveStatus(status, id)
 
@@ -504,6 +503,7 @@ def printException(ex, name):
 def saveStatus(status,id):
 	path=PARENTDIR+"/"+PREDIR+str(id)+"/status.json"
 	with open(path, "w") as outfile:
+		print("Schreibe ",status)
 		outfile.write(json.dumps(status))
 	
 	
