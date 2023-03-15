@@ -25,7 +25,11 @@ function update_parameter(){
 function run_query(){
 	update_parameter();
 	postData(url=baseref, data=parameter).then((data) => {
-		console.log(data);
+		hits=data['hits']
+		if ("hitsTruncated" in data){
+			hits += " of "+data['maxHits'];
+		}
+		document.getElementById("hits").innerHTML=hits;
 	});
 }
 
