@@ -301,6 +301,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 			with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.json", 'w') as f:
 				f.write(json.dumps(hitlist))
 			status['json']=MYFILEURL+verzeichnisname+"/hitlist.json"		
+			reply['json']=MYFILEURL+verzeichnisname+"/hitlist.json"		
 			status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
 			saveStatus(status, id)
 		
@@ -414,6 +415,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 							print("Zippe Datei "+filename+" in "+folderName)
 							zipObj.write(filePath, os.path.basename(filePath))
 			reply['zip']=MYFILEURL+verzeichnisname+"/"+ZIPNAME
+			print(reply)
 				
 	except Exception as ex:
 		printException(ex,"loadDocs "+str(id))
