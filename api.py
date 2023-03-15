@@ -110,6 +110,7 @@ def search(sdata):
 				p['hits']=str(maxHits)+' of '+str(hits)
 				hits=maxHits
 				reply['hitsTruncated']=True
+				print(reply)
 			else:
 				p['hits']=str(hits)			
 			if sdata['ui']:
