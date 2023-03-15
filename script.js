@@ -78,7 +78,7 @@ function run_check(statusLink){
 		if(data['requeststatus']=="running"){
 			alert("checking again");
 			statuslink=data['check'];
-			run_check(statuslink);
+			run_check(statusLink);
 		}	
 	});
 
