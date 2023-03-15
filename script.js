@@ -55,13 +55,13 @@ function run_query(){
 		document.getElementById("reply").innerHTML=reply;
 		if(data['requeststatus']){
 			statuslink=data['check'];
+			document.getElementById("replytitle").innerHTML="Checking...";	
 			run_check(statuslink);
 		}	
 	});
 }
 
 function run_check(statusLink){
-	document.getElementById("replytitle").innerHTML="Checking...";	
 	getData(url=statusLink).then((data) => {
 		if (data['status']!='ok'){
 			document.getElementById("replytitle").innerHTML="Error";		
