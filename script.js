@@ -1,5 +1,5 @@
 parameter={};
-baseref=location.protocol+"//"+location.host+"/api";
+baseref=location.protocol+"//"+location.host+"/api/search";
 
 function init(){
 	update_parameter();
