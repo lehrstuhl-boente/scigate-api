@@ -298,7 +298,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 			
 		if sdata['getJSON']:
 			print("Schreibe JSON")
-			with open(dir+"/hitlist.json", 'w') as f:
+			with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.json", 'w') as f:
 				f.write(json.dumps(hitlist))
 			status['json']=MYFILEURL+verzeichnisname+"/hitlist.json"		
 			status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
