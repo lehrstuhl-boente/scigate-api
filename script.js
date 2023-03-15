@@ -67,7 +67,7 @@ function run_check(statusLink){
 			document.getElementById("replytitle").innerHTML="Error";		
 		}
 		else{
-			document.getElementById("replytitle").innerHTML="Statu";		
+			document.getElementById("replytitle").innerHTML="Status";		
 		}
 		reply=JSON.stringify(data).replace(/,"/g,', "');
 		document.getElementById("reply").innerHTML=reply;
@@ -81,7 +81,7 @@ function run_check(statusLink){
 
 
 async function getData(url){
-  await sleep(2000);
+  await delay(2000);
   const response = await fetch(url, {});
   return response.json();
 }
