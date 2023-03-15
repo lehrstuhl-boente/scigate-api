@@ -121,6 +121,7 @@ def search(sdata):
 				if hits>maxReply:
 					new_thread = threading.Thread(target=getData,args=(query,hits,id,sdata))
 					new_thread.start()
+					reply["running"]=True
 				else:
 					print("Rufe nun getData mit '"+query+"' auf.")
 					reply.update(getData(query,hits,id,sdata))
@@ -425,7 +426,8 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 		saveStatus(status, id)
 
 	finally:
-		print("finally block of loadDocs for "+str(id))	
+		print("finally block of loadDocs for "+str(id))
+		reply['running']=False
 		return reply
 
 
@@ -457,13 +459,14 @@ def docs(sdata):
 			os.mkdir(dir)
 
 			if zahl>MAXREPLY:
-				reply["warning"]="Documents will be fetched asynchronosly. Synchronous requests are limited to "+str(MAXREPLY)+" hits"
 				new_thread = threading.Thread(target=loadDocs,args=(hitlist,id,sdata,verzeichnisname))
 				new_thread.start()
+				reply["running"]=True
 				
 			else:
 				print("Rufe nun getData mit '"+query+"' auf.")
 				reply.update(loadDocs(hitlist,id,sdata,verzeichnisname))
+
 		else:
 			result['errormodule']="docs"
 			reply['status']='error'
