@@ -191,7 +191,7 @@ def processOutputSetting(sdata,p):
 	
 def getData(query,hits,id,sdata):
 	print('Start getData for '+str(id))
-	status={ 'start': datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(), 'hits': hits, 'fetched': 0, 'requeststatus': 'running', 'job': 'reading hitlist'}
+	status={ 'hits': hits, 'fetched': 0, 'requeststatus': 'running', 'job': 'reading hitlist'}
 	reply={}
 	reply['status']='ok'
 	start=0
@@ -242,14 +242,14 @@ def getData(query,hits,id,sdata):
 def loadDocs(hitlist,id,sdata,verzeichnisname):
 	print('Start loadDocs for '+str(id))
 	hits=len(hitlist)
-	status={ 'start': datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(), 'last': datetime.datetime.fromtimestamp(time.time()).isoformat(), 'hits': hits, 'fetched': 0, 'requeststatus': 'running', 'job': 'reading documents'}
 	reply={}
 	reply['status']='ok'
-	start=0
 
-	saveStatus(status, id)
 	try:
 		if sdata['getDocs']:
+			status={ 'hits': hits, 'fetched': 0, 'requeststatus': 'running', 'job': 'reading documents'}
+			saveStatus(status, id)
+			start=0
 			for idx in range(len(hitlist)):
 				t=hitlist[idx]
 				if 'url' in t:
@@ -307,6 +307,8 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 			
 		if sdata['getJSON']:
 			print("Schreibe JSON")
+			status={ 'hits': hits, 'fetched': hits, 'requeststatus': 'running', 'job': 'creating JSON'}
+			saveStatus(status, id)
 			with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.json", 'w') as f:
 				f.write(json.dumps(hitlist))
 			status['json']=MYFILEURL+verzeichnisname+"/hitlist.json"		
@@ -347,6 +349,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 			
 			if sdata['getCSV']:
 				print("Schreibe CSV")
+				status={ 'hits': hits, 'fetched': hits, 'requeststatus': 'running', 'job': 'creating CSV'}
 				with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.csv", 'w') as f:
 					write = csv.writer(f)
 					write.writerow(spaltenliste)
@@ -372,6 +375,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 
 			if sdata['getHTML']:
 				print("Schreibe HTML")
+				status={ 'hits': hits, 'fetched': hits, 'requeststatus': 'running', 'job': 'creating CSV'}
 				with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.html", 'w') as f:
 					f.write(HTMLSTART)
 					f.write("<table class='styled-table'><thead><tr><th>")
@@ -408,6 +412,8 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 		saveStatus(status, id)
 		
 		if sdata['getZIP']:
+			status['job']="creating ZIP"
+			saveStatus(status, id)
 			print("Schreibe ZIP")
 			status['zip']=MYFILEURL+verzeichnisname+"/"+ZIPNAME
 			saveStatus(status, id)
@@ -422,6 +428,8 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 							print("Zippe Datei "+filename+" in "+folderName)
 							zipObj.write(filePath, os.path.basename(filePath))
 			reply['zip']=MYFILEURL+verzeichnisname+"/"+ZIPNAME
+		status['job']=""
+		saveStatus(status, id)
 				
 	except Exception as ex:
 		printException(ex,"loadDocs "+str(id))
@@ -508,6 +516,7 @@ def printException(ex, name):
 
 def saveStatus(status,id):
 	status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
+	status['start']=datetime.datetime.fromtimestamp(id/100000000000.0).isoformat()
 	path=PARENTDIR+"/"+PREDIR+str(id)+"/status.json"
 	with open(path, "w") as outfile:
 		print("Schreibe ",status)
