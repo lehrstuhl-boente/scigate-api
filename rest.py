@@ -79,6 +79,9 @@ class MyServer(BaseHTTPRequestHandler):
 			reply=api.search(sdata)
 		elif command=='/api/status':
 			reply=api.status(sdata)
+		elif command=='/api/ui':
+			sdata['ui']=True
+			reply=api.search(sdata)			
 		else:
 			reply['status']='error'
 			reply['error']="Unknown command: "+command

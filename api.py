@@ -142,49 +142,49 @@ def search(sdata):
 def processOutputSetting(sdata,p):
 	if 'collection' in sdata:
 		collection=sdata['collection']
-		if collection in ['entscheidsuche','boris','zora','swisscovery']:
+	else:
+		collection='entscheidsuche'
+		
+	if collection in ['entscheidsuche','boris','zora','swisscovery']:
+		#setDefaults
+		if not 'getZIP' in sdata:
+			sdata['getZIP']=True
+		else:
+			p['checked_zip']='checked'
+		if not 'getDocs' in sdata:
+			sdata['getDocs']=False
+		else:
+			p['checked_docs']='checked'
+		if not 'getCSV' in sdata:
+			sdata['getCSV']=False
+		else:
+			p['checked_csv']='checked'
+		if 'getNiceHTML' in sdata:
+			sdata['getNiceHTML']=True
+			p['checked_nicehtml']='checked'
+		if not 'getHTML' in sdata:
+			sdata['getHTML']=False
+		else:
+			p['checked_html']='checked'
+		if not 'getJSON' in sdata:
+			sdata['getJSON']=False
+		else:
+			p['checked_json']='checked'
+		if not 'ui' in sdata:
+			sdata['ui']=True
+		if sdata['getDocs'] and collection != 'entscheidsuche':
+			return "getDocs only available for entscheidsuche collection"
+		if not (sdata['getCSV'] or sdata['getHTML'] or sdata['getJSON'] or sdata['getDocs'] or sdata['ui']):
+			return "no output format selected, select at least one of getCSV, getHTML, getNiceHTML, getJSON, getDocs or set ui"
 
-			#setDefaults
-			if not 'getZIP' in sdata:
-				sdata['getZIP']=True
-			else:
-				p['checked_zip']='checked'
-			if not 'getDocs' in sdata:
-				sdata['getDocs']=False
-			else:
-				p['checked_docs']='checked'
-			if not 'getCSV' in sdata:
-				sdata['getCSV']=False
-			else:
-				p['checked_csv']='checked'
-			if 'getNiceHTML' in sdata:
-				sdata['getNiceHTML']=True
-				p['checked_nicehtml']='checked'
-			if not 'getHTML' in sdata:
-				sdata['getHTML']=False
-			else:
-				p['checked_html']='checked'
-			if not 'getJSON' in sdata:
-				sdata['getJSON']=False
-			else:
-				p['checked_json']='checked'
-			if not 'ui' in sdata:
-				sdata['ui']=True
-			if sdata['getDocs'] and collection != 'entscheidsuche':
-				return "getDocs only available for entscheidsuche collection"
-			if not (sdata['getCSV'] or sdata['getHTML'] or sdata['getJSON'] or sdata['getDocs'] or sdata['ui']):
-				return "no output format selected, select at least one of getCSV, getHTML, getNiceHTML, getJSON, getDocs or set ui"
-
-			#always ZIP when retrieving docs
-			if 'getDocs' in sdata and sdata['getDocs']:
-				sdata['getZIP']=True
-			if 'getZIP' in sdata:
-				p['checked_zip']='checked'
+		#always ZIP when retrieving docs
+		if 'getDocs' in sdata and sdata['getDocs']:
+			sdata['getZIP']=True
+		if 'getZIP' in sdata:
+			p['checked_zip']='checked'
 			
 		else:
 			return "Collection '"+collection+"' unknown"
-	else:
-		return "no collection set"
 		
 	return ""
 	
