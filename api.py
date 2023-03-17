@@ -68,7 +68,10 @@ def search(sdata):
 	id=millisec = int(time.time() * 100000000000)+random.randint(0,100000000)
 
 	try:
-		query=sdata['query']
+		if 'query' in sdata:
+			query=sdata['query']
+		else:
+			query=""
 		p['query']=query
 		maxHits=100
 		if 'maxHits' in sdata:
