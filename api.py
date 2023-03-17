@@ -140,10 +140,10 @@ def search(sdata):
 		return reply
 	
 def processOutputSetting(sdata,p):
-	if 'collection' in sdata:
-		collection=sdata['collection']
-	else:
-		collection='entscheidsuche'
+	if not 'collection' in sdata:
+		sdata['collection']='entscheidsuche'
+
+	collection=sdata['collection']
 		
 	if collection in ['entscheidsuche','boris','zora','swisscovery']:
 		#setDefaults
