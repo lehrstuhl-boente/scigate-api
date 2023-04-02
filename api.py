@@ -11,8 +11,8 @@ import traceback
 import threading
 import zipfile
 
-APIURL="http://v2202109132150164038.luckysrv.de:8080/"
-MYAPIURL="http://v2202109132150164038.luckysrv.de:5001/api/"
+APIURL="http://v2202109132150164038.luckysrv.de/stubs/"
+MYAPIURL="http://v2202109132150164038.luckysrv.de/api/"
 MYFILEURL="http://v2202109132150164038.luckysrv.de/apidata/"
 CHUNK=100
 PARENTDIR="/home/jorn/scigateapi/data"
