@@ -13,7 +13,7 @@ externalDocs:
   description: Description will be available soon
   url: https://scigate.ch
 servers:
-  - url: http://v2202109132150164038.luckysrv.de:5001/api
+  - url: http://v2202109132150164038.luckysrv.de/api
 tags:
   - name: search request
     description: Query a database
