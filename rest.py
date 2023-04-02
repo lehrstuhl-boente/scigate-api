@@ -36,7 +36,7 @@ class MyServer(BaseHTTPRequestHandler):
 			api.printException(ex,"do_Get")
 			self.do_Error('Wrong command: '+self.path+'. Use JSON-Syntax with double quotes.')
 		else:
-			if command[:5]=="/api/":
+			if command in ['/search','/status','/ui']:
 				self.do_Common(command,sdata)
 			else:
 				print("unknown command "+ command)
@@ -76,11 +76,11 @@ class MyServer(BaseHTTPRequestHandler):
 		reply={}
 		reply['status']='ok'
 		reply['command']=command
-		if command=='/api/search':
+		if command=='/search':
 			reply=api.search(sdata)
-		elif command=='/api/status':
+		elif command=='/status':
 			reply=api.status(sdata)
-		elif command=='/api/ui':
+		elif command=='/ui':
 			sdata['ui']=True
 			reply=api.search(sdata)			
 		else:
