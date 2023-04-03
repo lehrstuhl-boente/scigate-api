@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Scigate API
   description: This is an API to download search results (hitlists and documents) from different data sources
-  termsOfService: https://scigate.ch
+  termsOfService: http://scigate.ch
   contact:
     email: joern@erbguth.net
   license:
