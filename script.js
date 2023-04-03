@@ -81,7 +81,7 @@ function run_check(statusLink){
 			run_check(statusLink);
 		}
 		else{
-			var links="STATUS: <a target='_BLANK' href='"+statusLink+"'>"+statusLink+"</a><br>";
+			var links="";
 			if ("json" in data) links+="JSON: <a target='_BLANK' href='"+data['json']+"'>"+data['json']+"</a><br>";
 			if ("csv" in data) links+="CSV: <a target='_BLANK' href='"+data['csv']+"'>"+data['csv']+"</a><br>";
 			if ("html" in data) links+="HTML: <a target='_BLANK' href='"+data['html']+"'>"+data['html']+"</a><br>";
