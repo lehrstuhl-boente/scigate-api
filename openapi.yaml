@@ -128,7 +128,7 @@ components:
           default: false
         ui:
           type: boolean
-          default: true
+          default: false
         getZIP:
           type: boolean
           default: true
@@ -149,7 +149,7 @@ components:
         query:
           type: string
           format: json
-          example: xyz
+          example: Pfändungsbeschluss
         maxHits:
           type: integer
           format: int32
@@ -158,8 +158,8 @@ components:
         maxReply:
           type: integer
           format: int32
-          example: 100
-          default: 100
+          example: 50
+          default: 50
         getDocs:
           type: boolean
           default: false
@@ -177,7 +177,7 @@ components:
           default: false
         ui:
           type: boolean
-          default: true
+          default: false
         getZIP:
           type: boolean
           default: true
@@ -193,29 +193,36 @@ components:
     result:
       type: object
       properties:
-        collection:
-          type: string
-          example: entscheidsuche
-          enum:
-            - entscheidsuche
-            - swisscovery
-            - zora
-            - boris
-        hitlist:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              description1:
-                type: string
-              description2:
-                type: string
-              url:
-                type: string
+        status:
+            type: string
+            enum:
+              - ok
+              - error
+        hits:
+            type: int32
+        fetched:
+            type: int32
+        requeststatus:
+            type: string
+            enum:
+              - done
+              - running
+              - error
+        job:
+            type: string
+        last:
+            type: string
+        start:
+            type: string
+        json:
+            type: string
+        erasure:
+            type: string
         zip:
-          type: string
-          format: byte
-        request-id:
-          type: string
+            type: string
+        html:
+            type: string
+        nicehtml:
+            type: string
+            
+        
