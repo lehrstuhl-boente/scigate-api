@@ -74,6 +74,7 @@ function run_check(statusLink){
 			document.getElementById("replytitle").innerHTML=''+data['job']+' '+percent+'%<div id="myProgress" style="width: 100%; background-color: #ddd;"><div id="myBar" style="width: '+percent+'%; height: 20px; background-color: #04AA6D; text-align: center;"></div></div>';
 		}
 		reply=JSON.stringify(data).replace(/,"/g,', "');
+		reply+="<br>STATUS: <a target='_BLANK' href='"+statusLink+"'>"+statusLink+"</a>";
 		document.getElementById("reply").innerHTML=reply;
 		if(data['requeststatus']=="running"){
 			statuslink=data['check'];
