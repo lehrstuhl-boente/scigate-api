@@ -202,6 +202,12 @@ components:
             type: int32
         fetched:
             type: int32
+        maxHits:
+            type: int32
+        token:
+            type: int32
+        id:
+            type: int32
         requeststatus:
             type: string
             enum:
@@ -224,5 +230,9 @@ components:
             type: string
         nicehtml:
             type: string
+        check:
+            type: string
+        hitsTruncated:
+            type: boolean
             
         
