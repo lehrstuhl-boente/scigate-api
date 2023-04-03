@@ -119,4 +119,4 @@ async function postData(url = "", data = {}) {
 }
 
 init();
-run_query();
+if (document.getElementById('searchterm').value) run_query();
