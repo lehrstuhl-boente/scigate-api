@@ -118,3 +118,4 @@ async function postData(url = "", data = {}) {
 }
 
 init();
+run_query();
