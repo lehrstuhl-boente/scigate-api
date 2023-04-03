@@ -17,7 +17,7 @@ MYFILEURL="http://v2202109132150164038.luckysrv.de/apidata/"
 CHUNK=100
 PARENTDIR="/home/jorn/scigateapi/data"
 PREDIR="request"
-MAXREPLY=200
+MAXREPLY=100
 BASISURL="https://entscheidsuche.ch/docs"
 ZIPNAME="result.zip"
 TEMPLATEPATH="/home/jorn/scigateapi/template.html"
@@ -73,7 +73,7 @@ def search(sdata):
 		else:
 			query=""
 		p['query']=query
-		maxHits=100
+		maxHits=200
 		if 'maxHits' in sdata:
 			maxHits=sdata['maxHits']
 			if isinstance(maxHits,str):
