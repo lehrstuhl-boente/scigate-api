@@ -114,8 +114,25 @@ components:
           type: array
           items:
             type: string
-        output:
-          $ref: '#/components/schemas/output'
+        getCSV:
+          type: boolean
+          default: false
+        getHTML:
+          type: boolean
+          default: false
+        getJSON:
+          type: boolean
+          default: true
+        getNiceHTML:
+          type: boolean
+          default: false
+        ui:
+          type: boolean
+          default: true
+        getZIP:
+          type: boolean
+          default: true
+
 
   
     search:
@@ -146,12 +163,6 @@ components:
         getDocs:
           type: boolean
           default: false
-        output:
-          $ref: '#/components/schemas/output'
-
-    output:
-      type: object
-      properties:
         getCSV:
           type: boolean
           default: false
