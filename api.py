@@ -153,7 +153,7 @@ def processOutputSetting(sdata,p):
 			p['checked_zip']='checked'
 		if not 'getDocs' in sdata:
 			sdata['getDocs']=False
-		else if sdata['getDocs']:
+		elif sdata['getDocs']:
 			p['checked_docs']='checked'
 		if not 'getCSV' in sdata:
 			sdata['getCSV']=False
