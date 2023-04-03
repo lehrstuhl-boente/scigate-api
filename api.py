@@ -153,7 +153,7 @@ def processOutputSetting(sdata,p):
 			p['checked_zip']='checked'
 		if not 'getDocs' in sdata:
 			sdata['getDocs']=False
-		else:
+		else if sdata['getDocs']:
 			p['checked_docs']='checked'
 		if not 'getCSV' in sdata:
 			sdata['getCSV']=False
@@ -178,9 +178,9 @@ def processOutputSetting(sdata,p):
 			return "no output format selected, select at least one of getCSV, getHTML, getNiceHTML, getJSON, getDocs or set ui"
 
 		#always ZIP when retrieving docs
-		if 'getDocs' in sdata and sdata['getDocs']:
+		if sdata['getDocs']:
 			sdata['getZIP']=True
-		if 'getZIP' in sdata:
+		if sdata['getZIP']:
 			p['checked_zip']='checked'
 			
 		else:
