@@ -79,7 +79,7 @@ class MyServer(BaseHTTPRequestHandler):
 		if command=='/search':
 			print("-A-")
 			reply=api.search(sdata)
-			print("-B-")
+			print("-B-", reply)
 		elif command=='/status':
 			reply=api.status(sdata)
 		elif command=='/ui':
