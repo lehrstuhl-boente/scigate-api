@@ -215,6 +215,7 @@ def getData(query,hits,id,sdata):
 			if start+count>hits:
 				count=hits-start
 			data={'engine': sdata['collection'], 'type': 'hitlist', 'term': query, 'filter': sdata['filter'], 'start':start, 'count': count}
+			print(data)
 			
 			r=requests.post(url=APIURL,json=data)
 			ergebnis=r.text
