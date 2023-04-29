@@ -77,12 +77,16 @@ class MyServer(BaseHTTPRequestHandler):
 		reply['status']='ok'
 		reply['command']=command
 		if command=='/search':
+			print("-A-")
 			reply=api.search(sdata)
+			print("-B-")
 		elif command=='/status':
 			reply=api.status(sdata)
 		elif command=='/ui':
 			sdata['ui']=True
+			print("-C-")
 			reply=api.search(sdata)			
+			print("-D-")
 		else:
 			reply['status']='error'
 			reply['error']="Unknown command: "+command
