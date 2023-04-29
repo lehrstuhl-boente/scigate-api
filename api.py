@@ -78,7 +78,7 @@ def search(sdata):
 		if 'filter' not in sdata:
 			sdata['filter']=""
 		filter=sdata['filter']
-		p['filter']=filter.replace('@','"')
+		p['filter']=filter.replace('@','&quot;')
 		maxHits=200
 		if 'maxHits' in sdata:
 			maxHits=sdata['maxHits']
