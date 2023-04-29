@@ -121,7 +121,8 @@ def search(sdata):
 				reply['hitsTruncated']=True
 				print("Reply:", reply)
 			else:
-				p['hits']=str(hits)			
+				p['hits']=str(hits)
+			print("-1-")	
 			if sdata['ui']:
 				with open(TEMPLATEPATH) as f:
 					htmlstring = f.readlines()
@@ -135,8 +136,10 @@ def search(sdata):
 				else:
 					print("Rufe nun getData mit '"+query+"' auf.")
 					reply.update(getData(query,hits,id,sdata))
+			print("-2-")	
 		else:
 			result['errormodule']="search: return from search-command"
+			print("-3-")	
 			return result
 	except Exception as ex:
 		printException(ex,"search "+str(id))
@@ -144,6 +147,7 @@ def search(sdata):
 		reply['error']="exception caught"	
 		reply['status']='error'
 	finally:
+		print("-4-")	
 		return reply
 	
 def processOutputSetting(sdata,p):
