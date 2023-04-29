@@ -23,7 +23,7 @@ BASISURL="https://entscheidsuche.ch/docs"
 ZIPNAME="result.zip"
 TEMPLATEPATH="/home/jorn/scigateapi/template.html"
 
-TEMPLATEKEYS=["query","hits","truncated","checked_entscheidsuche","checked_swisscovery","checked_zora","checked_boris","checked_csv","checked_json","checked_html","checked_nicehtml","checked_docs","checked_zip","maxhits","maxreply","filter","date"]
+TEMPLATEKEYS=["query","hits","truncated","checked_entscheidsuche","checked_swisscovery","checked_zora","checked_boris","checked_csv","checked_json","checked_html","checked_nicehtml","checked_docs","checked_zip","maxhits","maxreply","filter"]
 
 HTMLSTART="""
 <!DOCTYPE html>
@@ -140,7 +140,7 @@ def search(sdata):
 			print("-2-")	
 		else:
 			result['errormodule']="search: return from search-command"
-			print("-3-")	
+			print("-3-", result)	
 			return result
 	except Exception as ex:
 		printException(ex,"search "+str(id))
