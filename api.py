@@ -109,7 +109,7 @@ def search(sdata):
 		result=json.loads(ergebnis)
 		if result['status']=='ok':
 			hits=result['hits']
-			print(hits)
+			print("Hits in search:", hits)
 			reply['hits']=hits
 			reply['maxHits']=maxHits
 			reply['token']=str(id)
@@ -119,7 +119,7 @@ def search(sdata):
 				p['hits']=str(maxHits)+' of '+str(hits)
 				hits=maxHits
 				reply['hitsTruncated']=True
-				print(reply)
+				print("Reply:", reply)
 			else:
 				p['hits']=str(hits)			
 			if sdata['ui']:
