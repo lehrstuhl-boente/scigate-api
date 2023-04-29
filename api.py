@@ -408,7 +408,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 			
 
 		status['requeststatus']='done'
-		status['erasure']=datetime.datetime.fromtimestamp(time.time()+604800).isoformat()
+		status['erasure']=datetime.datetime.fromtimestamp(time.time()+604800).isoformat(timespec="minutes", sep=" ")
 		saveStatus(status, id)
 		
 		if sdata['getZIP']:
@@ -515,8 +515,8 @@ def printException(ex, name):
 
 
 def saveStatus(status,id):
-	status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat()
-	status['start']=datetime.datetime.fromtimestamp(id/100000000000.0).isoformat()
+	status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat(timespec="seconds", sep=" ")
+	status['start']=datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(timespec="seconds", sep=" ")
 	path=PARENTDIR+"/"+PREDIR+str(id)+"/status.json"
 	with open(path, "w") as outfile:
 		print("Schreibe ",status)
