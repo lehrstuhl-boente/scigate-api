@@ -10,6 +10,7 @@ import sys
 import traceback
 import threading
 import zipfile
+import re
 
 APIURL="http://v2202109132150164038.luckysrv.de/stubs/"
 MYAPIURL="http://v2202109132150164038.luckysrv.de/api/"
@@ -77,7 +78,7 @@ def search(sdata):
 		if 'filter' not in sdata:
 			sdata['filter']=""
 		filter=sdata['filter']
-		p['filter']=filter
+		p['filter']=filter.replace('@','"')
 		maxHits=200
 		if 'maxHits' in sdata:
 			maxHits=sdata['maxHits']
