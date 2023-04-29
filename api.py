@@ -137,7 +137,7 @@ def search(sdata):
 				else:
 					print("Rufe nun getData mit '"+query+"' auf.")
 					reply.update(getData(query,hits,id,sdata))
-			print("-2-")	
+			return reply
 		else:
 			result['errormodule']="search: return from search-command"
 			print("-3-", result)	
@@ -147,8 +147,6 @@ def search(sdata):
 		reply['errormodule']="search"
 		reply['error']="exception caught"	
 		reply['status']='error'
-	finally:
-		print("-4-")	
 		return reply
 	
 def processOutputSetting(sdata,p):
@@ -240,6 +238,7 @@ def getData(query,hits,id,sdata):
 			saveStatus(status, id)
 
 		reply.update(loadDocs(hitlist,id,sdata,verzeichnisname))
+		return reply
 				
 	except Exception as ex:
 		printException(ex,"getData "+str(id))
@@ -248,9 +247,6 @@ def getData(query,hits,id,sdata):
 		reply['status']='error'
 		status['status']='error'
 		saveStatus(status, id)
-
-	finally:
-		print("finally block of getData for "+str(id))	
 		return reply
 
 def loadDocs(hitlist,id,sdata,verzeichnisname):
@@ -444,6 +440,8 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 			reply['zip']=MYFILEURL+verzeichnisname+"/"+ZIPNAME
 		status['job']=""
 		saveStatus(status, id)
+		reply['requeststatus']='done'
+		return reply
 				
 	except Exception as ex:
 		printException(ex,"loadDocs "+str(id))
@@ -452,10 +450,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 		reply['status']='error'
 		status['status']='error'
 		saveStatus(status, id)
-
-	finally:
-		print("finally block of loadDocs for "+str(id))
-		reply['requeststatus']='done'
+		reply['requeststatus']='error'
 		return reply
 
 
@@ -500,12 +495,12 @@ def docs(sdata):
 			reply['status']='error'
 			reply['error']='Missing document list'			
 			return result	
+		return reply
 	except Exception as ex:
 		printException(ex,"docs "+str(id))
 		reply['errormodule']="docs"
 		reply['error']="exception caught"	
 		reply['status']='error'
-	finally:
 		return reply
 
 
