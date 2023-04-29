@@ -103,13 +103,13 @@ def search(sdata):
 		p['checked_'+sdata['collection']]='checked'
 
 		result={}
-		print(filter)
 		data={'engine': sdata['collection'], 'type': 'search', 'term': query, 'filter': filter}
 		r=requests.post(url=APIURL,json=data)
 		ergebnis=r.text
 		result=json.loads(ergebnis)
 		if result['status']=='ok':
 			hits=result['hits']
+			print(hits)
 			reply['hits']=hits
 			reply['maxHits']=maxHits
 			reply['token']=str(id)
