@@ -61,6 +61,7 @@ HTMLSTART="""
   <body>"""
 
 def search(sdata):
+	print("search:",sdata)
 	p={ a: "" for a in TEMPLATEKEYS}
 	reply={}
 	reply['status']='ok'
@@ -73,11 +74,10 @@ def search(sdata):
 		else:
 			query=""
 		p['query']=query
-		if 'filter' in sdata:
-			filter=sdata['filter']
-		else:
-			filter=""
+		if 'filter' not in sdata:
 			sdata['filter']=""
+		filter=sdata['filter']
+		p['filter']=filter
 		maxHits=200
 		if 'maxHits' in sdata:
 			maxHits=sdata['maxHits']
@@ -128,6 +128,7 @@ def search(sdata):
 				reply['htmloutput']=("".join(htmlstring)).format(**p)
 			else:			
 				if hits>maxReply:
+					print("Rufe nun getData in neuem Thread mit '"+query+"' auf.")
 					new_thread = threading.Thread(target=getData,args=(query,hits,id,sdata))
 					new_thread.start()
 					reply["requeststatus"]="running"
