@@ -77,6 +77,7 @@ def search(sdata):
 			filter=sdata['filter']
 		else:
 			filter=""
+			sdata['filter']=""
 		maxHits=200
 		if 'maxHits' in sdata:
 			maxHits=sdata['maxHits']
@@ -212,7 +213,7 @@ def getData(query,hits,id,sdata):
 			count=CHUNK
 			if start+count>hits:
 				count=hits-start
-			data={'engine': sdata['collection'], 'type': 'hitlist', 'term': query, 'start':start, 'count': count}
+			data={'engine': sdata['collection'], 'type': 'hitlist', 'term': query, 'filter': filter, 'start':start, 'count': count}
 			r=requests.post(url=APIURL,json=data)
 			ergebnis=r.text
 			#print("Ergebnis von 'hitlist': "+ergebnis)
