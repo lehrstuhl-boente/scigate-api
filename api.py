@@ -73,6 +73,10 @@ def search(sdata):
 		else:
 			query=""
 		p['query']=query
+		if 'filter' in sdata:
+			filter=sdata['filter']
+		else:
+			filter=""
 		maxHits=200
 		if 'maxHits' in sdata:
 			maxHits=sdata['maxHits']
@@ -98,7 +102,7 @@ def search(sdata):
 		p['checked_'+sdata['collection']]='checked'
 
 		result={}
-		data={'engine': sdata['collection'], 'type': 'search', 'term': query}
+		data={'engine': sdata['collection'], 'type': 'search', 'term': query, 'filter': filter}
 		r=requests.post(url=APIURL,json=data)
 		ergebnis=r.text
 		result=json.loads(ergebnis)
