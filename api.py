@@ -23,7 +23,7 @@ BASISURL="https://entscheidsuche.ch/docs"
 ZIPNAME="result.zip"
 TEMPLATEPATH="/home/jorn/scigateapi/template.html"
 
-TEMPLATEKEYS=["query","hits","truncated","checked_entscheidsuche","checked_swisscovery","checked_zora","checked_boris","checked_csv","checked_json","checked_html","checked_nicehtml","checked_docs","checked_zip","maxhits","maxreply","filter"]
+TEMPLATEKEYS=["query","hits","truncated","checked_entscheidsuche","checked_swisscovery","checked_zora","checked_boris","checked_fedlex","checked_csv","checked_json","checked_html","checked_nicehtml","checked_docs","checked_zip","maxhits","maxreply","filter"]
 
 HTMLSTART="""
 <!DOCTYPE html>
@@ -123,7 +123,6 @@ def search(sdata):
 				print("Reply:", reply)
 			else:
 				p['hits']=str(hits)
-			print("-1-")	
 			if sdata['ui']:
 				with open(TEMPLATEPATH) as f:
 					htmlstring = f.readlines()
@@ -155,7 +154,7 @@ def processOutputSetting(sdata,p):
 
 	collection=sdata['collection']
 		
-	if collection in ['entscheidsuche','boris','zora','swisscovery']:
+	if collection in ['entscheidsuche','boris','zora','swisscovery','fedlex']:
 		#setDefaults
 		if not 'getZIP' in sdata:
 			sdata['getZIP']=True

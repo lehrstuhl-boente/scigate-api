@@ -36,7 +36,7 @@
                   <div class="grid grid-flow-row sm:grid-flow-col grid-cols-1 sm:grid-cols-2 sm:grid-rows-2 sm:gap-x-8 gap-y-1 sm:gap-y-2"">
                     <div class="relative flex justify-left">
                       <div class="h-5">
-                        <input id="entscheidsuche" oninput="update_parameter()"aria-describedby="entscheidsuche-description" {checked_entscheidsuche} value="entscheidsuche" type="radio" name="collection" class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
+                        <input id="entscheidsuche" oninput="update_parameter()" aria-describedby="entscheidsuche-description" {checked_entscheidsuche} value="entscheidsuche" type="radio" name="collection" class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
                       </div>
                       <div class="ml-2 sm:ml-3">
                         <label for="entscheidsuche" class="text-gray-700 text-sm font-medium uppercase">Entscheidsuche</label>
@@ -44,7 +44,7 @@
                     </div>
                     <div class="relative flex justify-left">
                       <div class="h-5">
-                        <input id="swisscovery" oninput="update_parameter()"aria-describedby="swisscovery-description" {checked_swisscovery} value="swisscovery" type="radio" name="collection" class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
+                        <input id="swisscovery" oninput="update_parameter()" aria-describedby="swisscovery-description" {checked_swisscovery} value="swisscovery" type="radio" name="collection" class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
                       </div>
                       <div class="ml-2 sm:ml-3">
                         <label for="swisscovery" class="text-gray-700 text-sm font-medium uppercase">Swisscovery</label>
@@ -52,7 +52,7 @@
                     </div>
                     <div class="relative flex justify-left">
                       <div class="h-5">
-                        <input id="zora" oninput="update_parameter()"aria-describedby="zora-description" {checked_zora} value="zora" type="radio" name="collection" class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
+                        <input id="zora" oninput="update_parameter()" aria-describedby="zora-description" {checked_zora} value="zora" type="radio" name="collection" class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
                       </div>
                       <div class="ml-2 sm:ml-3">
                         <label for="zora" class="text-gray-700 text-sm font-medium uppercase">Zora</label>
@@ -60,10 +60,18 @@
                     </div>
                     <div class="relative flex justify-left">
                       <div class="h-5">
-                        <input id="boris" oninput="update_parameter()"aria-describedby="boris-description" {checked_boris} value="boris" type="radio" name="collection" class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
+                        <input id="boris" oninput="update_parameter()" aria-describedby="boris-description" {checked_boris} value="boris" type="radio" name="collection" class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
                       </div>
                       <div class="ml-2 sm:ml-3">
                         <label for="boris" class="text-gray-700 text-sm font-medium uppercase">Boris</label>
+                      </div>
+                    </div>
+                    <div class="relative flex justify-left">
+                      <div class="h-5">
+                        <input id="fedlex" oninput="update_parameter()" aria-describedby="fedlex-description" {checked_fedlex} value="fedlex" type="radio" name="collection" class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
+                      </div>
+                      <div class="ml-2 sm:ml-3">
+                        <label for="boris" class="text-gray-700 text-sm font-medium uppercase">Fedlex</label>
                       </div>
                     </div>
                   </div>
@@ -75,7 +83,7 @@
                   <div class="grid grid-flow-row sm:grid-flow-col grid-cols-1 sm:grid-rows-2 sm:gap-x-8 gap-y-1 sm:gap-y-2">
                     <div class="relative flex justify-left">
                       <div class="h-5">
-                        <input id="filter" oninput="update_parameter()"aria-describedby="entscheidsuche-description" size="50" name="filter" type="text" value="{filter}" class="focus:ring-gray-200 sm:h-6 sm:w-10 text-gray-900 border-gray-300 checked:bg-gray-200">
+                        <input id="filter" oninput="update_parameter()" size="50" name="filter" type="text" value="{filter}" class="focus:ring-gray-200 sm:h-6 sm:w-10 text-gray-900 border-gray-300 checked:bg-gray-200">
                       </div>
                       <div class="ml-2 sm:ml-3">
                         <label for="maxHits" class="text-gray-700 text-sm font-medium">Filter canton, court, date</label>
@@ -90,7 +98,7 @@
                   <div class="grid grid-flow-row sm:grid-flow-col grid-cols-1 sm:grid-cols-2 sm:grid-rows-2 sm:gap-x-4 gap-y-1 sm:gap-y-2">
                     <div class="relative flex justify-left">
                       <div class="h-5">
-                        <input id="getCSV" oninput="update_parameter()"aria-describedby="swisscovery-description" name="swisscovery" type="checkbox" {checked_csv} class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
+                        <input id="getCSV" oninput="update_parameter()" name="getCSV" type="checkbox" {checked_csv} class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
                       </div>
                       <div class="ml-2 sm:ml-3">
                         <label for="getCSV" class="text-gray-700 text-sm font-medium">get list as CSV (Excel)</label>
@@ -98,7 +106,7 @@
                     </div>
                     <div class="relative flex justify-left">
                       <div class="h-5">
-                        <input id="getJSON" oninput="update_parameter()"aria-describedby="zora-description" name="getJSON" type="checkbox" {checked_json} class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
+                        <input id="getJSON" oninput="update_parameter()" name="getJSON" type="checkbox" {checked_json} class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
                       </div>
                       <div class="ml-2 sm:ml-3">
                         <label for="getJSON" class="text-gray-700 text-sm font-medium">get list as JSON</label>
@@ -106,7 +114,7 @@
                     </div>
                     <div class="relative flex justify-left">
                       <div class="h-5">
-                        <input id="getHTML" oninput="update_parameter()"aria-describedby="zora-description" name="getHTML" type="checkbox" {checked_html} class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
+                        <input id="getHTML" oninput="update_parameter()" name="getHTML" type="checkbox" {checked_html} class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
                       </div>
                       <div class="ml-2 sm:ml-3">
                         <label for="getHTML" class="text-gray-700 text-sm font-medium">get list as HTML</label>
@@ -114,7 +122,7 @@
                     </div>
                     <div class="relative flex justify-left">
                       <div class="h-5">
-                        <input id="getNiceHTML" oninput="update_parameter()"aria-describedby="boris-description" name="getNiceHTML" type="checkbox" {checked_nicehtml} class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
+                        <input id="getNiceHTML" oninput="update_parameter()" name="getNiceHTML" type="checkbox" {checked_nicehtml} class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
                       </div>
                       <div class="ml-2 sm:ml-3">
                         <label for="getNiceHTML" class="text-gray-700 text-sm font-medium">get list as compact HTML</label>
@@ -129,7 +137,7 @@
                   <div class="grid grid-flow-row sm:grid-flow-col grid-cols-1 sm:grid-rows-2 sm:gap-y-1 sm:gap-y-2">
                     <div class="relative flex justify-left">
                       <div class="h-5">
-                        <input id="getDocs" oninput="update_parameter()"aria-describedby="entscheidsuche-description" name="getDocs" type="checkbox" {checked_docs} class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
+                        <input id="getDocs" oninput="update_parameter()" name="getDocs" type="checkbox" {checked_docs} class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
                       </div>
                       <div class="ml-2 sm:ml-3">
                         <label for="getDocs" class="text-gray-700 text-sm font-medium">get Documents (only entscheidsuche)</label>
@@ -137,7 +145,7 @@
                     </div>
                     <div class="relative flex justify-left">
                       <div class="h-5">
-                        <input id="getZIP" oninput="update_parameter()"aria-describedby="boris-description" name="getZIP" type="checkbox" {checked_zip} class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
+                        <input id="getZIP" oninput="update_parameter()" name="getZIP" type="checkbox" {checked_zip} class="focus:ring-gray-200 sm:h-6 sm:w-6 text-gray-900 border-gray-300 checked:bg-gray-200">
                       </div>
                       <div class="ml-2 sm:ml-3">
                         <label for="getZIP" class="text-gray-700 text-sm font-medium">create a zip-file with the results</label>
@@ -152,7 +160,7 @@
                   <div class="grid grid-flow-row sm:grid-flow-col grid-cols-1 sm:grid-rows-2 sm:gap-x-8 gap-y-1 sm:gap-y-2">
                     <div class="relative flex justify-left">
                       <div class="h-5">
-                        <input id="maxHits" oninput="update_parameter()"aria-describedby="entscheidsuche-description" name="maxHits" type="number" value="{maxhits}" min="1" max="1000000" class="focus:ring-gray-200 sm:h-6 sm:w-10 text-gray-900 border-gray-300 checked:bg-gray-200">
+                        <input id="maxHits" oninput="update_parameter()" name="maxHits" type="number" value="{maxhits}" min="1" max="1000000" class="focus:ring-gray-200 sm:h-6 sm:w-10 text-gray-900 border-gray-300 checked:bg-gray-200">
                       </div>
                       <div class="ml-2 sm:ml-3">
                         <label for="maxHits" class="text-gray-700 text-sm font-medium">maximum number of hits retrieved</label>
@@ -160,7 +168,7 @@
                     </div>
                     <div class="relative flex justify-left">
                       <div class="h-5">
-                        <input id="maxReply" oninput="update_parameter()"aria-describedby="boris-description" name="maxReply" type="number" value="{maxreply}" min="1" max="1000000" class="focus:ring-gray-200 sm:h-6 sm:w-10 text-gray-900 border-gray-300 checked:bg-gray-200">
+                        <input id="maxReply" oninput="update_parameter()" name="maxReply" type="number" value="{maxreply}" min="1" max="1000000" class="focus:ring-gray-200 sm:h-6 sm:w-10 text-gray-900 border-gray-300 checked:bg-gray-200">
                       </div>
                       <div class="ml-2 sm:ml-3">
                         <label for="maxReply" class="text-gray-700 text-sm font-medium">maximum number of hits retrieved synchronously</label>
