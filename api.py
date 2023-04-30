@@ -397,19 +397,21 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 						s=0
 						while s<spaltenzahl:
 							spaltenname=spaltenliste[s]
-							if spaltenname in h:
-								spaltenwert=h[spaltenname]
-								if type(spaltenwert)==list:
-									f.write("<td>"+"</td><td>".join(spaltenwert)+"</td>")
-									s+=len(spaltenwert)
-								else:
-									if spaltenwert[:4]=="http":
-										spaltenwert="<a href='"+spaltenwert+"'>"+spaltenwert+"</a>"
-									f.write("<td>"+spaltenwert+"</td>")
-									s+=1
+							if spaltenname =='sort':
 							else:
-								f.write("<td></td>")
-								s+=1
+								if spaltenname in h:
+									spaltenwert=h[spaltenname]
+									if type(spaltenwert)==list:
+										f.write("<td>"+"</td><td>".join(spaltenwert)+"</td>")
+										s+=len(spaltenwert)
+									else:
+										if spaltenwert[:4]=="http":
+											spaltenwert="<a href='"+spaltenwert+"'>"+spaltenwert+"</a>"
+										f.write("<td>"+spaltenwert+"</td>")
+										s+=1
+								else:
+									f.write("<td></td>")
+									s+=1
 						f.write("</tr>")
 					f.write("</tbody></table></body></html>")
 					status['html']=MYFILEURL+verzeichnisname+"/hitlist.html"
