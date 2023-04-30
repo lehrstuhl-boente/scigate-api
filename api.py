@@ -368,17 +368,18 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 						reihe=[]
 						while s<spaltenzahl:
 							spaltenname=spaltenliste[s]
-							if spaltenname in h:
-								spaltenwert=h[spaltenname]
-								if type(spaltenwert)==list:
-									reihe.extend(spaltenwert)
-									s+=len(spaltenwert)
+							if spaltenname !='sort':
+								if spaltenname in h:
+									spaltenwert=h[spaltenname]
+									if type(spaltenwert)==list:
+										reihe.extend(spaltenwert)
+										s+=len(spaltenwert)
+									else:
+										reihe.append(spaltenwert)
+										s+=1
 								else:
-									reihe.append(spaltenwert)
+									reihe.append("")
 									s+=1
-							else:
-								reihe.append("")
-								s+=1
 						write.writerow(reihe)
 				status['csv']=MYFILEURL+verzeichnisname+"/hitlist.csv"
 				reply['csv']=MYFILEURL+verzeichnisname+"/hitlist.csv"
@@ -397,8 +398,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 						s=0
 						while s<spaltenzahl:
 							spaltenname=spaltenliste[s]
-							if spaltenname =='sort':
-							else:
+							if spaltenname !='sort':
 								if spaltenname in h:
 									spaltenwert=h[spaltenname]
 									if type(spaltenwert)==list:
