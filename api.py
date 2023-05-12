@@ -289,7 +289,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 					t['HTML-URL']=stammurl+".html"	
 				if "PDF" in entscheidjson:
 					r=requests.get(url=stammurl+".pdf")
-					with open(stammpath+".html", "wb") as outfile:
+					with open(stammpath+".pdf", "wb") as outfile:
 						outfile.write(r.content)
 					t['PDF-File']=entscheidid+".pdf"
 					t['PDF-URL']=stammurl+".pdf"
