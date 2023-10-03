@@ -70,7 +70,7 @@ def search(sdata):
 	# add some random to the id so that guessing it becomes difficult
 	id=millisec = int(time.time() * 100000000000)+random.randint(0,100000000)
 	# Semaphores are needed to make sure that only complete status files are read
-	Semaphores[id]=threading/Semaphore(1)
+	Semaphores[id]=threading.Semaphore(1)
 
 	try:
 		if 'query' in sdata:
