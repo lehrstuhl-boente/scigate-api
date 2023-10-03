@@ -24,6 +24,7 @@ ZIPNAME="result.zip"
 TEMPLATEPATH="/home/jorn/scigateapi/template.html"
 
 TEMPLATEKEYS=["query","hits","truncated","checked_entscheidsuche","checked_swisscovery","checked_zora","checked_swisslexGreen","checked_repositorium","checked_boris","checked_fedlex","checked_csv","checked_json","checked_html","checked_nicehtml","checked_docs","checked_zip","maxhits","maxreply","filter"]
+Semaphores={}
 
 HTMLSTART="""
 <!DOCTYPE html>
@@ -68,6 +69,8 @@ def search(sdata):
 	reply['status']='ok'
 	# add some random to the id so that guessing it becomes difficult
 	id=millisec = int(time.time() * 100000000000)+random.randint(0,100000000)
+	# Semaphores are needed to make sure that only complete status files are read
+	Semaphores[id]=Semaphore(1)
 
 	try:
 		if 'query' in sdata:
@@ -461,6 +464,9 @@ def docs(sdata):
 	reply['status']='ok'
 	# add some random to the id so that guessing it becomes difficult
 	id=millisec = int(time.time() * 100000000000)+random.randint(0,100000000)
+	# Semaphores are needed to make sure that only complete status files are read
+	Semaphores[id]=Semaphore(1)
+
 
 	try:
 		sdata['getDocs']=True
@@ -529,9 +535,12 @@ def saveStatus(status,id):
 	status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat(timespec="seconds", sep=" ")
 	status['start']=datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(timespec="seconds", sep=" ")
 	path=PARENTDIR+"/"+PREDIR+str(id)+"/status.json"
+	Semaphores[id].acquire()
 	with open(path, "w") as outfile:
 		print("Schreibe ",status)
 		outfile.write(json.dumps(status))
+	Semaphores[id].release()
+	
 	
 	
 def status(sdata):
@@ -542,10 +551,13 @@ def status(sdata):
 			id=sdata['id']
 			path=PARENTDIR+"/"+PREDIR+str(id)+"/status.json"
 			if os.path.isfile(path):
+				# Script might be restarted so that Semaphore is lost and no writing is taking place anymore
+				if id in Semaphores: Semaphores[id].acquire()
 				f = open(path)
 				data=json.load(f)
 				reply.update(data)
 				reply['status']='ok'
+				if id in Semaphores : Semaphores[id].release()
 			else:
 				reply['error']='id '+str(id)+' not found'	
 		else:
