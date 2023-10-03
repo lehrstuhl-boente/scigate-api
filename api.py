@@ -535,10 +535,12 @@ def saveStatus(status,id):
 	status['last']=datetime.datetime.fromtimestamp(time.time()).isoformat(timespec="seconds", sep=" ")
 	status['start']=datetime.datetime.fromtimestamp(id/100000000000.0).isoformat(timespec="seconds", sep=" ")
 	path=PARENTDIR+"/"+PREDIR+str(id)+"/status.json"
+	print("Semaphore acquire status write ",id)
 	Semaphores[id].acquire()
 	with open(path, "w") as outfile:
 		print("Schreibe ",status)
 		outfile.write(json.dumps(status))
+	print("Semaphore release status write ",id)
 	Semaphores[id].release()
 	
 	
@@ -552,11 +554,13 @@ def status(sdata):
 			path=PARENTDIR+"/"+PREDIR+str(id)+"/status.json"
 			if os.path.isfile(path):
 				# Script might be restarted so that Semaphore is lost and no writing is taking place anymore
+				print("Semaphore acquire status read ",id)
 				if id in Semaphores: Semaphores[id].acquire()
 				f = open(path)
 				data=json.load(f)
 				reply.update(data)
 				reply['status']='ok'
+				print("Semaphore release status read ",id)
 				if id in Semaphores : Semaphores[id].release()
 			else:
 				reply['error']='id '+str(id)+' not found'	
