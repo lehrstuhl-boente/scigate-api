@@ -542,7 +542,7 @@ def saveStatus(status,id):
 	with open(path, "w") as outfile:
 		print("Schreibe ",status)
 		outfile.write(json.dumps(status))
-	Status[id]=status.copy()
+	Status[id]=status.deepcopy()
 	# print("Semaphore release status write ",id)
 	# Semaphores[id].release()
 	
