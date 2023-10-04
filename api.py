@@ -11,6 +11,7 @@ import traceback
 import threading
 import zipfile
 import re
+import copy
 
 APIURL="http://v2202109132150164038.luckysrv.de/stubs/"
 MYAPIURL="http://v2202109132150164038.luckysrv.de/api/"
@@ -542,7 +543,7 @@ def saveStatus(status,id):
 	with open(path, "w") as outfile:
 		print("Schreibe ",status)
 		outfile.write(json.dumps(status))
-	Status[id]=status.deepcopy()
+	Status[id]=copy.deepcopy(status)
 	# print("Semaphore release status write ",id)
 	# Semaphores[id].release()
 	
