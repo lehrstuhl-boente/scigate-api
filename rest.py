@@ -25,31 +25,35 @@ class MyServer(BaseHTTPRequestHandler):
 		try:
 			commands=self.path.split("?",1)
 			print(commands)
-			if len(commands)<2:
-				sdata={}
-			else:
-				args=urllib.parse.unquote(commands[1])
-				print(args)
-				sdata=json.loads(args)
 			command=commands[0]
+			if command in ['/search','/status','/ui']:
+				if len(commands)<2:
+					sdata={}
+				else:
+					args=urllib.parse.unquote(commands[1])
+					print(args)
+					sdata=json.loads(args)
+			else:
+				self.do_Error('Wrong GET command: '+self.path)
 		except Exception as ex:
 			api.printException(ex,"do_Get")
 			self.do_Error('Wrong command: '+self.path+'. Use JSON-Syntax with double quotes.')
 		else:
-			if command in ['/search','/status','/ui']:
-				self.do_Common(command,sdata)
-			else:
-				print("unknown command "+ command)
+			self.do_Common(command,sdata)
 	
 	def do_POST(self):
 		try:
 			commands=self.path.split("?",1)
+			print(commands)
 			command=commands[0]
-			if "application/json" in self.headers.get("Content-type").lower():
-				data = self.rfile.read(int(self.headers.get('Content-Length')))
-				sdata=json.loads(data)
+			if command in ['/search','/status','/ui','/docs']:
+				if "application/json" in self.headers.get("Content-type").lower():
+					data = self.rfile.read(int(self.headers.get('Content-Length')))
+					sdata=json.loads(data)
+				else:
+					self.do_Error('Wrong Content-type: '+self.headers.get("Content-type")+' (should by application/json)')
 			else:
-				self.do_Error('Wrong Content-type: '+self.headers.get("Content-type")+' (should by application/json)')
+				self.do_Error('Wrong Post command: '+self.path)
 		except Exception as ex:
 			api.printException(ex,"do_Post")
 			self.do_Error('Wrong command: '+self.path)

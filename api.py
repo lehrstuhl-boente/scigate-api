@@ -256,174 +256,27 @@ def getData(query,hits,id,sdata):
 
 def loadDocs(hitlist,id,sdata,verzeichnisname):
 	print('Start loadDocs for '+str(id))
-	hits=len(hitlist)
 	reply={}
 	reply['status']='ok'
+	hits=len(hitlist)
+	status={ 'hits': hits, 'fetched': 0, 'requeststatus': 'running', 'job': 'loadDocs', 'errors': []}
+	saveStatus(status, id)
 
 	try:
 		if sdata['getDocs']:
-			status={ 'hits': hits, 'fetched': 0, 'requeststatus': 'running', 'job': 'reading documents'}
-			saveStatus(status, id)
-			start=0
-			for idx in range(len(hitlist)):
-				t=hitlist[idx]
-				if 'url' in t:
-					url=t['url']
-					stamm=url.split('/view/')
-					entscheidid=stamm[1]
-					basisurl=stamm[0]
-					t['DocID']=entscheidid
-				else:
-					entscheidid=t['DocID']
-					basisurl=BASISURL
-
-				print("Verarbeite "+entscheidid)
-				stammurl=basisurl+"/docs/"+entscheidid
-				stammpath=PARENTDIR+"/"+verzeichnisname+"/"+entscheidid
-				r=requests.get(url=stammurl+".json")
-				with open(stammpath+".json", "w") as outfile:
-					outfile.write(r.text)
-				t['JSON-File']=entscheidid+".json"
-				t['JSON-URL']=stammurl+".json"
-				print(stammurl+".json")
-				entscheidjson=json.loads(r.text)
-				if "HTML" in entscheidjson:
-					r=requests.get(url=stammurl+".html")
-					with open(stammpath+".html", "wb") as outfile:
-						outfile.write(r.content)
-					t['HTML-File']=entscheidid+".html"
-					t['HTML-URL']=stammurl+".html"	
-				if "PDF" in entscheidjson:
-					r=requests.get(url=stammurl+".pdf")
-					with open(stammpath+".pdf", "wb") as outfile:
-						outfile.write(r.content)
-					t['PDF-File']=entscheidid+".pdf"
-					t['PDF-URL']=stammurl+".pdf"
-				if "Datum" in entscheidjson:
-					t['Date']=entscheidjson['Datum']
-				if "Sprache" in entscheidjson:
-					t['Lang']=entscheidjson['Sprache']
-					lang=entscheidjson['Sprache']
-				else:
-					lang="de"
-				if "Zeit UTC" in entscheidjson:
-					t['Scrapingtime UTC']=entscheidjson['Zeit UTC']
-				if "Abstract" in entscheidjson:
-					t['Abstract']=entscheidjson['Abstract'][0]['Text']
-				if "Num" in entscheidjson:
-					t['Reference']=entscheidjson['Num']
-				if "Meta" in entscheidjson:
-					t['Source']=list(filter(lambda x: x['Sprachen'][0] == lang, entscheidjson['Meta']))[0]['Text']
-				if idx % 10 ==5:
-					status['fetched']=idx
-					saveStatus(status,id)
-			status['fetched']=len(hitlist)
-			saveStatus(status,id)
+			reply=getDocs(hitlist, id,sdata,verzeichnisname)
+			if reply['status']!='ok':
+				status['errors'].append(reply['errors'])
 			
 		if sdata['getJSON']:
-			print("Schreibe JSON")
-			status={ 'hits': hits, 'fetched': hits, 'requeststatus': 'running', 'job': 'creating JSON'}
-			saveStatus(status, id)
-			with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.json", 'w') as f:
-				f.write(json.dumps(hitlist))
-			status['json']=MYFILEURL+verzeichnisname+"/hitlist.json"		
-			reply['json']=MYFILEURL+verzeichnisname+"/hitlist.json"	
-			saveStatus(status, id)
-		
+			reply=writeJSON(hitlist, id, sdata, verzeichnisname)
+			if reply['status']!='ok':
+				status['errors'].append(reply['errors'])
+
 		if sdata['getCSV'] or sdata['getHTML']:
-			print("Bereite CSV und/oder HTML vor")
-			spalten={}
-			for h in hitlist:
-				for k in h:
-					if k != 'sort':
-						if type(h[k])==list:
-							#leere Einträge am Ende löschen
-							l=len(h[k])
-							while l>1 and not h[k][l-1]:
-								l-=1
-								del h[k][l]
-						else:
-							l=1
-						if k in spalten:
-							if spalten[k]<l:
-								spalten[k]=l
-						else:
-							spalten[k]=l
-			print(spalten)
-
-			spaltenliste=[]
-			for s in spalten:
-				spaltenliste.append(s)
-				if spalten[s]>1:
-					i=1
-					while spalten[s]>i:
-						i+=1
-						spaltenliste.append(s+str(i))
-			spaltenzahl=len(spaltenliste)
-			
-			print(spaltenliste)
-			
-			if sdata['getCSV']:
-				print("Schreibe CSV")
-				status={ 'hits': hits, 'fetched': hits, 'requeststatus': 'running', 'job': 'creating CSV'}
-				with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.csv", 'w') as f:
-					write = csv.writer(f)
-					write.writerow(spaltenliste)
-					for h in hitlist:
-						s=0
-						reihe=[]
-						while s<spaltenzahl:
-							spaltenname=spaltenliste[s]
-							if spaltenname !='sort':
-								if spaltenname in h:
-									spaltenwert=h[spaltenname]
-									if type(spaltenwert)==list:
-										reihe.extend(spaltenwert)
-										s+=len(spaltenwert)
-									else:
-										reihe.append(spaltenwert)
-										s+=1
-								else:
-									reihe.append("")
-									s+=1
-						write.writerow(reihe)
-				status['csv']=MYFILEURL+verzeichnisname+"/hitlist.csv"
-				reply['csv']=MYFILEURL+verzeichnisname+"/hitlist.csv"
-
-			if sdata['getHTML']:
-				print("Schreibe HTML")
-				status={ 'hits': hits, 'fetched': hits, 'requeststatus': 'running', 'job': 'creating CSV'}
-				with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.html", 'w') as f:
-					f.write(HTMLSTART)
-					f.write("<table class='styled-table'><thead><tr><th>")
-					f.write("</th><th>".join(spaltenliste))
-					f.write("</th></tr></thead>")
-					f.write("<tobody>")
-					for h in hitlist:
-						f.write("<tr>")
-						s=0
-						while s<spaltenzahl:
-							spaltenname=spaltenliste[s]
-							if spaltenname !='sort':
-								if spaltenname in h:
-									spaltenwert=h[spaltenname]
-									if type(spaltenwert)==list:
-										f.write("<td>"+"</td><td>".join(spaltenwert)+"</td>")
-										s+=len(spaltenwert)
-									else:
-										if spaltenwert[:4]=="http":
-											spaltenwert="<a href='"+spaltenwert+"'>"+spaltenwert+"</a>"
-										f.write("<td>"+spaltenwert+"</td>")
-										s+=1
-								else:
-									f.write("<td></td>")
-									s+=1
-						f.write("</tr>")
-					f.write("</tbody></table></body></html>")
-					status['html']=MYFILEURL+verzeichnisname+"/hitlist.html"
-					reply['html']=MYFILEURL+verzeichnisname+"/hitlist.html"
-
-			
+			reply=writeCSV_HTML(hitlist, id, sdata, verzeichnisname)
+			if reply['status']!='ok':
+				status['errors'].append(reply['errors'])
 
 		status['requeststatus']='done'
 		status['erasure']=datetime.datetime.fromtimestamp(time.time()+604800).isoformat(timespec="minutes", sep=" ")
@@ -450,6 +303,226 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 		saveStatus(status, id)
 		reply['requeststatus']='done'
 		return reply
+				
+	except Exception as ex:
+		printException(ex,"loadDocs "+str(id))
+		reply['errormodule']="loadDocs"
+		reply['error']="exception caught"	
+		reply['status']='error'
+		status['status']='error'
+		saveStatus(status, id)
+		reply['requeststatus']='error'
+		return reply
+
+
+def getDocs(hitlist,id,sdata,verzeichnisname):
+	print('Start getDocs for '+str(id))
+	hits=len(hitlist)
+	reply={}
+	reply['status']='ok'
+	reply['errors']=[]
+
+	status={ 'hits': hits, 'fetched': 0, 'requeststatus': 'running', 'job': 'reading documents', 'errors': []}
+	saveStatus(status, id)
+	start=0
+	for idx in range(len(hitlist)):
+		try:
+			t=hitlist[idx]
+			entscheidid="undefined"
+			if 'url' in t:
+				url=t['url']
+				stamm=url.split('/view/')
+				entscheidid=stamm[1]
+				basisurl=stamm[0]
+				t['DocID']=entscheidid
+			else:
+				entscheidid=t['DocID']
+				basisurl=BASISURL
+
+			print("Verarbeite "+entscheidid)
+			stammurl=basisurl+"/docs/"+entscheidid
+			stammpath=PARENTDIR+"/"+verzeichnisname+"/"+entscheidid
+			r=requests.get(url=stammurl+".json")
+			with open(stammpath+".json", "w") as outfile:
+				outfile.write(r.text)
+			t['JSON-File']=entscheidid+".json"
+			t['JSON-URL']=stammurl+".json"
+			print(stammurl+".json")
+			entscheidjson=json.loads(r.text)
+			if "HTML" in entscheidjson:
+				r=requests.get(url=stammurl+".html")
+				with open(stammpath+".html", "wb") as outfile:
+					outfile.write(r.content)
+				t['HTML-File']=entscheidid+".html"
+				t['HTML-URL']=stammurl+".html"	
+			if "PDF" in entscheidjson:
+				r=requests.get(url=stammurl+".pdf")
+				with open(stammpath+".pdf", "wb") as outfile:
+					outfile.write(r.content)
+				t['PDF-File']=entscheidid+".pdf"
+				t['PDF-URL']=stammurl+".pdf"
+			if "Datum" in entscheidjson:
+				t['Date']=entscheidjson['Datum']
+			if "Sprache" in entscheidjson:
+				t['Lang']=entscheidjson['Sprache']
+				lang=entscheidjson['Sprache']
+			else:
+				lang="de"
+			if "Zeit UTC" in entscheidjson:
+				t['Scrapingtime UTC']=entscheidjson['Zeit UTC']
+			if "Abstract" in entscheidjson:
+				t['Abstract']=entscheidjson['Abstract'][0]['Text']
+			if "Num" in entscheidjson:
+				t['Reference']=entscheidjson['Num']
+			if "Meta" in entscheidjson:
+				t['Source']=list(filter(lambda x: x['Sprachen'][0] == lang, entscheidjson['Meta']))[0]['Text']
+			if idx % 10 ==5:
+				status['fetched']=idx
+				saveStatus(status,id)
+		except Exception as ex:
+			printException(ex,"getDocs "+str(id)+" "+entscheidid)
+			error="Exception with loading document "+entscheidid+" removing item "+str(idx)+" from hitlist."
+			status[errors]+=error
+			reply[errors]+=error
+			del hitlist[idx]
+			idx-=1
+			status['status']='warning'
+			saveStatus(status, id)
+			reply['requeststatus']='warning'
+
+		status['fetched']=len(hitlist)
+		saveStatus(status,id)
+
+		return reply
+
+def writeJSON(hitlist,id,sdata,verzeichnisname):
+	print('Start writeJSON for '+str(id))
+	hits=len(hitlist)
+	reply={}
+	reply['status']='ok'
+
+	try:
+		print("Schreibe JSON")
+		status={ 'hits': hits, 'fetched': hits, 'requeststatus': 'running', 'job': 'creating JSON'}
+		saveStatus(status, id)
+		with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.json", 'w') as f:
+			f.write(json.dumps(hitlist))
+		status['json']=MYFILEURL+verzeichnisname+"/hitlist.json"		
+		reply['json']=MYFILEURL+verzeichnisname+"/hitlist.json"	
+		saveStatus(status, id)
+		return reply
+
+	except Exception as ex:
+		printException(ex,"writeJSON "+str(id))
+		reply['errormodule']="writeJSON"
+		reply['error']="exception caught"	
+		reply['status']='error'
+		status['status']='error'
+		saveStatus(status, id)
+		reply['requeststatus']='error'
+		return reply
+
+
+
+def writeCSV_HTML(hitlist,id,sdata,verzeichnisname):
+	print('Start writeCSV_HTML for '+str(id))
+	hits=len(hitlist)
+	reply={}
+	reply['status']='ok'
+
+	try:
+		print("Bereite CSV und/oder HTML vor")
+		spalten={}
+		for h in hitlist:
+			for k in h:
+				if k != 'sort':
+					if type(h[k])==list:
+						#leere Einträge am Ende löschen
+						l=len(h[k])
+						while l>1 and not h[k][l-1]:
+							l-=1
+							del h[k][l]
+					else:
+						l=1
+					if k in spalten:
+						if spalten[k]<l:
+							spalten[k]=l
+					else:
+						spalten[k]=l
+		print(spalten)
+
+		spaltenliste=[]
+		for s in spalten:
+			spaltenliste.append(s)
+			if spalten[s]>1:
+				i=1
+				while spalten[s]>i:
+					i+=1
+					spaltenliste.append(s+str(i))
+		spaltenzahl=len(spaltenliste)
+		
+		print(spaltenliste)
+		
+		if sdata['getCSV']:
+			print("Schreibe CSV")
+			status={ 'hits': hits, 'fetched': hits, 'requeststatus': 'running', 'job': 'creating CSV'}
+			with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.csv", 'w') as f:
+				write = csv.writer(f)
+				write.writerow(spaltenliste)
+				for h in hitlist:
+					s=0
+					reihe=[]
+					while s<spaltenzahl:
+						spaltenname=spaltenliste[s]
+						if spaltenname !='sort':
+							if spaltenname in h:
+								spaltenwert=h[spaltenname]
+								if type(spaltenwert)==list:
+									reihe.extend(spaltenwert)
+									s+=len(spaltenwert)
+								else:
+									reihe.append(spaltenwert)
+									s+=1
+							else:
+								reihe.append("")
+								s+=1
+					write.writerow(reihe)
+			status['csv']=MYFILEURL+verzeichnisname+"/hitlist.csv"
+			reply['csv']=MYFILEURL+verzeichnisname+"/hitlist.csv"
+
+		if sdata['getHTML']:
+			print("Schreibe HTML")
+			status={ 'hits': hits, 'fetched': hits, 'requeststatus': 'running', 'job': 'creating CSV'}
+			with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.html", 'w') as f:
+				f.write(HTMLSTART)
+				f.write("<table class='styled-table'><thead><tr><th>")
+				f.write("</th><th>".join(spaltenliste))
+				f.write("</th></tr></thead>")
+				f.write("<tobody>")
+				for h in hitlist:
+					f.write("<tr>")
+					s=0
+					while s<spaltenzahl:
+						spaltenname=spaltenliste[s]
+						if spaltenname !='sort':
+							if spaltenname in h:
+								spaltenwert=h[spaltenname]
+								if type(spaltenwert)==list:
+									f.write("<td>"+"</td><td>".join(spaltenwert)+"</td>")
+									s+=len(spaltenwert)
+								else:
+									if spaltenwert[:4]=="http":
+										spaltenwert="<a href='"+spaltenwert+"'>"+spaltenwert+"</a>"
+									f.write("<td>"+spaltenwert+"</td>")
+									s+=1
+							else:
+								f.write("<td></td>")
+								s+=1
+					f.write("</tr>")
+				f.write("</tbody></table></body></html>")
+				status['html']=MYFILEURL+verzeichnisname+"/hitlist.html"
+				reply['html']=MYFILEURL+verzeichnisname+"/hitlist.html"
+		return reply			
 				
 	except Exception as ex:
 		printException(ex,"loadDocs "+str(id))
