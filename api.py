@@ -391,10 +391,10 @@ def getDocs(hitlist,id,sdata,verzeichnisname):
 			saveStatus(status, id)
 			reply['requeststatus']='warning'
 
-		status['fetched']=len(hitlist)
-		saveStatus(status,id)
+	status['fetched']=len(hitlist)
+	saveStatus(status,id)
 
-		return reply, len(hitlist)
+	return reply, len(hitlist)
 
 def writeJSON(hitlist,id,sdata,verzeichnisname):
 	print('Start writeJSON for '+str(id))
