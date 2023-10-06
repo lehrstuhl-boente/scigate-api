@@ -264,7 +264,8 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 
 	try:
 		if sdata['getDocs']:
-			reply=getDocs(hitlist, id,sdata,verzeichnisname)
+			reply,fetched=getDocs(hitlist, id,sdata,verzeichnisname)
+			status['fetched']=fetched
 			if reply['status']!='ok':
 				status['errors'].append(reply['errors'])
 			
@@ -393,7 +394,7 @@ def getDocs(hitlist,id,sdata,verzeichnisname):
 		status['fetched']=len(hitlist)
 		saveStatus(status,id)
 
-		return reply
+		return reply, len(hitlist)
 
 def writeJSON(hitlist,id,sdata,verzeichnisname):
 	print('Start writeJSON for '+str(id))
