@@ -26,10 +26,9 @@ class MyServer(BaseHTTPRequestHandler):
 			commands=self.path.split("?",1)
 			print(commands)
 			command=commands[0]
+			sdata={}
 			if command in ['/search','/status','/ui']:
-				if len(commands)<2:
-					sdata={}
-				else:
+				if len(commands)>1:
 					args=urllib.parse.unquote(commands[1])
 					print(args)
 					sdata=json.loads(args)
@@ -86,6 +85,9 @@ class MyServer(BaseHTTPRequestHandler):
 			reply=api.status(sdata)
 		elif command=='/ui':
 			sdata['ui']=True
+			reply=api.search(sdata)			
+		elif command=='/docs':
+			sdata['docs']=True
 			reply=api.search(sdata)			
 		else:
 			reply['status']='error'
