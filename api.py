@@ -259,7 +259,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 	reply={}
 	reply['status']='ok'
 	hits=len(hitlist)
-	status={ 'hits': hits, 'fetched': 0, 'requeststatus': 'running', 'job': 'loadDocs', 'errors': []}
+	status={ 'hits': hits, 'fetched': 0, 'requeststatus': 'running', 'job': 'loadDocs', 'errlist': []}
 	saveStatus(status, id)
 
 	try:
@@ -267,17 +267,17 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 			reply,fetched=getDocs(hitlist, id,sdata,verzeichnisname)
 			status['fetched']=fetched
 			if reply['status']!='ok':
-				status['errors'].append(reply['errors'])
+				status['errlist'].append(reply['errlist'])
 			
 		if sdata['getJSON']:
 			reply=writeJSON(hitlist, id, sdata, verzeichnisname)
 			if reply['status']!='ok':
-				status['errors'].append(reply['errors'])
+				status['errlist'].append(reply['errlist'])
 
 		if sdata['getCSV'] or sdata['getHTML']:
 			reply=writeCSV_HTML(hitlist, id, sdata, verzeichnisname)
 			if reply['status']!='ok':
-				status['errors'].append(reply['errors'])
+				status['errlist'].append(reply['errlist'])
 
 		status['requeststatus']='done'
 		status['erasure']=datetime.datetime.fromtimestamp(time.time()+604800).isoformat(timespec="minutes", sep=" ")
@@ -321,9 +321,9 @@ def getDocs(hitlist,id,sdata,verzeichnisname):
 	hits=len(hitlist)
 	reply={}
 	reply['status']='ok'
-	reply['errors']=[]
+	reply['errlist']=[]
 
-	status={ 'hits': hits, 'fetched': 0, 'requeststatus': 'running', 'job': 'reading documents', 'errors': []}
+	status={ 'hits': hits, 'fetched': 0, 'requeststatus': 'running', 'job': 'reading documents', 'errlist': []}
 	saveStatus(status, id)
 	start=0
 	for idx in range(len(hitlist)):
@@ -383,8 +383,8 @@ def getDocs(hitlist,id,sdata,verzeichnisname):
 		except Exception as ex:
 			printException(ex,"getDocs "+str(id)+" "+entscheidid)
 			error="Exception with loading document "+entscheidid+" removing item "+str(idx)+" from hitlist."
-			status[errors]+=error
-			reply[errors]+=error
+			status['errlist']+=error
+			reply['errlist']+=error
 			del hitlist[idx]
 			idx-=1
 			status['status']='warning'
