@@ -383,8 +383,8 @@ def getDocs(hitlist,id,sdata,verzeichnisname):
 		except Exception as ex:
 			printException(ex,"getDocs "+str(id)+" "+entscheidid)
 			error="Exception with loading document "+entscheidid+" removing item "+str(idx)+" from hitlist."
-			status['errlist']+=error
-			reply['errlist']+=error
+			status['errlist'].append(error)
+			reply['errlist'].append(error)
 			del hitlist[idx]
 			idx-=1
 			status['status']='warning'
