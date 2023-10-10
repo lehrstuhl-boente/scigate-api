@@ -326,9 +326,10 @@ def getDocs(hitlist,id,sdata,verzeichnisname):
 	status={ 'hits': hits, 'fetched': 0, 'requeststatus': 'running', 'job': 'reading documents', 'errlist': []}
 	saveStatus(status, id)
 	start=0
+	entfernt=0
 	for idx in range(len(hitlist)):
 		try:
-			t=hitlist[idx]
+			t=hitlist[idx-entfernt]
 			entscheidid="undefined"
 			if 'url' in t:
 				url=t['url']
@@ -378,15 +379,16 @@ def getDocs(hitlist,id,sdata,verzeichnisname):
 			if "Meta" in entscheidjson:
 				t['Source']=list(filter(lambda x: x['Sprachen'][0] == lang, entscheidjson['Meta']))[0]['Text']
 			if idx % 10 ==5:
-				status['fetched']=idx
+				status['fetched']=idx-entfernt
+				status['skipped']=entfernt
 				saveStatus(status,id)
 		except Exception as ex:
 			printException(ex,"getDocs "+str(id)+" "+entscheidid)
 			error="Exception with loading document "+entscheidid+" removing item "+str(idx)+" from hitlist."
 			status['errlist'].append(error)
 			reply['errlist'].append(error)
-			del hitlist[idx]
-			idx-=1
+			del hitlist[idx-entfernt]
+			entfernt+=1
 			status['status']='warning'
 			saveStatus(status, id)
 			reply['requeststatus']='warning'
