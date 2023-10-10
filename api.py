@@ -327,76 +327,108 @@ def getDocs(hitlist,id,sdata,verzeichnisname):
 	saveStatus(status, id)
 	start=0
 	entfernt=0
+	skiplist=[]
 	for idx in range(len(hitlist)):
-		try:
-			t=hitlist[idx-entfernt]
-			entscheidid="undefined"
-			if 'url' in t:
-				url=t['url']
-				stamm=url.split('/view/')
-				entscheidid=stamm[1]
-				basisurl=stamm[0]
-				t['DocID']=entscheidid
-			else:
-				entscheidid=t['DocID']
-				basisurl=BASISURL
-
-			print("Verarbeite "+entscheidid)
-			stammurl=basisurl+"/docs/"+entscheidid
-			stammpath=PARENTDIR+"/"+verzeichnisname+"/"+entscheidid
-			r=requests.get(url=stammurl+".json")
-			with open(stammpath+".json", "w") as outfile:
-				outfile.write(r.text)
-			t['JSON-File']=entscheidid+".json"
-			t['JSON-URL']=stammurl+".json"
-			print(stammurl+".json")
-			entscheidjson=json.loads(r.text)
-			if "HTML" in entscheidjson:
-				r=requests.get(url=stammurl+".html")
-				with open(stammpath+".html", "wb") as outfile:
-					outfile.write(r.content)
-				t['HTML-File']=entscheidid+".html"
-				t['HTML-URL']=stammurl+".html"	
-			if "PDF" in entscheidjson:
-				r=requests.get(url=stammurl+".pdf")
-				with open(stammpath+".pdf", "wb") as outfile:
-					outfile.write(r.content)
-				t['PDF-File']=entscheidid+".pdf"
-				t['PDF-URL']=stammurl+".pdf"
-			if "Datum" in entscheidjson:
-				t['Date']=entscheidjson['Datum']
-			if "Sprache" in entscheidjson:
-				t['Lang']=entscheidjson['Sprache']
-				lang=entscheidjson['Sprache']
-			else:
-				lang="de"
-			if "Zeit UTC" in entscheidjson:
-				t['Scrapingtime UTC']=entscheidjson['Zeit UTC']
-			if "Abstract" in entscheidjson:
-				t['Abstract']=entscheidjson['Abstract'][0]['Text']
-			if "Num" in entscheidjson:
-				t['Reference']=entscheidjson['Num']
-			if "Meta" in entscheidjson:
-				t['Source']=list(filter(lambda x: x['Sprachen'][0] == lang, entscheidjson['Meta']))[0]['Text']
-			if idx % 10 ==5:
-				status['fetched']=idx-entfernt
-				status['skipped']=entfernt
-				saveStatus(status,id)
-		except Exception as ex:
-			printException(ex,"getDocs "+str(id)+" "+entscheidid)
-			error="Exception with loading document "+entscheidid+" removing item "+str(idx)+" from hitlist."
+		t=hitlist[idx-entfernt]
+		error=getDocsSub(t,id,verzeichnisname)
+		if error:
 			status['errlist'].append(error)
 			reply['errlist'].append(error)
+			skiplist.append(hitlist[idx-entfernt])
 			del hitlist[idx-entfernt]
 			entfernt+=1
 			status['status']='warning'
 			saveStatus(status, id)
 			reply['requeststatus']='warning'
+			
+		if idx % 10 ==5:
+			status['fetched']=idx-entfernt
+			status['skipped']=entfernt
+			saveStatus(status,id)
 
+	if entfernt>0:
+		print("Probiere nun "+str(entfernt)+" fehlgeschlagene Entscheide erneut.")
+		for idx in range(len(skiplist)):
+			t=hitlist[idx]
+			error=getDocsSub(t,id,verzeichnisname)
+			if error:
+				status['errlist'].append(error)
+				reply['errlist'].append(error)
+			else:
+				entfernt-=1
+				meldung="Zweitversuch für "+t['DocID']+" erfolgreich."				
+				status['errlist'].append(meldung)
+				reply['errlist'].append(meldung)
+				print(meldung)
+				hitlist.append(t)
+			
+		if entfernt==0:
+			status['status']='ok'
+			reply['requeststatus']='ok'
 	status['fetched']=len(hitlist)
+	status['skipped']=entfernt
 	saveStatus(status,id)
 
 	return reply, len(hitlist)
+
+
+	
+def getDocsSub(t,id,verzeichnisname):
+	entscheidid="undefined"
+	try:
+		if 'url' in t:
+			url=t['url']
+			stamm=url.split('/view/')
+			entscheidid=stamm[1]
+			basisurl=stamm[0]
+			t['DocID']=entscheidid
+		else:
+			entscheidid=t['DocID']
+			basisurl=BASISURL
+
+		print("Verarbeite "+entscheidid)
+		stammurl=basisurl+"/docs/"+entscheidid
+		stammpath=PARENTDIR+"/"+verzeichnisname+"/"+entscheidid
+		r=requests.get(url=stammurl+".json")
+		with open(stammpath+".json", "w") as outfile:
+			outfile.write(r.text)
+		t['JSON-File']=entscheidid+".json"
+		t['JSON-URL']=stammurl+".json"
+		print(stammurl+".json")
+		entscheidjson=json.loads(r.text)
+		if "HTML" in entscheidjson:
+			r=requests.get(url=stammurl+".html")
+			with open(stammpath+".html", "wb") as outfile:
+				outfile.write(r.content)
+			t['HTML-File']=entscheidid+".html"
+			t['HTML-URL']=stammurl+".html"	
+		if "PDF" in entscheidjson:
+			r=requests.get(url=stammurl+".pdf")
+			with open(stammpath+".pdf", "wb") as outfile:
+				outfile.write(r.content)
+			t['PDF-File']=entscheidid+".pdf"
+			t['PDF-URL']=stammurl+".pdf"
+		if "Datum" in entscheidjson:
+			t['Date']=entscheidjson['Datum']
+		if "Sprache" in entscheidjson:
+			t['Lang']=entscheidjson['Sprache']
+			lang=entscheidjson['Sprache']
+		else:
+			lang="de"
+		if "Zeit UTC" in entscheidjson:
+			t['Scrapingtime UTC']=entscheidjson['Zeit UTC']
+		if "Abstract" in entscheidjson:
+			t['Abstract']=entscheidjson['Abstract'][0]['Text']
+		if "Num" in entscheidjson:
+			t['Reference']=entscheidjson['Num']
+		if "Meta" in entscheidjson:
+			t['Source']=list(filter(lambda x: x['Sprachen'][0] == lang, entscheidjson['Meta']))[0]['Text']
+		return ""
+
+	except Exception as ex:
+		detail=printException(ex,"getDocs "+str(id)+" "+entscheidid)
+		error="Exception with loading document "+entscheidid+" skipping item "+str(idx)+" from hitlist ["+detail+"]"
+		return error
 
 def writeJSON(hitlist,id,sdata,verzeichnisname):
 	print('Start writeJSON for '+str(id))
@@ -608,6 +640,11 @@ def printException(ex, name):
 	print("Exception type : %s " % ex_type.__name__)
 	print("Exception message : %s" %ex_value)
 	print("Stack trace : %s" %stack_trace)
+	
+	errstring="Exception "+name+"; Exception type : "+ ex_type.__name__ + "; Exception message : "+ ex_value+"; Stack trace : "+stack_trace
+	
+	return errstring
+
 
 
 def saveStatus(status,id):
