@@ -227,8 +227,14 @@ def getData(query,hits,id,sdata):
 			print(data)
 			
 			r=requests.post(url=APIURL,json=data)
-			ergebnis=r.text
 			#print("Ergebnis von 'hitlist': "+ergebnis)
+			retries=0
+			while (r.status_code != 200 and retries < 10)
+				retries += 1
+				print ("Status code: "+str(r.status_code)+" '"+r.text+"' Retry "+str(retries))
+				r=requests.post(url=APIURL,json=data)
+				
+			ergebnis=r.text
 			result=json.loads(ergebnis)
 			#print("json")
 			if result['status']=='ok':
