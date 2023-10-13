@@ -647,7 +647,7 @@ def printException(ex, name):
 	print("Exception message : %s" %ex_value)
 	print("Stack trace : %s" %stack_trace)
 	
-	errstring="Exception "+name+"; Exception type : "+ ex_type.__name__ + "; Exception message : "+ ex_value+"; Stack trace : "+stack_trace
+	errstring="Exception "+name+"; Exception type : "+ ex_type.__name__ + "; Exception message : "+ ex_value+"; Stack trace : "+",".join(stack_trace)
 	
 	return errstring
 
