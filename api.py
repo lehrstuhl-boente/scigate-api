@@ -433,7 +433,7 @@ def getDocsSub(t,id,verzeichnisname):
 
 	except Exception as ex:
 		detail=printException(ex,"getDocs "+str(id)+" "+entscheidid)
-		error="Exception with loading document "+entscheidid+" skipping item "+str(idx)+" from hitlist ["+detail+"]"
+		error="Exception with loading document "+entscheidid+" skipping item "+str(idx)+" from hitlist ["+",".join(detail)+"]"
 		return error
 
 def writeJSON(hitlist,id,sdata,verzeichnisname):
