@@ -401,35 +401,39 @@ def getDocsSub(t,id,verzeichnisname):
 		t['JSON-File']=entscheidid+".json"
 		t['JSON-URL']=stammurl+".json"
 		print(stammurl+".json")
-		entscheidjson=json.loads(r.text)
-		if "HTML" in entscheidjson:
-			r=requests.get(url=stammurl+".html")
-			with open(stammpath+".html", "wb") as outfile:
-				outfile.write(r.content)
-			t['HTML-File']=entscheidid+".html"
-			t['HTML-URL']=stammurl+".html"	
-		if "PDF" in entscheidjson:
-			r=requests.get(url=stammurl+".pdf")
-			with open(stammpath+".pdf", "wb") as outfile:
-				outfile.write(r.content)
-			t['PDF-File']=entscheidid+".pdf"
-			t['PDF-URL']=stammurl+".pdf"
-		if "Datum" in entscheidjson:
-			t['Date']=entscheidjson['Datum']
-		if "Sprache" in entscheidjson:
-			t['Lang']=entscheidjson['Sprache']
-			lang=entscheidjson['Sprache']
+		if len(r.text)<10:
+			error="File "+stammurl+".json was (almost) empty. Skipping item from hitlist"
 		else:
-			lang="de"
-		if "Zeit UTC" in entscheidjson:
-			t['Scrapingtime UTC']=entscheidjson['Zeit UTC']
-		if "Abstract" in entscheidjson:
-			t['Abstract']=entscheidjson['Abstract'][0]['Text']
-		if "Num" in entscheidjson:
-			t['Reference']=entscheidjson['Num']
-		if "Meta" in entscheidjson:
-			t['Source']=list(filter(lambda x: x['Sprachen'][0] == lang, entscheidjson['Meta']))[0]['Text']
-		return ""
+			error=""
+			entscheidjson=json.loads(r.text)
+			if "HTML" in entscheidjson:
+				r=requests.get(url=stammurl+".html")
+				with open(stammpath+".html", "wb") as outfile:
+					outfile.write(r.content)
+				t['HTML-File']=entscheidid+".html"
+				t['HTML-URL']=stammurl+".html"	
+			if "PDF" in entscheidjson:
+				r=requests.get(url=stammurl+".pdf")
+				with open(stammpath+".pdf", "wb") as outfile:
+					outfile.write(r.content)
+				t['PDF-File']=entscheidid+".pdf"
+				t['PDF-URL']=stammurl+".pdf"
+			if "Datum" in entscheidjson:
+				t['Date']=entscheidjson['Datum']
+			if "Sprache" in entscheidjson:
+				t['Lang']=entscheidjson['Sprache']
+				lang=entscheidjson['Sprache']
+			else:
+				lang="de"
+			if "Zeit UTC" in entscheidjson:
+				t['Scrapingtime UTC']=entscheidjson['Zeit UTC']
+			if "Abstract" in entscheidjson:
+				t['Abstract']=entscheidjson['Abstract'][0]['Text']
+			if "Num" in entscheidjson:
+				t['Reference']=entscheidjson['Num']
+			if "Meta" in entscheidjson:
+				t['Source']=list(filter(lambda x: x['Sprachen'][0] == lang, entscheidjson['Meta']))[0]['Text']
+		return error
 
 	except Exception as ex:
 		detail=printException(ex,"getDocs "+str(id)+" "+entscheidid)
@@ -447,7 +451,14 @@ def writeJSON(hitlist,id,sdata,verzeichnisname):
 		status={ 'hits': hits, 'fetched': hits, 'requeststatus': 'running', 'job': 'creating JSON'}
 		saveStatus(status, id)
 		with open(PARENTDIR+"/"+verzeichnisname+"/hitlist.json", 'w') as f:
-			f.write(json.dumps(hitlist))
+			# der komplette dump führt zum Fehler
+			# f.write(json.dumps(hitlist))
+			f.write("[")
+			for i in range(len(hitlist)-1):
+				f.write(json.dumps(hitlist[i]))
+				f.write(",")
+			f.write(json.dumps(hitlist[len(hitlist)-1]))
+			f.write("]")	
 		status['json']=MYFILEURL+verzeichnisname+"/hitlist.json"		
 		reply['json']=MYFILEURL+verzeichnisname+"/hitlist.json"	
 		saveStatus(status, id)
@@ -461,6 +472,7 @@ def writeJSON(hitlist,id,sdata,verzeichnisname):
 		status['status']='error'
 		saveStatus(status, id)
 		reply['requeststatus']='error'
+		reply['errlist']=printException(ex,"writeJson "+str(id)+" "+entscheidid)
 		return reply
 
 
@@ -566,13 +578,14 @@ def writeCSV_HTML(hitlist,id,sdata,verzeichnisname):
 		return reply			
 				
 	except Exception as ex:
-		printException(ex,"loadDocs "+str(id))
-		reply['errormodule']="loadDocs"
+		printException(ex,"writeCSV_HTML "+str(id))
+		reply['errormodule']="writeCSV_HTML"
 		reply['error']="exception caught"	
 		reply['status']='error'
 		status['status']='error'
 		saveStatus(status, id)
 		reply['requeststatus']='error'
+		reply['errlist']=printException(ex,"writeCSV_HTML "+str(id)+" "+entscheidid)
 		return reply
 
 
