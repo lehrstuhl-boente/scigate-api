@@ -74,8 +74,8 @@ function run_check(statusLink){
 			percent=Math.round(100*fetched/hits);
 			document.getElementById("replytitle").innerHTML=''+data['job']+' '+percent+'%<div id="myProgress" style="width: 100%; background-color: #ddd;"><div id="myBar" style="width: '+percent+'%; height: 20px; background-color: #04AA6D; text-align: center;"></div></div>';
 		}
-		reply=JSON.stringify(data).replace(/,"/g,', "');
-		reply+="<br>STATUS: <a target='_BLANK' href='"+statusLink+"'>"+statusLink+"</a>";
+		reply="STATUS: <u><a target='_BLANK' href='"+statusLink+"'>"+statusLink+"</a></u> (If you close this window, you'll need this link to access the status and result of your request)";
+		reply+="<br><br>"+JSON.stringify(data).replace(/,"/g,', "');
 		document.getElementById("reply").innerHTML=reply;
 		if(data['requeststatus']=="running"){
 			statuslink=data['check'];
@@ -83,10 +83,10 @@ function run_check(statusLink){
 		}
 		else{
 			var links="";
-			if ("json" in data) links+="JSON: <a target='_BLANK' href='"+data['json']+"'>"+data['json']+"</a><br>";
-			if ("csv" in data) links+="CSV: <a target='_BLANK' href='"+data['csv']+"'>"+data['csv']+"</a><br>";
-			if ("html" in data) links+="HTML: <a target='_BLANK' href='"+data['html']+"'>"+data['html']+"</a><br>";
-			if ("zip" in data) links+="ZIP: <a target='_BLANK' href='"+data['zip']+"'>"+data['zip']+"</a><br>";
+			if ("json" in data) links+="JSON: <u><a target='_BLANK' href='"+data['json']+"'>"+data['json']+"</a></u><br>";
+			if ("csv" in data) links+="CSV: <u><a target='_BLANK' href='"+data['csv']+"'>"+data['csv']+"</a></u><br>";
+			if ("html" in data) links+="HTML: <u><a target='_BLANK' href='"+data['html']+"'>"+data['html']+"</a></u><br>";
+			if ("zip" in data) links+="ZIP: <u><a target='_BLANK' href='"+data['zip']+"'>"+data['zip']+"</a></u> (Click here to download your results)<br>";
 			document.getElementById("replylinks").innerHTML=links;			
 		}
 	});
