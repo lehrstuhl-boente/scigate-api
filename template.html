@@ -27,11 +27,8 @@
             </div>
             <div>
               <b id="hits">{hits}</b> hits
-              <div>
-                 <legend class="mb-4 text-gray-700 text-sm font-medium uppercase whitespace-nowrap">Downloadlimit</legend>
-              </div>
-
               <div class="grid grid-flow-row sm:grid-flow-col grid-cols-1 sm:grid-rows-2 sm:gap-x-8 gap-y-1 sm:gap-y-2">
+                 <legend class="mb-4 text-gray-700 text-sm font-medium uppercase whitespace-nowrap">Downloadlimit</legend>
                  <div class="relative flex justify-left">
                    <div class="h-5">
                      <input id="maxHits" oninput="update_parameter()" name="maxHits" type="number" value="{maxhits}" min="1" max="1000000" class="focus:ring-gray-200 sm:h-6 sm:w-10 text-gray-900 border-gray-300 checked:bg-gray-200">
