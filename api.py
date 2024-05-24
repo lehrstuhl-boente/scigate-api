@@ -23,6 +23,8 @@ MAXREPLY=100
 BASISURL="https://entscheidsuche.ch/docs"
 ZIPNAME="result.zip"
 TEMPLATEPATH="/home/jorn/scigateapi/template.html"
+SPEICHERZEITRAUM=604800
+reDir=re.compile('^request(?P<Zeit>[0-9]{10})[0-9]{11}$')
 
 TEMPLATEKEYS=["query","hits","truncated","checked_entscheidsuche","checked_swisscovery","checked_zora","checked_swisslexGreen","checked_repositorium","checked_boris","checked_fedlex","checked_csv","checked_json","checked_html","checked_nicehtml","checked_docs","checked_zip","maxhits","maxreply","filter"]
 # Wollte Semaphores nehmen für den Zugriff auf Status. Geht aber einfacher. Wenn der Status noch im Speicher ist, kann er aus dem Speicher genommen werden. Falls nicht, gibt es auch keine Zugriffskonflikte
@@ -71,7 +73,7 @@ def search(sdata):
 	reply={}
 	reply['status']='ok'
 	# add some random to the id so that guessing it becomes difficult
-	id=millisec = int(time.time() * 100000000000)+random.randint(0,100000000)
+	id= int(time.time() * 100000000000)+random.randint(0,100000000)
 	# Semaphores are needed to make sure that only complete status files are read
 	# Semaphores[id]=threading.Semaphore(1)
 
@@ -154,7 +156,17 @@ def search(sdata):
 		reply['status']='error'
 		return reply
 	
+def checkExpiry():
+	limit=int(time.time())-SPEICHERZEITRAUM
+	dateien=os.listdir(PARENTDIR)
+	for datei in dateien:
+		f=reDate.match(datei)
+		if f and int(f.group('Zeit'))<limit:
+			os.system('rm -rf '+PARENTDIR+"/"+datei)
+			
+	
 def processOutputSetting(sdata,p):
+	checkExpiry()
 	if not 'collection' in sdata:
 		sdata['collection']='entscheidsuche'
 
@@ -286,7 +298,7 @@ def loadDocs(hitlist,id,sdata,verzeichnisname):
 				status['errlist'].append(reply['errlist'])
 
 		status['requeststatus']='done'
-		status['erasure']=datetime.datetime.fromtimestamp(time.time()+604800).isoformat(timespec="minutes", sep=" ")
+		status['erasure']=datetime.datetime.fromtimestamp(time.time()+SPEICHERZEITRAUM).isoformat(timespec="minutes", sep=" ")
 		saveStatus(status, id)
 		
 		if sdata['getZIP']:
@@ -593,7 +605,7 @@ def docs(sdata):
 	reply={}
 	reply['status']='ok'
 	# add some random to the id so that guessing it becomes difficult
-	id=millisec = int(time.time() * 100000000000)+random.randint(0,100000000)
+	id= int(time.time() * 100000000000)+random.randint(0,100000000)
 	# Semaphores are needed to make sure that only complete status files are read
 	# Semaphores[id]=Semaphore(1)
 
