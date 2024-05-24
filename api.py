@@ -160,7 +160,7 @@ def checkExpiry():
 	limit=int(time.time())-SPEICHERZEITRAUM
 	dateien=os.listdir(PARENTDIR)
 	for datei in dateien:
-		f=reDatei.match(datei)
+		f=reDir.match(datei)
 		if f and int(f.group('Zeit'))<limit:
 			os.system('rm -rf '+PARENTDIR+"/"+datei)
 			
